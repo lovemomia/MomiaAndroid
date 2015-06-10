@@ -7,7 +7,7 @@ import android.view.ViewGroup;
 import android.widget.AbsListView;
 
 /**
- * 类似
+ * 类似iOS group样式ListView的Adapter
  *
  * Created by Jun Deng on 15/6/4.
  */
@@ -43,25 +43,44 @@ public abstract class GroupStyleAdapter extends BasicAdapter {
 
     abstract public int getCountInSection(int section);
 
-    @Override
-    final public View getView(int position, View convertView, ViewGroup parent) {
-        int p = 0;
-        for (int i = 0; i < getSectionCount(); i++) {
-            if (position == p) {
-                return getViewForSection(convertView, parent, i);
-            }
-            p += 1;
+    public boolean isSectionAtPosition(int position) {
+        return getIndexForPosition(position).row == -1;
+    }
 
-            for (int j = 0; j < getCountInSection(i); j++) {
-                if (position == p) {
-                    View view = getViewForRow(convertView, parent, i, j);
-                    view.setBackgroundColor(Color.WHITE);
-                    return view;
-                }
-                p += 1;
+    public IndexPath getIndexForPosition(int position) {
+        IndexPath index = new IndexPath();
+        int sumCount = 0;
+        int section;
+        for (section = 0; section < getSectionCount(); section++) {
+            int rowCount = getCountInSection(section);
+            sumCount += (rowCount + 1);
+            if (position < sumCount) {
+                index.section = section;
+                index.row = rowCount - (sumCount - position);
+                break;
             }
         }
-        return null;
+        return index;
+    }
+
+    @Override
+    public boolean isEnabled(int position) {
+        if (isSectionAtPosition(position)) {
+            return false;
+        }
+        return super.isEnabled(position);
+    }
+
+    @Override
+    final public View getView(int position, View convertView, ViewGroup parent) {
+        IndexPath indexPath = getIndexForPosition(position);
+        if (indexPath.row == -1) {
+            return getViewForSection(convertView, parent, indexPath.section);
+        } else {
+            View view = getViewForRow(convertView, parent, indexPath.section, indexPath.row);
+            view.setBackgroundColor(Color.WHITE);
+            return view;
+        }
     }
 
     abstract public View getViewForRow(View convertView, ViewGroup parent, int section, int row);
@@ -84,6 +103,16 @@ public abstract class GroupStyleAdapter extends BasicAdapter {
      */
     public int getHeightForSectionView(int section) {
         return 20;
+    }
+
+    /**
+     * 维护section与row关系的索引
+     * <p>
+     *     注：如果row为-1，表示当前item为section
+     */
+    public static class IndexPath {
+        public int section;
+        public int row;
     }
 
 }

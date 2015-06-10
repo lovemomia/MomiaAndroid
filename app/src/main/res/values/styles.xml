@@ -3,6 +3,28 @@
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <!-- Customize your theme here. -->
+        <!--<item name="android:actionBarItemBackground">@android:color/holo_blue_bright</item>-->
+        <!--<item name="actionBarItemBackground">@android:color/holo_blue_bright</item>-->
+        <item name="actionBarStyle">@style/MyActionBar</item>
+        <item name="android:listViewStyle">@style/CustomListView</item>
+    </style>
+
+    <style name="MyActionBar" parent="@style/Widget.AppCompat.ActionBar">
+        <item name="background">@color/bg_title_bar</item>
+        <item name="android:background">@color/bg_title_bar</item>
+        <item name="android:windowContentOverlay">@null</item>
+    </style>
+
+    <style name="CustomListView" parent="android:Widget.ListView">
+        <item name="android:dividerHeight">0.5dp</item>
+        <item name="android:divider">@color/bg_divider</item>
+    </style>
+
+    <style name="CustomButton" parent="android:Widget.Button">
+        <item name="android:padding">10dp</item>
+        <item name="android:background">@drawable/bg_button</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textSize">@dimen/text_large</item>
     </style>
 
 </resources>
