@@ -1,5 +1,7 @@
 package com.youxing.momia.home;
 
+import android.os.Bundle;
+
 import com.youxing.momia.app.TQActivity;
 
 /**
@@ -7,6 +9,10 @@ import com.youxing.momia.app.TQActivity;
  */
 public class HomeActivity extends TQActivity {
 
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
 
 
+    }
 }

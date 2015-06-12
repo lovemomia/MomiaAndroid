@@ -2,9 +2,12 @@ package com.youxing.momia.app;
 
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
+import android.view.View;
 
 import com.youxing.common.app.YXActivity;
+import com.youxing.momia.R;
 import com.youxing.momia.home.HomeActivity;
 
 /**
@@ -34,5 +37,9 @@ public class TQActivity extends YXActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    public View inflateView(int resId) {
+        return LayoutInflater.from(this).inflate(resId, null);
     }
 }

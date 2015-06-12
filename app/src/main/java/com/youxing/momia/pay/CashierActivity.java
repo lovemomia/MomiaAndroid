@@ -9,7 +9,11 @@ import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.ListView;
 
+import com.tencent.mm.sdk.modelpay.PayReq;
+import com.tencent.mm.sdk.openapi.IWXAPI;
+import com.tencent.mm.sdk.openapi.WXAPIFactory;
 import com.youxing.common.adapter.GroupStyleAdapter;
+import com.youxing.common.app.Constants;
 import com.youxing.momia.R;
 import com.youxing.momia.app.TQActivity;
 import com.youxing.momia.pay.views.CashierPayItemView;
@@ -50,7 +54,19 @@ public class CashierActivity extends TQActivity implements View.OnClickListener,
 
         } else if (wechatItem.isChecked()) {
             // 微信支付
+            final IWXAPI api = WXAPIFactory.createWXAPI(this, null);
+            // 将该app注册到微信
+            api.registerApp(Constants.WECHAT_APP_ID);
 
+            PayReq request = new PayReq();
+            request.appId = Constants.WECHAT_APP_ID;
+            request.partnerId = "1900000109";
+            request.prepayId= "1101000000140415649af9fc314aa427";
+            request.packageValue = "Sign=WXPay";
+            request.nonceStr= "1101000000140429eb40476f8896f4c9";
+            request.timeStamp= "1398746574";
+            request.sign= "7FFECB600D7157C5AA49810D2D8F28BC2811827B";
+            api.sendReq(request);
         }
 
     }
@@ -133,7 +149,7 @@ public class CashierActivity extends TQActivity implements View.OnClickListener,
         @Override
         public View getViewForSection(View convertView, ViewGroup parent, int section) {
             if (section == 1) {
-                SectionView sectionView = (SectionView)LayoutInflater.from(CashierActivity.this).inflate(R.layout.layout_section_text, null);
+                SectionView sectionView = SectionView.create(CashierActivity.this);
                 sectionView.setTitle("支付方式");
                 return sectionView;
             }

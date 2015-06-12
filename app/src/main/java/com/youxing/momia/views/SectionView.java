@@ -2,6 +2,7 @@ package com.youxing.momia.views;
 
 import android.content.Context;
 import android.util.AttributeSet;
+import android.view.LayoutInflater;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -21,6 +22,11 @@ public class SectionView extends LinearLayout {
 
     public SectionView(Context context, AttributeSet attrs) {
         super(context, attrs);
+    }
+
+    public static SectionView create(Context context) {
+        SectionView view = (SectionView) LayoutInflater.from(context).inflate(R.layout.layout_section_text, null);
+        return view;
     }
 
     @Override

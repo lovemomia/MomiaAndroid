@@ -90,7 +90,8 @@ public abstract class GroupStyleAdapter extends BasicAdapter {
         view.setBackgroundColor(Color.parseColor("#F4F4F4"));
         int height = getHeightForSectionView(section);
         if (height >= 0) {
-            view.setLayoutParams(new AbsListView.LayoutParams(AbsListView.LayoutParams.MATCH_PARENT, getHeightForSectionView(section)));
+            view.setLayoutParams(new AbsListView.LayoutParams(AbsListView.LayoutParams.MATCH_PARENT,
+                    getHeightForSectionView(section)));
         }
         return view;
     }

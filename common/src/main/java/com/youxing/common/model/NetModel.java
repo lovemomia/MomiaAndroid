@@ -8,6 +8,10 @@ public class NetModel {
     private int errno;
     private String errmsg;
 
+    public NetModel() {
+        this(0, "success");
+    }
+
     public NetModel(int errno, String errmsg) {
         this.errno = errno;
         this.errmsg = errmsg;

@@ -5,26 +5,57 @@
         android:name=".app.TQApplication">
 
         <activity
-            android:name=".pay.CashierActivity"
+            android:name=".order.OrderSubmitActivity"
             android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
-                <data android:scheme="tq" android:host="home"/>
+                <data android:scheme="tq" android:host="ordersubmit"/>
             </intent-filter>
         </activity>
 
-        <!--<activity-->
-            <!--android:name=".pay.CashierActivity"-->
-            <!--android:label="收银台">-->
-            <!--<intent-filter>-->
-                <!--<action android:name="android.intent.action.MAIN" />-->
+        <activity
+            android:name=".pay.CashierActivity"
+            android:label="收银台">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
 
-                <!--<category android:name="android.intent.category.BROWSABLE" />-->
-                <!--<data android:scheme="tq" android:host="cashier"/>-->
-            <!--</intent-filter>-->
-        <!--</activity>-->
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="tq" android:host="cashier"/>
+            </intent-filter>
+
+        </activity>
+
+        <activity
+            android:name=".order.TripPersonActivity"
+            android:label="选择出行人">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="tq" android:host="tripperson"/>
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name=".order.AddPersonActivity"
+            android:label="选择出行人">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="tq" android:host="addperson"/>
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name=".wxapi.WXPayEntryActivity"
+            android:exported="true"
+            android:launchMode="singleTop"/>
 
     </application>
 

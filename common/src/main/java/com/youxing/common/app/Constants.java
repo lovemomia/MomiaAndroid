@@ -8,4 +8,6 @@ package com.youxing.common.app;
 public class Constants {
 
     public static final String REQUEST_FAILED_FOR_NET = "网络异常，请稍后再试";
+
+    public static final String WECHAT_APP_ID = "wxf2f565574a968187";
 }
