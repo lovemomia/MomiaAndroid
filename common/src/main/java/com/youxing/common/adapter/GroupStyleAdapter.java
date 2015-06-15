@@ -88,16 +88,13 @@ public abstract class GroupStyleAdapter extends BasicAdapter {
     public View getViewForSection(View convertView, ViewGroup parent, int section) {
         View view = new View(context);
         view.setBackgroundColor(Color.parseColor("#F4F4F4"));
-        int height = getHeightForSectionView(section);
-        if (height >= 0) {
-            view.setLayoutParams(new AbsListView.LayoutParams(AbsListView.LayoutParams.MATCH_PARENT,
-                    getHeightForSectionView(section)));
-        }
+        view.setLayoutParams(new AbsListView.LayoutParams(AbsListView.LayoutParams.MATCH_PARENT,
+                getHeightForSectionView(section)));
         return view;
     }
 
     /**
-     * 设置section高度，-1表示自适应
+     * 设置section高度
      *
      * @param section
      * @return

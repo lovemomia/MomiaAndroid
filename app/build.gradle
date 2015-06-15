@@ -5,7 +5,7 @@ android {
     buildToolsVersion "21.1.0"
 
     defaultConfig {
-        applicationId "com.youxing.momia"
+        applicationId "com.youxing.duola"
         minSdkVersion 8
         targetSdkVersion 21
         versionCode 1
@@ -21,7 +21,8 @@ android {
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
-    compile 'com.android.support:appcompat-v7:21.0.2'
+    compile 'com.android.support:support-v4:21.0.2'
+//    compile 'com.android.support:appcompat-v7:21.0.2'
     compile 'com.android.support:gridlayout-v7:21.0.2'
     compile project(':common')
     compile files('libs/libammsdk.jar')

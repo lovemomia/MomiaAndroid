@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.youxing.duola.home.views.HomeListItem xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingBottom="10dp">
+
+    <com.youxing.common.views.YXNetworkImageView
+        android:id="@+id/cover"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:scaleType="centerCrop"
+        android:layout_alignParentTop="true"/>
+
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/text_large"
+        android:textColor="@color/text_deep_gray"
+        android:padding="10dp"
+        android:layout_below="@id/cover"
+        android:text="星光游乐园，与家人共享欢乐时光"/>
+
+    <TextView
+        android:id="@+id/address"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/text_medium"
+        android:textColor="@color/text_gray"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:layout_below="@id/title"
+        android:text="太湖公园游乐场  -  2km"/>
+
+    <TextView
+        android:id="@+id/date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/text_medium"
+        android:textColor="@color/text_gray"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp"
+        android:paddingBottom="2dp"
+        android:layout_below="@id/address"
+        android:text="每周末 10：30"
+        android:background="@drawable/ic_bg_rect_text"/>
+
+    <TextView
+        android:id="@+id/number"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/text_medium"
+        android:textColor="@color/text_gray"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp"
+        android:paddingBottom="2dp"
+        android:layout_toRightOf="@id/date"
+        android:layout_below="@id/address"
+        android:text="106人报名"
+        android:background="@drawable/ic_bg_rect_text"/>
+
+    <TextView
+        android:id="@+id/price"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/text_super_large"
+        android:textColor="@color/text_blue"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:paddingRight="10dp"
+        android:text="￥36"/>
+
+</com.youxing.duola.home.views.HomeListItem>

@@ -1,4 +1,4 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".HomeActivity">
@@ -7,15 +7,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/listView"
-        android:layout_above="@+id/helpPhone"
         android:divider="@null"/>
 
-    <TextView
-        android:id="@+id/helpPhone"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:gravity="center"
-        android:text="客服电话：021-62578700"
-        android:padding="10dp"/>
-</RelativeLayout>
+</LinearLayout>

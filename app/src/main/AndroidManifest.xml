@@ -1,59 +1,85 @@
-<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="com.youxing.momia">
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.youxing.duola">
+
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.BLUETOOTH" />
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
+    <uses-permission android:name="android.permission.BAIDU_LOCATION_SERVICE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="com.android.launcher.permission.READ_SETTINGS" />
 
     <application android:allowBackup="true" android:label="@string/app_name"
         android:icon="@mipmap/ic_launcher" android:theme="@style/AppTheme"
-        android:name=".app.TQApplication">
+        android:name=".app.DLApplication">
 
         <activity
-            android:name=".order.OrderSubmitActivity"
+            android:name="com.youxing.duola.home.HomeActivity"
             android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
-                <data android:scheme="tq" android:host="ordersubmit"/>
+                <data android:scheme="duola" android:host="home"/>
             </intent-filter>
         </activity>
 
         <activity
-            android:name=".pay.CashierActivity"
+            android:name="com.youxing.duola.order.OrderSubmitActivity"
+            android:label="提交订单">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="duola" android:host="ordersubmit"/>
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name="com.youxing.duola.pay.CashierActivity"
             android:label="收银台">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
 
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
-                <data android:scheme="tq" android:host="cashier"/>
+                <data android:scheme="duola" android:host="cashier"/>
             </intent-filter>
 
         </activity>
 
         <activity
-            android:name=".order.TripPersonActivity"
+            android:name="com.youxing.duola.order.TripPersonActivity"
             android:label="选择出行人">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
 
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
-                <data android:scheme="tq" android:host="tripperson"/>
+                <data android:scheme="duola" android:host="tripperson"/>
             </intent-filter>
         </activity>
 
         <activity
-            android:name=".order.AddPersonActivity"
+            android:name="com.youxing.duola.order.AddPersonActivity"
             android:label="选择出行人">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
 
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
-                <data android:scheme="tq" android:host="addperson"/>
+                <data android:scheme="duola" android:host="addperson"/>
             </intent-filter>
         </activity>
 
         <activity
-            android:name=".wxapi.WXPayEntryActivity"
+            android:name="com.youxing.duola.wxapi.WXPayEntryActivity"
             android:exported="true"
             android:launchMode="singleTop"/>
 

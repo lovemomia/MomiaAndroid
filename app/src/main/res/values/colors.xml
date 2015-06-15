@@ -2,11 +2,14 @@
 <resources>
 
     <!-- 背景颜色 -->
-    <color name="bg_title_bar">#96CDCD</color>
+    <color name="bg_title_bar">#1ebba6</color>
     <color name="bg_section">#F4F4F4</color>
     <color name="bg_button_normal">#FF6A6A</color>
     <color name="bg_button_selected">#CD3333</color>
     <color name="bg_divider">#DCDCDC</color>
+    <color name="bg_window">#f1f1f1</color>
+    <color name="bg_dot_normal">#99f1f1f1</color>
+    <color name="bg_dot_select">#991ebba6</color>
 
     <!-- 基本颜色 -->
     <color name="red">#FF3030</color>
@@ -15,8 +18,9 @@
 
     <!-- 字体颜色 -->
     <color name="text_dark">#000000</color>
-    <color name="text_deep_gray">#4D4D4D</color>
-    <color name="text_gray">#949494</color>
+    <color name="text_deep_gray">#333333</color>
+    <color name="text_gray">#999999</color>
     <color name="text_red">#FF6A6A</color>
+    <color name="text_blue">#1ebba6</color>
 
 </resources>
