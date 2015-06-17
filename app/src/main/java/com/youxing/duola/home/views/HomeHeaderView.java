@@ -25,9 +25,9 @@ public class HomeHeaderView extends FrameLayout implements ViewPager.OnPageChang
     private PageControl pageControl;
     private YXNetworkImageView[] imageViews;
 
-    String[] imgArray = new String[]{"http://mmbiz.qpic.cn/mmbiz/syMQqNbQpgyUwvv83XgrN8tpCyOLGkgUVEqI53jmgibQ4bHk9nx4w2QTo1XUuL8hwgoDHdYxwQe00olPgicJxaHQ/640?wx_fmt=jpeg&tp=webp&wxfrom=5",
-            "http://mmbiz.qpic.cn/mmbiz/syMQqNbQpgyUwvv83XgrN8tpCyOLGkgUHXqxHyfISwRTjrGribbg5ibM5OLxeOgx2HMRDjdPuSJlODLgej8K9lYA/640?wx_fmt=png&tp=webp&wxfrom=5",
-            "http://mmbiz.qpic.cn/mmbiz/syMQqNbQpgyUwvv83XgrN8tpCyOLGkgUjvtsUaksHTHQ3caIXv6icYUkQjPhAJ9iakOYxyJme49WkLhNibXiaP04ZA/640?wx_fmt=png&tp=webp&wxfrom=5"};
+    String[] imgArray = new String[]{"http://m.chanyouji.cn/index-cover/45546-1628868.jpg",
+            "http://m.chanyouji.cn/index-cover/27926-894425.jpg",
+            "http://m.chanyouji.cn/index-cover/331-13837.jpg"};
 
 
     Handler handler = new Handler() {

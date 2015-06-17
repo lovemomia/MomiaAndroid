@@ -17,7 +17,9 @@ import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * http数据请求服务
@@ -43,15 +45,13 @@ public class HttpService {
      *
      * 发起一个GET请求
      *
-     * @param tag 请求的tag，用于取消请求的时候区分，可以多个请求同一个tag
      * @param url 请求url地址
      * @param params 请求参数
      * @param cacheType 缓存类型
      * @param clazz 返回数据model类
      * @param handler 请求回调
      */
-    public static void get(Object tag, String url,
-                            List<NameValuePair> params, CacheType cacheType, Class<NetModel> clazz, final RequestHandler handler) {
+    public static void get(String url, List<NameValuePair> params, CacheType cacheType, Class<? extends NetModel> clazz, final RequestHandler handler) {
         SignTool.sign(appendBasicParams(params));
 
         String newUrl = appendForms(url, params);
@@ -74,14 +74,14 @@ public class HttpService {
                 handler.onRequestFailed(new NetModel(-1, Constants.REQUEST_FAILED_FOR_NET));
             }
         };
-        FastJsonRequest request = new FastJsonRequest(Request.Method.GET, url, clazz, null, listener, errorListener);
+
+        FastJsonRequest request = new FastJsonRequest(Request.Method.GET, newUrl, clazz, getHeaders(), listener, errorListener);
         // 请求加上Tag,用于取消请求
-        request.setTag(tag);
+        request.setTag(handler);
         getQueue().add(request);
     }
 
-    public static void post(Object tag, String url,
-                            List<NameValuePair> params, Class<NetModel> clazz, final RequestHandler handler) {
+    public static void post(String url, List<NameValuePair> params, Class<NetModel> clazz, final RequestHandler handler) {
         SignTool.sign(appendBasicParams(params));
 
         String newUrl = appendForms(url, params);
@@ -105,9 +105,9 @@ public class HttpService {
             }
         };
 
-        FastJsonRequest request = new FastJsonRequest(Request.Method.POST, url, clazz, null, listener, errorListener);
+        FastJsonRequest request = new FastJsonRequest(Request.Method.POST, newUrl, clazz, getHeaders(), listener, errorListener);
         // 请求加上Tag,用于取消请求
-        request.setTag(tag);
+        request.setTag(handler);
         getQueue().add(request);
     }
 
@@ -116,8 +116,14 @@ public class HttpService {
      *
      * @param tag
      */
-    public static void abort(Object tag) {
+    public static void abort(RequestHandler tag) {
         getQueue().cancelAll(tag);
+    }
+
+    private static Map<String, String> getHeaders() {
+        Map<String, String> headers = new HashMap<>();
+        headers.put("User-Agent", "");
+        return headers;
     }
 
     private static List<NameValuePair> appendBasicParams(List<NameValuePair> forms) {

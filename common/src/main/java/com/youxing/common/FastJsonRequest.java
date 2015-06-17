@@ -1,5 +1,7 @@
 package com.youxing.common;
 
+import android.util.Log;
+
 import com.alibaba.fastjson.JSON;
 import com.android.volley.NetworkResponse;
 import com.android.volley.ParseError;
@@ -45,6 +47,7 @@ public class FastJsonRequest<T> extends Request<T> {
             return Response.success(JSON.parseObject(json, clazz), HttpHeaderParser.parseCacheHeaders(response));
 
         }catch (UnsupportedEncodingException e) {
+            System.out.print(e);
             return Response.error(new ParseError(e));
         }
     }

@@ -63,19 +63,27 @@ public abstract class GroupStyleAdapter extends BasicAdapter {
         return index;
     }
 
+//    @Override
+//    public boolean isEnabled(int position) {
+//        if (isSectionAtPosition(position)) {
+//            return false;
+//        }
+//        return super.isEnabled(position);
+//    }
+
     @Override
-    public boolean isEnabled(int position) {
-        if (isSectionAtPosition(position)) {
-            return false;
-        }
-        return super.isEnabled(position);
+    public boolean areAllItemsEnabled() {
+        return true;
     }
 
     @Override
     final public View getView(int position, View convertView, ViewGroup parent) {
         IndexPath indexPath = getIndexForPosition(position);
         if (indexPath.row == -1) {
-            return getViewForSection(convertView, parent, indexPath.section);
+            View view = getViewForSection(convertView, parent, indexPath.section);
+            view.setClickable(true);
+            view.setFocusable(true);
+            return view;
         } else {
             View view = getViewForRow(convertView, parent, indexPath.section, indexPath.row);
             view.setBackgroundColor(Color.WHITE);

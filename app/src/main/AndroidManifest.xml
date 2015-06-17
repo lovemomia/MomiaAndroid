@@ -14,12 +14,15 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="com.android.launcher.permission.READ_SETTINGS" />
 
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+
     <application android:allowBackup="true" android:label="@string/app_name"
         android:icon="@mipmap/ic_launcher" android:theme="@style/AppTheme"
         android:name=".app.DLApplication">
 
         <activity
             android:name="com.youxing.duola.home.HomeActivity"
+            android:screenOrientation="portrait"
             android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -30,7 +33,21 @@
         </activity>
 
         <activity
+            android:name="com.youxing.duola.product.ProductDetailActivity"
+            android:screenOrientation="portrait"
+            android:label="活动详情">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="duola" android:host="product"/>
+            </intent-filter>
+        </activity>
+
+        <activity
             android:name="com.youxing.duola.order.OrderSubmitActivity"
+            android:screenOrientation="portrait"
             android:label="提交订单">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
@@ -43,6 +60,7 @@
 
         <activity
             android:name="com.youxing.duola.pay.CashierActivity"
+            android:screenOrientation="portrait"
             android:label="收银台">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
@@ -56,6 +74,7 @@
 
         <activity
             android:name="com.youxing.duola.order.TripPersonActivity"
+            android:screenOrientation="portrait"
             android:label="选择出行人">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
@@ -68,6 +87,7 @@
 
         <activity
             android:name="com.youxing.duola.order.AddPersonActivity"
+            android:screenOrientation="portrait"
             android:label="选择出行人">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
@@ -80,6 +100,7 @@
 
         <activity
             android:name="com.youxing.duola.wxapi.WXPayEntryActivity"
+            android:screenOrientation="portrait"
             android:exported="true"
             android:launchMode="singleTop"/>
 

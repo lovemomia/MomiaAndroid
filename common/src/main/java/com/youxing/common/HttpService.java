@@ -17,7 +17,9 @@ import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * http数据请求服务
@@ -74,7 +76,7 @@ public class HttpService {
                 handler.onRequestFailed(new NetModel(-1, Constants.REQUEST_FAILED_FOR_NET));
             }
         };
-        FastJsonRequest request = new FastJsonRequest(Request.Method.GET, url, clazz, null, listener, errorListener);
+        FastJsonRequest request = new FastJsonRequest(Request.Method.GET, url, clazz, getHeaders(), listener, errorListener);
         // 请求加上Tag,用于取消请求
         request.setTag(tag);
         getQueue().add(request);
@@ -105,10 +107,16 @@ public class HttpService {
             }
         };
 
-        FastJsonRequest request = new FastJsonRequest(Request.Method.POST, url, clazz, null, listener, errorListener);
+        FastJsonRequest request = new FastJsonRequest(Request.Method.POST, url, clazz, getHeaders(), listener, errorListener);
         // 请求加上Tag,用于取消请求
         request.setTag(tag);
         getQueue().add(request);
+    }
+
+    private static Map<String, String> getHeaders() {
+        Map<String, String> headers = new HashMap<>();
+        headers.put("User-Agent", "");
+        return headers;
     }
 
     /**

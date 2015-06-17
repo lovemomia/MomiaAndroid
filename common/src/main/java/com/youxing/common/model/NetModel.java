@@ -7,6 +7,7 @@ public class NetModel {
 
     private int errno;
     private String errmsg;
+    private long time;
 
     public NetModel() {
         this(0, "success");
@@ -23,5 +24,9 @@ public class NetModel {
 
     public String getErrmsg() {
         return errmsg;
+    }
+
+    public long getTime() {
+        return time;
     }
 }

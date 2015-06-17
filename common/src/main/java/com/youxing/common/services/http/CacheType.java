@@ -5,16 +5,16 @@ package com.youxing.common.services.http;
  *
  * Created by Jun Deng on 15/6/3.
  */
-public interface CacheType {
+public enum  CacheType {
 
     /**
      * 禁用缓存
      */
-    final public static int DISABLE = 0;
+    DISABLE,
 
     /**
      * 普通缓存
      */
-    final public static int NORMAL = 1;
+    NORMAL;
 
 }

@@ -14,11 +14,30 @@
         android:id="@+id/title_left_btn"
         android:layout_height="match_parent"
         android:layout_width="60dp"
-        android:layout_gravity="left|center_vertical"/>
+        android:layout_gravity="left|center_vertical"
+        android:background="@drawable/bg_action_button_dark">
+
+        <ImageView
+            android:id="@+id/icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"/>
+
+    </com.youxing.duola.views.TitleBarButton>
+
     <com.youxing.duola.views.TitleBarButton
         android:id="@+id/title_right_btn"
         android:layout_height="match_parent"
         android:layout_width="60dp"
         android:layout_gravity="right|center_vertical"
-        android:padding="10dp"/>
+        android:padding="10dp"
+        android:background="@drawable/bg_action_button_dark">
+
+        <ImageView
+            android:id="@id/icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"/>
+
+    </com.youxing.duola.views.TitleBarButton>
 </FrameLayout>

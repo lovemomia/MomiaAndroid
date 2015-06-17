@@ -46,6 +46,6 @@ public class HomeListItem extends RelativeLayout {
 
     public void setData() {
         //TODO
-        coverIv.setImageUrl("http://mmbiz.qpic.cn/mmbiz/syMQqNbQpgyUwvv83XgrN8tpCyOLGkgUXSaddicMK59IPR7xdGRMFlKsF2ibvYvawxTvKMcT7Iicxs55LcSms6gSg/640?wx_fmt=png&tp=webp&wxfrom=5");
+        coverIv.setImageUrl("http://p.chanyouji.cn/113610/1400664587110p18of1quqmsql1kk9b3i1bv5v492.jpg?imageView2/1/w/620/h/330/format/jpg");
     }
 }
