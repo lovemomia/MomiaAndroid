@@ -81,7 +81,7 @@ public class HttpService {
         getQueue().add(request);
     }
 
-    public static void post(String url, List<NameValuePair> params, Class<NetModel> clazz, final RequestHandler handler) {
+    public static void post(String url, List<NameValuePair> params, Class<? extends NetModel> clazz, final RequestHandler handler) {
         SignTool.sign(appendBasicParams(params));
 
         String newUrl = appendForms(url, params);

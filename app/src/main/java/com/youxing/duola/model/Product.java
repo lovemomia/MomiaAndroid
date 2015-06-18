@@ -5,12 +5,14 @@ package com.youxing.duola.model;
  */
 public class Product {
 
-    private long id;
+    private Long id;
     private String cover;
     private int joined;
     private double price;
     private String title;
     private String scheduler;
+    private String address;
+    private String poi;
 
     public long getId() {
         return id;
@@ -34,5 +36,45 @@ public class Product {
 
     public String getScheduler() {
         return scheduler;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public String getPoi() {
+        return poi;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public void setCover(String cover) {
+        this.cover = cover;
+    }
+
+    public void setJoined(int joined) {
+        this.joined = joined;
+    }
+
+    public void setPrice(double price) {
+        this.price = price;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public void setScheduler(String scheduler) {
+        this.scheduler = scheduler;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public void setPoi(String poi) {
+        this.poi = poi;
     }
 }

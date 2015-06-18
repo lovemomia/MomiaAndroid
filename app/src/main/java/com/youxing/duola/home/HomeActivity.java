@@ -106,6 +106,9 @@ public class HomeActivity extends DLActivity implements AdapterView.OnItemClickL
     @Override
     public void onRefresh() {
         isRefresh = true;
+        nextPage = 0;
+        productList.clear();
+        requestData();
     }
 
     @Override
@@ -134,7 +137,7 @@ public class HomeActivity extends DLActivity implements AdapterView.OnItemClickL
 
         HomeModel homeModel = (HomeModel) response;
         productList.addAll(homeModel.getData().getProducts());
-//        nextPage = homeModel.getData().getNextpage();
+        nextPage = homeModel.getData().getNextpage();
         adapter.notifyDataSetChanged();
     }
 
@@ -175,7 +178,7 @@ public class HomeActivity extends DLActivity implements AdapterView.OnItemClickL
             if (!(view instanceof HomeListItem)) {
                 view = HomeListItem.create(HomeActivity.this);
             }
-            ((HomeListItem) view).setData();
+            ((HomeListItem) view).setData(productList.get(section));
             return view;
         }
 

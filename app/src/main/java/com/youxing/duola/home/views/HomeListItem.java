@@ -8,6 +8,7 @@ import android.widget.TextView;
 
 import com.youxing.common.views.YXNetworkImageView;
 import com.youxing.duola.R;
+import com.youxing.duola.model.Product;
 
 /**
  * Created by Jun Deng on 15/6/15.
@@ -44,8 +45,12 @@ public class HomeListItem extends RelativeLayout {
         priceTv = (TextView) findViewById(R.id.price);
     }
 
-    public void setData() {
-        //TODO
-        coverIv.setImageUrl("http://p.chanyouji.cn/113610/1400664587110p18of1quqmsql1kk9b3i1bv5v492.jpg?imageView2/1/w/620/h/330/format/jpg");
+    public void setData(Product product) {
+        coverIv.setImageUrl(product.getCover());
+        titleTv.setText(product.getTitle());
+        addressTv.setText(product.getAddress());
+        dateTv.setText(product.getScheduler());
+        numberTv.setText(String.valueOf(product.getJoined()));
+        priceTv.setText(String.valueOf("￥" + product.getPrice()));
     }
 }

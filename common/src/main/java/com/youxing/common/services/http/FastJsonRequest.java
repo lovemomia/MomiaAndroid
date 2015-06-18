@@ -41,8 +41,9 @@ public class FastJsonRequest<T> extends Request<T> {
     @Override
     protected Response<T> parseNetworkResponse(NetworkResponse response) {
         try {
-            String json = new String(response.data, HttpHeaderParser.parseCharset(headers));
-            return Response.success(JSON.parseObject(json, clazz), HttpHeaderParser.parseCacheHeaders(response));
+            String json = new String(response.data, "UTF-8");
+            T object = JSON.parseObject(json, clazz);
+            return Response.success(object, HttpHeaderParser.parseCacheHeaders(response));
 
         }catch (UnsupportedEncodingException e) {
             return Response.error(new ParseError(e));
