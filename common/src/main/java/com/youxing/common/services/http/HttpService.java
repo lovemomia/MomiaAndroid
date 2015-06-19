@@ -57,7 +57,7 @@ public class HttpService {
         String newUrl = appendForms(url, params);
         Log.i("request", "http (GET) " + newUrl);
 
-        Response.Listener<NetModel> listener = new Response.Listener<NetModel>() {
+        Response.Listener<? extends NetModel> listener = new Response.Listener<NetModel>() {
             @Override
             public void onResponse(NetModel response) {
                 if (response.getErrno() == 0) {

@@ -10,18 +10,36 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.youxing.common.adapter.GroupStyleAdapter;
+import com.youxing.common.app.Constants;
+import com.youxing.common.model.NetModel;
+import com.youxing.common.services.http.CacheType;
+import com.youxing.common.services.http.HttpService;
+import com.youxing.common.services.http.RequestHandler;
 import com.youxing.duola.R;
 import com.youxing.duola.app.DLActivity;
+import com.youxing.duola.model.HomeModel;
+import com.youxing.duola.model.Product;
+import com.youxing.duola.model.ProductModel;
 import com.youxing.duola.product.views.ProductDetailHeaderView;
 import com.youxing.duola.product.views.ProductDetailInfoView;
 import com.youxing.duola.product.views.ProductDetailPartersView;
+
+import org.apache.http.NameValuePair;
+import org.apache.http.message.BasicNameValuePair;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 活动详情
  *
  * Created by Jun Deng on 15/6/11.
  */
-public class ProductDetailActivity extends DLActivity implements View.OnClickListener {
+public class ProductDetailActivity extends DLActivity implements View.OnClickListener, RequestHandler {
+
+    private ProductModel product;
+
+    private Adapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,7 +57,21 @@ public class ProductDetailActivity extends DLActivity implements View.OnClickLis
         findViewById(R.id.buy).setOnClickListener(this);
 
         ListView listView = (ListView) findViewById(R.id.listView);
-        listView.setAdapter(new Adapter());
+        adapter = new Adapter();
+        listView.setAdapter(adapter);
+
+        requestData();
+    }
+
+    private void requestData() {
+        showLoading();
+
+        String url = Constants.DOMAIN_ONLINE + "/product";
+
+        List<NameValuePair> params = new ArrayList<>();
+        params.add(new BasicNameValuePair("id", String.valueOf(37)));
+
+        HttpService.get(url, params, CacheType.NORMAL, ProductModel.class, this);
     }
 
     @Override
@@ -52,6 +84,20 @@ public class ProductDetailActivity extends DLActivity implements View.OnClickLis
         }
     }
 
+    @Override
+    public void onRequestFinish(NetModel response) {
+        dismissLoading();
+
+        product = (ProductModel)response;
+        adapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void onRequestFailed(NetModel error) {
+        dismissLoading();
+        showDialog(this, "对不起", error.getErrmsg(), "确定");
+    }
+
     class Adapter extends GroupStyleAdapter {
 
         public Adapter() {
@@ -60,6 +106,9 @@ public class ProductDetailActivity extends DLActivity implements View.OnClickLis
 
         @Override
         public int getSectionCount() {
+            if (product == null) {
+                return 0;
+            }
             return 4;
         }
 
@@ -80,20 +129,23 @@ public class ProductDetailActivity extends DLActivity implements View.OnClickLis
             View view = null;
             if (section == 0) {
                 view = ProductDetailHeaderView.create(ProductDetailActivity.this);
-                ((ProductDetailHeaderView)view).setData();
+                ((ProductDetailHeaderView)view).setData(product.getData());
+
             } else if (section == 1) {
                 view = ProductDetailPartersView.create(ProductDetailActivity.this);
+                ((ProductDetailPartersView)view).setData(product.getData().getCustomers());
+
             } else if (section == 2) {
                 ProductDetailInfoView infoView = ProductDetailInfoView.create(ProductDetailActivity.this);
                 if (row == 0) {
                     infoView.setIcon(R.drawable.ic_umbrella);
-                    infoView.setTitle("适合2-6岁儿童");
+                    infoView.setTitle(product.getData().getCrowd());
                 } else if (row == 1) {
                     infoView.setIcon(R.drawable.ic_alarm);
-                    infoView.setTitle("2015.6.8 ~ 2015.10.1");
+                    infoView.setTitle(product.getData().getScheduler());
                 } else if (row == 2) {
                     infoView.setIcon(R.drawable.ic_address);
-                    infoView.setTitle("上海市浦东新区上南路168号");
+                    infoView.setTitle(product.getData().getAddress());
                 }
                 view = infoView;
 

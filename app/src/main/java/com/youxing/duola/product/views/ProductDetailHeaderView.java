@@ -12,9 +12,11 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.youxing.common.views.YXNetworkImageView;
 import com.youxing.duola.R;
+import com.youxing.duola.model.Product;
 
 /**
  * Created by Jun Deng on 15/6/16.
@@ -24,22 +26,11 @@ public class ProductDetailHeaderView extends RelativeLayout implements ViewPager
     private ViewPager pager;
     private YXNetworkImageView[] imageViews;
 
-    String[] imgArray = new String[]{"http://m.chanyouji.cn/index-cover/45546-1628868.jpg",
-            "http://m.chanyouji.cn/index-cover/27926-894425.jpg",
-            "http://m.chanyouji.cn/index-cover/331-13837.jpg"};
+    private TextView titleTv;
+    private TextView numberTv;
+    private TextView priceTv;
 
-    Handler handler = new Handler() {
-        @Override
-        public void handleMessage(Message msg) {
-            switch (msg.what) {
-                case 1:
-                    int index = (Integer) msg.obj;
-                    pager.setCurrentItem(index);
-                    sendMessageDelayed(obtainMessage(1, (index + 1)), 3000);
-                    break;
-            }
-        }
-    };
+    private int pageCount;
 
     public ProductDetailHeaderView(Context context) {
         this(context, null);
@@ -54,39 +45,35 @@ public class ProductDetailHeaderView extends RelativeLayout implements ViewPager
     }
 
     @Override
-    protected void onDetachedFromWindow() {
-        handler.removeMessages(1);
-        super.onDetachedFromWindow();
-    }
-
-    @Override
     protected void onFinishInflate() {
         super.onFinishInflate();
         pager = (ViewPager) findViewById(R.id.pager);
+        titleTv = (TextView) findViewById(R.id.title);
+        numberTv = (TextView) findViewById(R.id.number);
+        priceTv = (TextView) findViewById(R.id.price);
     }
 
-    public void setData() {
-        //TODO
+    public void setData(Product product) {
+        titleTv.setText(product.getTitle());
+        numberTv.setText(product.getJoined() + "人报名");
+        priceTv.setText("￥" + product.getPrice());
 
+        pageCount = product.getImgs().size();
 
-        imageViews = new YXNetworkImageView[imgArray.length];
-        for (int i = 0; i < imgArray.length; i++) {
+        imageViews = new YXNetworkImageView[pageCount];
+        for (int i = 0; i < pageCount; i++) {
+            String url = product.getImgs().get(i);
             YXNetworkImageView imageView = new YXNetworkImageView(getContext());
             imageView.setLayoutParams(new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT));
             imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
-            imageView.setImageUrl(imgArray[i]);
+            imageView.setImageUrl(url);
             imageViews[i] = imageView;
         }
 
         pager.setAdapter(new Adapter());
         pager.setOnPageChangeListener(this);
 
-        if (imgArray.length > 1) {
-            //设置ViewPager的默认项, 设置为长度的100倍，这样子开始就能往左滑动
-            handler.sendMessage(handler.obtainMessage(1, (imgArray.length) * 100));
-        } else {
-            pager.setCurrentItem((imgArray.length) * 100);
-        }
+        pager.setCurrentItem(pageCount * 100);
     }
 
     @Override
@@ -96,12 +83,6 @@ public class ProductDetailHeaderView extends RelativeLayout implements ViewPager
 
     @Override
     public void onPageScrollStateChanged(int state) {
-        if (state == ViewPager.SCROLL_STATE_DRAGGING) {
-            handler.removeMessages(1);
-
-        } else if (state == ViewPager.SCROLL_STATE_SETTLING) {
-            handler.sendMessageDelayed(handler.obtainMessage(1, pager.getCurrentItem() + 1), 3000);
-        }
     }
 
     @Override
@@ -113,7 +94,7 @@ public class ProductDetailHeaderView extends RelativeLayout implements ViewPager
 
         @Override
         public int getCount() {
-            return imgArray.length > 1 ? Integer.MAX_VALUE : 1;
+            return pageCount > 1 ? Integer.MAX_VALUE : 1;
         }
 
         @Override

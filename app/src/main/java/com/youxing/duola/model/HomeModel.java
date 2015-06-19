@@ -19,7 +19,7 @@ public class HomeModel extends NetModel {
         this.data = data;
     }
 
-    public class HomeData {
+    public static class HomeData {
 
         private List<HomeBanner> banners;
         private List<Product> products;
@@ -50,7 +50,7 @@ public class HomeModel extends NetModel {
         }
     }
 
-    public class HomeBanner {
+    public static class HomeBanner {
 
         private String cover;
         private String action;

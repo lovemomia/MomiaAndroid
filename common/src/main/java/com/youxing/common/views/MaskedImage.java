@@ -14,7 +14,7 @@ import android.widget.ImageView;
 /**
  * Created by Jun Deng on 15/6/16.
  */
-public abstract class MaskedImage extends ImageView {
+public abstract class MaskedImage extends YXNetworkImageView {
     private static final Xfermode MASK_XFERMODE;
     private Bitmap mask;
     private Paint paint;

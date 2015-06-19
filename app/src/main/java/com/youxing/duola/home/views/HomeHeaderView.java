@@ -1,6 +1,8 @@
 package com.youxing.duola.home.views;
 
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.view.PagerAdapter;
@@ -14,7 +16,10 @@ import android.widget.ImageView;
 
 import com.youxing.common.views.YXNetworkImageView;
 import com.youxing.duola.R;
+import com.youxing.duola.model.HomeModel;
 import com.youxing.duola.views.PageControl;
+
+import java.util.List;
 
 /**
  * Created by Jun Deng on 15/6/15.
@@ -25,9 +30,11 @@ public class HomeHeaderView extends FrameLayout implements ViewPager.OnPageChang
     private PageControl pageControl;
     private YXNetworkImageView[] imageViews;
 
-    String[] imgArray = new String[]{"http://m.chanyouji.cn/index-cover/45546-1628868.jpg",
-            "http://m.chanyouji.cn/index-cover/27926-894425.jpg",
-            "http://m.chanyouji.cn/index-cover/331-13837.jpg"};
+    private int pageCount;
+
+//    String[] imgArray = new String[]{"http://m.chanyouji.cn/index-cover/45546-1628868.jpg",
+//            "http://m.chanyouji.cn/index-cover/27926-894425.jpg",
+//            "http://m.chanyouji.cn/index-cover/331-13837.jpg"};
 
 
     Handler handler = new Handler() {
@@ -68,29 +75,37 @@ public class HomeHeaderView extends FrameLayout implements ViewPager.OnPageChang
         pageControl = (PageControl) findViewById(R.id.pageControl);
     }
 
-    public void setData() {
+    public void setData(List<HomeModel.HomeBanner> banners) {
         //TODO
 
-        pageControl.setNumberOfPages(imgArray.length);
+        pageCount = banners.size();
+        pageControl.setNumberOfPages(pageCount);
         pageControl.setCurrentPage(0);
 
-        imageViews = new YXNetworkImageView[imgArray.length];
-        for (int i = 0; i < imgArray.length; i++) {
+        imageViews = new YXNetworkImageView[pageCount];
+        for (int i = 0; i < banners.size(); i++) {
+            final HomeModel.HomeBanner banner = banners.get(i);
             YXNetworkImageView imageView = new YXNetworkImageView(getContext());
             imageView.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
             imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
-            imageView.setImageUrl(imgArray[i]);
+            imageView.setImageUrl(banner.getCover());
+            imageView.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    getContext().startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(banner.getAction())));
+                }
+            });
             imageViews[i] = imageView;
         }
 
         pager.setAdapter(new Adapter());
         pager.setOnPageChangeListener(this);
 
-        if (imgArray.length > 1) {
+        if (pageCount > 1) {
             //设置ViewPager的默认项, 设置为长度的100倍，这样子开始就能往左滑动
-            handler.sendMessage(handler.obtainMessage(1, (imgArray.length) * 100));
+            handler.sendMessage(handler.obtainMessage(1, (banners.size()) * 100));
         } else {
-            pager.setCurrentItem((imgArray.length) * 100);
+            pager.setCurrentItem((pageCount) * 100);
         }
     }
 
@@ -118,7 +133,7 @@ public class HomeHeaderView extends FrameLayout implements ViewPager.OnPageChang
 
         @Override
         public int getCount() {
-            return imgArray.length > 1 ? Integer.MAX_VALUE : 1;
+            return pageCount > 1 ? Integer.MAX_VALUE : 1;
         }
 
         @Override

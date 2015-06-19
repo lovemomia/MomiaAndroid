@@ -36,6 +36,7 @@ public class HomeActivity extends DLActivity implements AdapterView.OnItemClickL
         SwipeRefreshLayout.OnRefreshListener, RequestHandler {
 
     private SwipeRefreshLayout swipeLayout;
+    private ListView listView;
     private Adapter adapter;
 
     private List<Product> productList = new ArrayList<>();
@@ -50,10 +51,7 @@ public class HomeActivity extends DLActivity implements AdapterView.OnItemClickL
         setContentView(R.layout.activity_home);
 
 
-        ListView listView = (ListView)findViewById(R.id.listView);
-        listView.addHeaderView(createHeaderView());
-        adapter = new Adapter();
-        listView.setAdapter(adapter);
+        listView = (ListView)findViewById(R.id.listView);
         listView.setOnItemClickListener(this);
 
         swipeLayout = (SwipeRefreshLayout)findViewById(R.id.refresh);
@@ -116,9 +114,9 @@ public class HomeActivity extends DLActivity implements AdapterView.OnItemClickL
         return true;
     }
 
-    private HomeHeaderView createHeaderView() {
+    private HomeHeaderView createHeaderView(List<HomeModel.HomeBanner> banners) {
         HomeHeaderView header = HomeHeaderView.create(this);
-        header.setData();
+        header.setData(banners);
         return header;
     }
 
@@ -138,7 +136,10 @@ public class HomeActivity extends DLActivity implements AdapterView.OnItemClickL
         HomeModel homeModel = (HomeModel) response;
         productList.addAll(homeModel.getData().getProducts());
         nextPage = homeModel.getData().getNextpage();
-        adapter.notifyDataSetChanged();
+
+        listView.addHeaderView(createHeaderView(homeModel.getData().getBanners()));
+        adapter = new Adapter();
+        listView.setAdapter(adapter);
     }
 
     @Override
@@ -148,6 +149,7 @@ public class HomeActivity extends DLActivity implements AdapterView.OnItemClickL
             isRefresh = false;
             swipeLayout.setRefreshing(false);
         }
+        showDialog(this, "对不起", error.getErrmsg(), "确定");
     }
 
     class Adapter extends GroupStyleAdapter {

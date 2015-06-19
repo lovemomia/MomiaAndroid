@@ -99,6 +99,18 @@
         </activity>
 
         <activity
+            android:name="com.youxing.duola.app.WebActivity"
+            android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="duola" android:host="web"/>
+            </intent-filter>
+        </activity>
+
+        <activity
             android:name="com.youxing.duola.wxapi.WXPayEntryActivity"
             android:screenOrientation="portrait"
             android:exported="true"
