@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">哆啦亲子</string>
+    <string name="title_activity_root">RootActivity</string>
+
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
 </resources>

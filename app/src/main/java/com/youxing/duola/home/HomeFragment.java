@@ -1,10 +1,10 @@
 package com.youxing.duola.home;
 
 import android.content.Intent;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -17,7 +17,7 @@ import com.youxing.common.services.http.CacheType;
 import com.youxing.common.services.http.HttpService;
 import com.youxing.common.services.http.RequestHandler;
 import com.youxing.duola.R;
-import com.youxing.duola.app.DLActivity;
+import com.youxing.duola.app.DLFragment;
 import com.youxing.duola.home.views.HomeHeaderView;
 import com.youxing.duola.home.views.HomeListItem;
 import com.youxing.duola.model.HomeModel;
@@ -30,9 +30,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by Jun Deng on 15/6/8.
+ * Created by Jun Deng on 15/8/3.
  */
-public class HomeActivity extends DLActivity implements AdapterView.OnItemClickListener,
+public class HomeFragment extends DLFragment implements AdapterView.OnItemClickListener,
         SwipeRefreshLayout.OnRefreshListener, RequestHandler {
 
     private SwipeRefreshLayout swipeLayout;
@@ -45,19 +45,21 @@ public class HomeActivity extends DLActivity implements AdapterView.OnItemClickL
     private boolean isRefresh;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-        setContentView(R.layout.activity_home);
-
-
-        listView = (ListView)findViewById(R.id.listView);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.activity_home, null);
+        listView = (ListView)view.findViewById(R.id.listView);
         listView.setOnItemClickListener(this);
 
-        swipeLayout = (SwipeRefreshLayout)findViewById(R.id.refresh);
+        swipeLayout = (SwipeRefreshLayout)view.findViewById(R.id.refresh);
         swipeLayout.setOnRefreshListener(this);
         swipeLayout.setColorSchemeResources(android.R.color.holo_blue_bright, android.R.color.holo_green_light,
                 android.R.color.holo_orange_light, android.R.color.holo_red_light);
+        return view;
+    }
+
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
 
         initTitle();
 
@@ -65,33 +67,33 @@ public class HomeActivity extends DLActivity implements AdapterView.OnItemClickL
     }
 
     private void initTitle() {
-        setTitle("上海");
-        Drawable img = getResources().getDrawable(R.drawable.ic_arrow_down);
-        img.setBounds(0, 0, img.getMinimumWidth(), img.getMinimumHeight());
-        titleTv.setCompoundDrawables(null, null, img, null);
-        titleTv.setCompoundDrawablePadding(10);
-        titleTv.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-            }
-        });
-        setTitleLeftButton(R.drawable.ic_action_mine, new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-            }
-        });
-        setTitleRightButton(R.drawable.ic_action_search, new View.OnClickListener(){
-            @Override
-            public void onClick(View v) {
-
-            }
-        });
+//        getDLActivity().setTitle("上海");
+//        Drawable img = getResources().getDrawable(R.drawable.ic_arrow_down);
+//        img.setBounds(0, 0, img.getMinimumWidth(), img.getMinimumHeight());
+//        titleTv.setCompoundDrawables(null, null, img, null);
+//        titleTv.setCompoundDrawablePadding(10);
+//        titleTv.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//
+//            }
+//        });
+//        setTitleLeftButton(R.drawable.ic_action_mine, new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//
+//            }
+//        });
+//        setTitleRightButton(R.drawable.ic_action_search, new View.OnClickListener(){
+//            @Override
+//            public void onClick(View v) {
+//
+//            }
+//        });
     }
 
     private void requestData() {
-        showLoading();
+        getDLActivity().showLoading();
 
         String url = Constants.DOMAIN_ONLINE + "/home";
 
@@ -109,13 +111,13 @@ public class HomeActivity extends DLActivity implements AdapterView.OnItemClickL
         requestData();
     }
 
-    @Override
-    public boolean isDarkTitleBar() {
-        return true;
-    }
+//    @Override
+//    public boolean isDarkTitleBar() {
+//        return true;
+//    }
 
     private HomeHeaderView createHeaderView(List<HomeModel.HomeBanner> banners) {
-        HomeHeaderView header = HomeHeaderView.create(this);
+        HomeHeaderView header = HomeHeaderView.create(getActivity());
         header.setData(banners);
         return header;
     }
@@ -127,7 +129,7 @@ public class HomeActivity extends DLActivity implements AdapterView.OnItemClickL
 
     @Override
     public void onRequestFinish(NetModel response) {
-        dismissLoading();
+        getDLActivity().dismissLoading();
         if (isRefresh) {
             isRefresh = false;
             swipeLayout.setRefreshing(false);
@@ -147,18 +149,18 @@ public class HomeActivity extends DLActivity implements AdapterView.OnItemClickL
 
     @Override
     public void onRequestFailed(NetModel error) {
-        dismissLoading();
+        getDLActivity().dismissLoading();
         if (isRefresh) {
             isRefresh = false;
             swipeLayout.setRefreshing(false);
         }
-        showDialog(this, "对不起", error.getErrmsg(), "确定");
+        getDLActivity().showDialog(getDLActivity(), "对不起", error.getErrmsg(), "确定");
     }
 
     class Adapter extends GroupStyleAdapter {
 
         public Adapter() {
-            super(HomeActivity.this);
+            super(getDLActivity());
         }
 
         @Override
@@ -181,7 +183,7 @@ public class HomeActivity extends DLActivity implements AdapterView.OnItemClickL
         public View getViewForRow(View convertView, ViewGroup parent, int section, int row) {
             View view = convertView;
             if (!(view instanceof HomeListItem)) {
-                view = HomeListItem.create(HomeActivity.this);
+                view = HomeListItem.create(getDLActivity());
             }
             ((HomeListItem) view).setData(productList.get(section));
             return view;
@@ -202,8 +204,9 @@ public class HomeActivity extends DLActivity implements AdapterView.OnItemClickL
     }
 
     @Override
-    protected void onDestroy() {
+    public void onDestroy() {
         HttpService.abort(this);
         super.onDestroy();
     }
+
 }

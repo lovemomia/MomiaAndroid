@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.youxing.duola">
+    package="com.youxing.duola" >
 
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
@@ -13,109 +13,131 @@
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="com.android.launcher.permission.READ_SETTINGS" />
-
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
 
-    <application android:allowBackup="true" android:label="@string/app_name"
-        android:icon="@mipmap/ic_launcher" android:theme="@style/AppTheme"
-        android:name=".app.DLApplication">
-
+    <application
+        android:name=".app.DLApplication"
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:theme="@style/AppTheme" >
         <activity
-            android:name="com.youxing.duola.home.HomeActivity"
-            android:screenOrientation="portrait"
-            android:label="@string/app_name">
+            android:name=".RootTabActivity"
+            android:label="@string/title_activity_root" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
-                <data android:scheme="duola" android:host="home"/>
             </intent-filter>
         </activity>
+        <!--<activity-->
+            <!--android:name=".home.HomeActivity"-->
+            <!--android:label="@string/app_name"-->
+            <!--android:screenOrientation="portrait" >-->
+            <!--<intent-filter>-->
+                <!--<action android:name="android.intent.action.MAIN" />-->
 
+                <!--<category android:name="android.intent.category.LAUNCHER" />-->
+
+                <!--<data-->
+                    <!--android:host="home"-->
+                    <!--android:scheme="duola" />-->
+            <!--</intent-filter>-->
+        <!--</activity>-->
         <activity
-            android:name="com.youxing.duola.product.ProductDetailActivity"
-            android:screenOrientation="portrait"
-            android:label="活动详情">
+            android:name=".product.ProductDetailActivity"
+            android:label="活动详情"
+            android:screenOrientation="portrait" >
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
 
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
-                <data android:scheme="duola" android:host="product"/>
+
+                <data
+                    android:host="product"
+                    android:scheme="duola" />
             </intent-filter>
         </activity>
-
         <activity
-            android:name="com.youxing.duola.order.OrderSubmitActivity"
-            android:screenOrientation="portrait"
-            android:label="提交订单">
+            android:name=".order.OrderSubmitActivity"
+            android:label="提交订单"
+            android:screenOrientation="portrait" >
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
 
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
-                <data android:scheme="duola" android:host="ordersubmit"/>
+
+                <data
+                    android:host="ordersubmit"
+                    android:scheme="duola" />
             </intent-filter>
         </activity>
-
         <activity
-            android:name="com.youxing.duola.pay.CashierActivity"
-            android:screenOrientation="portrait"
-            android:label="收银台">
+            android:name=".pay.CashierActivity"
+            android:label="收银台"
+            android:screenOrientation="portrait" >
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
 
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
-                <data android:scheme="duola" android:host="cashier"/>
+
+                <data
+                    android:host="cashier"
+                    android:scheme="duola" />
             </intent-filter>
-
         </activity>
-
         <activity
-            android:name="com.youxing.duola.order.TripPersonActivity"
-            android:screenOrientation="portrait"
-            android:label="选择出行人">
+            android:name=".order.TripPersonActivity"
+            android:label="选择出行人"
+            android:screenOrientation="portrait" >
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
 
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
-                <data android:scheme="duola" android:host="tripperson"/>
+
+                <data
+                    android:host="tripperson"
+                    android:scheme="duola" />
             </intent-filter>
         </activity>
-
         <activity
-            android:name="com.youxing.duola.order.AddPersonActivity"
-            android:screenOrientation="portrait"
-            android:label="选择出行人">
+            android:name=".order.AddPersonActivity"
+            android:label="选择出行人"
+            android:screenOrientation="portrait" >
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
 
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
-                <data android:scheme="duola" android:host="addperson"/>
+
+                <data
+                    android:host="addperson"
+                    android:scheme="duola" />
             </intent-filter>
         </activity>
-
         <activity
-            android:name="com.youxing.duola.app.WebActivity"
-            android:screenOrientation="portrait">
+            android:name=".app.WebActivity"
+            android:screenOrientation="portrait" >
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
 
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
-                <data android:scheme="duola" android:host="web"/>
+
+                <data
+                    android:host="web"
+                    android:scheme="duola" />
             </intent-filter>
         </activity>
-
         <activity
-            android:name="com.youxing.duola.wxapi.WXPayEntryActivity"
-            android:screenOrientation="portrait"
+            android:name=".wxapi.WXPayEntryActivity"
             android:exported="true"
-            android:launchMode="singleTop"/>
-
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" />
     </application>
 
 </manifest>

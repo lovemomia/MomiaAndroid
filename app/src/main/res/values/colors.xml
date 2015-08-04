@@ -2,7 +2,7 @@
 <resources>
 
     <!-- 背景颜色 -->
-    <color name="bg_title_bar">#1ebba6</color>
+    <color name="bg_app_theme">#1ebba6</color>
     <color name="bg_title_button_clicked">#189584</color>
     <color name="bg_section">#F4F4F4</color>
     <color name="bg_button_normal">#f67531</color>

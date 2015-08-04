@@ -1,6 +1,6 @@
 package com.youxing.common.services.http;
 
-import android.util.Log;
+import com.youxing.common.utils.*;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -122,7 +122,7 @@ public class HttpService {
 
     private static Map<String, String> getHeaders() {
         Map<String, String> headers = new HashMap<>();
-        headers.put("User-Agent", "");
+        headers.put("User-Agent", "API1.0(com.youxing.duola;Android)");
         return headers;
     }
 
@@ -131,9 +131,12 @@ public class HttpService {
             forms = new ArrayList<NameValuePair>();
         }
 
-        forms.add(new BasicNameValuePair("timestamp", String.valueOf(System
-                .currentTimeMillis())));
         forms.add(new BasicNameValuePair("channel", "android"));
+        forms.add(new BasicNameValuePair("city", "1"));
+        forms.add(new BasicNameValuePair("device", "nexus"));
+        forms.add(new BasicNameValuePair("net", "wifi"));
+        forms.add(new BasicNameValuePair("os", "4.3"));
+        forms.add(new BasicNameValuePair("terminal", "android"));
         forms.add(new BasicNameValuePair("v", Enviroment.versionName()));
         return forms;
     }

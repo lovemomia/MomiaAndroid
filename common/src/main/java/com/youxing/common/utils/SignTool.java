@@ -69,7 +69,7 @@ public class SignTool {
             sysSign.append(key + "=" + kv.get(key));
         }
 
-        String signStr = sysSign.toString();
+        String signStr = sysSign.toString() + "key=";
         Log.d("sign", signStr);
 
         String sighed = sign(signStr);
