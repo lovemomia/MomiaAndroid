@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <color name="app_theme">#00c49d</color>
+
     <!-- 背景颜色 -->
-    <color name="bg_app_theme">#1ebba6</color>
     <color name="bg_title_button_clicked">#189584</color>
     <color name="bg_section">#F4F4F4</color>
     <color name="bg_button_normal">#f67531</color>
@@ -21,7 +22,7 @@
     <color name="text_dark">#000000</color>
     <color name="text_deep_gray">#333333</color>
     <color name="text_gray">#999999</color>
-    <color name="text_red">#FF6A6A</color>
+    <color name="text_red">#F67531</color>
     <color name="text_blue">#1ebba6</color>
 
 </resources>

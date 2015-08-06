@@ -17,6 +17,7 @@ public class Product {
     private String scheduler;
     private String address;
     private String poi;
+    private String region;
 
     private String crowd;
     private List<String> imgs;
@@ -54,6 +55,10 @@ public class Product {
 
     public String getPoi() {
         return poi;
+    }
+
+    public String getRegion() {
+        return region;
     }
 
     public String getCrowd() {
@@ -102,6 +107,10 @@ public class Product {
 
     public void setPoi(String poi) {
         this.poi = poi;
+    }
+
+    public void setRegion(String region) {
+        this.region = region;
     }
 
     public void setCrowd(String crowd) {

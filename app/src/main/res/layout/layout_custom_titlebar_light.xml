@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.youxing.duola.views.TitleBar xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="45dp"
     android:background="@color/white">
     <TextView
         android:id="@android:id/title"
@@ -24,6 +24,14 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"/>
 
+        <TextView
+            android:id="@+id/text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/app_theme"
+            android:textSize="@dimen/text_medium"
+            android:layout_gravity="center"/>
+
     </com.youxing.duola.views.TitleBarButton>
 
     <com.youxing.duola.views.TitleBarButton
@@ -40,10 +48,18 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"/>
 
+        <TextView
+            android:id="@id/text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/app_theme"
+            android:textSize="@dimen/text_medium"
+            android:layout_gravity="center"/>
+
     </com.youxing.duola.views.TitleBarButton>
 
     <include layout="@layout/layout_divider"
         android:layout_height="0.5dp"
         android:layout_width="match_parent"
         android:layout_gravity="bottom"/>
-</FrameLayout>
+</com.youxing.duola.views.TitleBar>

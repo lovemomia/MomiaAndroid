@@ -9,6 +9,7 @@ import android.widget.TextView;
 import com.youxing.common.views.YXNetworkImageView;
 import com.youxing.duola.R;
 import com.youxing.duola.model.Product;
+import com.youxing.duola.utils.PriceUtils;
 
 /**
  * Created by Jun Deng on 15/6/15.
@@ -48,9 +49,9 @@ public class HomeListItem extends RelativeLayout {
     public void setData(Product product) {
         coverIv.setImageUrl(product.getCover());
         titleTv.setText(product.getTitle());
-        addressTv.setText(product.getAddress());
+        addressTv.setText(product.getRegion());
         dateTv.setText(product.getScheduler());
-        numberTv.setText(String.valueOf(product.getJoined()));
-        priceTv.setText(String.valueOf("￥" + product.getPrice()));
+        numberTv.setText(product.getJoined() + "人报名");
+        priceTv.setText(PriceUtils.formatPriceString(product.getPrice()));
     }
 }
