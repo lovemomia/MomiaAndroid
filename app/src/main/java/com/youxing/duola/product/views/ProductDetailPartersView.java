@@ -2,10 +2,7 @@ package com.youxing.duola.product.views;
 
 import android.content.Context;
 import android.util.AttributeSet;
-import android.view.LayoutInflater;
-import android.view.ViewGroup;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import com.youxing.common.utils.UnitTools;
 import com.youxing.common.views.CircularImage;
@@ -19,9 +16,6 @@ import java.util.List;
  */
 public class ProductDetailPartersView extends LinearLayout {
 
-    private TextView numberTv;
-    private ViewGroup partersLay;
-
     public ProductDetailPartersView(Context context) {
         this(context, null);
     }
@@ -31,26 +25,26 @@ public class ProductDetailPartersView extends LinearLayout {
     }
 
     public static ProductDetailPartersView create(Context context) {
-        return (ProductDetailPartersView) LayoutInflater.from(context).inflate(R.layout.layout_product_detail_parters, null);
+        return new ProductDetailPartersView(context);
     }
 
     @Override
     protected void onFinishInflate() {
         super.onFinishInflate();
-        numberTv = (TextView) findViewById(R.id.number);
-        partersLay = (ViewGroup) findViewById(R.id.parters);
     }
 
     public void setData(Product.Customers customers) {
-        numberTv.setText(customers.getText());
+        int padding = UnitTools.dip2px(getContext(), 10);
+        this.setPadding(padding, UnitTools.dip2px(getContext(), 15), padding, UnitTools.dip2px(getContext(), 15));
         List<String> avatars = customers.getAvatars();
         for (String avatar : avatars) {
             CircularImage image = new CircularImage(getContext());
-            LayoutParams lp = new LayoutParams(UnitTools.px2dip(getContext(), 40), UnitTools.px2dip(getContext(), 40));
-            lp.setMargins(0, 0, UnitTools.px2dip(getContext(), 15), 0);
+            LayoutParams lp = new LayoutParams(UnitTools.dip2px(getContext(), 40), UnitTools.dip2px(getContext(), 40));
+            lp.setMargins(0, 0, UnitTools.dip2px(getContext(), 15), 0);
             image.setLayoutParams(lp);
             image.setImageUrl(avatar);
-            partersLay.addView(image);
+            image.setDefaultImageResId(R.drawable.ic_avatar_default);
+            this.addView(image);
         }
     }
 }

@@ -11,7 +11,7 @@
         android:scaleType="centerCrop"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
-        android:background="@color/bg_divider"
+        android:background="@color/bg_image"
         android:layout_alignParentTop="true"/>
 
     <FrameLayout

@@ -1,14 +1,19 @@
 package com.youxing.common.app;
 
+import android.content.Context;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
+import android.graphics.Point;
 import android.os.Build;
+import android.view.WindowManager;
 
 public class Enviroment {
 
 	private static String versionName;
 	private static String deviceType;
+
+	private static int screenWidth;
 
 	public static String versionName() {
 		if (versionName == null) {
@@ -33,4 +38,11 @@ public class Enviroment {
 		return deviceType;
 	}
 
+	public static int screenWidth(Context context) {
+		WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
+		if (screenWidth == 0) {
+			screenWidth = wm.getDefaultDisplay().getWidth();
+		}
+		return screenWidth;
+	}
 }

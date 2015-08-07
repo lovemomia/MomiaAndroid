@@ -6,6 +6,8 @@ import android.view.LayoutInflater;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.youxing.common.app.Enviroment;
+import com.youxing.common.utils.UnitTools;
 import com.youxing.common.views.YXNetworkImageView;
 import com.youxing.duola.R;
 import com.youxing.duola.model.Product;
@@ -47,6 +49,10 @@ public class HomeListItem extends RelativeLayout {
     }
 
     public void setData(Product product) {
+        int width = Enviroment.screenWidth(getContext()) - 20;
+        RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(width, width * 3/4);
+        lp.setMargins(UnitTools.dip2px(getContext(), 10), 0, UnitTools.dip2px(getContext(), 10), 0);
+        coverIv.setLayoutParams(lp);
         coverIv.setImageUrl(product.getCover());
         titleTv.setText(product.getTitle());
         addressTv.setText(product.getRegion());

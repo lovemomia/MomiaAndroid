@@ -11,5 +11,6 @@ public class Constants {
 
     public static final String WECHAT_APP_ID = "wxf2f565574a968187";
 
-    public static final String DOMAIN_ONLINE = "http://i.momia.cn";
+    public static final String DOMAIN_ONLINE = "http://i.duolaqinzi.com";
+    public static final String DOMAIN_QA = "http://i.momia.cn";
 }

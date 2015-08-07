@@ -1,8 +1,6 @@
 package com.youxing.duola.product.views;
 
 import android.content.Context;
-import android.os.Handler;
-import android.os.Message;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
@@ -14,9 +12,11 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.youxing.common.app.Enviroment;
 import com.youxing.common.views.YXNetworkImageView;
 import com.youxing.duola.R;
 import com.youxing.duola.model.Product;
+import com.youxing.duola.utils.PriceUtils;
 
 /**
  * Created by Jun Deng on 15/6/16.
@@ -48,6 +48,8 @@ public class ProductDetailHeaderView extends RelativeLayout implements ViewPager
     protected void onFinishInflate() {
         super.onFinishInflate();
         pager = (ViewPager) findViewById(R.id.pager);
+        int width = Enviroment.screenWidth(getContext());
+        pager.setLayoutParams(new RelativeLayout.LayoutParams(width, width * 3/4));
         titleTv = (TextView) findViewById(R.id.title);
         numberTv = (TextView) findViewById(R.id.number);
         priceTv = (TextView) findViewById(R.id.price);
@@ -55,8 +57,8 @@ public class ProductDetailHeaderView extends RelativeLayout implements ViewPager
 
     public void setData(Product product) {
         titleTv.setText(product.getTitle());
-        numberTv.setText(product.getJoined() + "人报名");
-        priceTv.setText("￥" + product.getPrice());
+        numberTv.setText(product.getJoined() + "人已报名");
+        priceTv.setText(PriceUtils.formatPriceString(product.getPrice()));
 
         pageCount = product.getImgs().size();
 

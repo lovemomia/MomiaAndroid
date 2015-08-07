@@ -117,7 +117,8 @@ public class HomeFragment extends DLFragment implements AdapterView.OnItemClickL
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("duola://product")));
+        Product product = productList.get(adapter.getIndexForPosition(position).section);
+        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("duola://product?id=" + product.getId())));
     }
 
     @Override

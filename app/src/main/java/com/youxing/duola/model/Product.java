@@ -24,6 +24,16 @@ public class Product {
     private Customers customers;
     private List<ContentItem> content;
 
+    private boolean opened;
+    private boolean favored;
+    private boolean soldOut;
+    private String[] tags;
+
+    // 分享
+    private String thumb;
+    private String url;
+    private String abstracts;
+
 
     public long getId() {
         return id;
@@ -77,6 +87,34 @@ public class Product {
         return content;
     }
 
+    public boolean isOpened() {
+        return opened;
+    }
+
+    public boolean isFavored() {
+        return favored;
+    }
+
+    public boolean isSoldOut() {
+        return soldOut;
+    }
+
+    public String[] getTags() {
+        return tags;
+    }
+
+    public String getThumb() {
+        return thumb;
+    }
+
+    public String getAbstracts() {
+        return abstracts;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
     public void setId(Long id) {
         this.id = id;
     }
@@ -127,6 +165,34 @@ public class Product {
 
     public void setContent(List<ContentItem> content) {
         this.content = content;
+    }
+
+    public void setOpened(boolean opened) {
+        this.opened = opened;
+    }
+
+    public void setFavored(boolean favored) {
+        this.favored = favored;
+    }
+
+    public void setSoldOut(boolean soldOut) {
+        this.soldOut = soldOut;
+    }
+
+    public void setTags(String[] tags) {
+        this.tags = tags;
+    }
+
+    public void setThumb(String thumb) {
+        this.thumb = thumb;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
+    }
+
+    public void setAbstracts(String abstracts) {
+        this.abstracts = abstracts;
     }
 
     public static class Customers {
