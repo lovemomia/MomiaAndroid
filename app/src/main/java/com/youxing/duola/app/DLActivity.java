@@ -19,7 +19,7 @@ import android.widget.TextView;
 
 import com.youxing.common.app.YXActivity;
 import com.youxing.duola.R;
-import com.youxing.duola.home.HomeActivity;
+import com.youxing.duola.RootTabActivity;
 import com.youxing.duola.views.TitleBarButton;
 
 /**
@@ -61,7 +61,7 @@ public class DLActivity extends YXActivity {
             titleRightBtn = (TitleBarButton) findViewById(R.id.title_right_btn);
             titleTv = (TextView) findViewById(android.R.id.title);
             setTitle(getTitle());
-            if (!(this instanceof HomeActivity)) {
+            if (!(this instanceof RootTabActivity)) {
                 setTitleLeftButton(R.drawable.ic_action_back, new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {

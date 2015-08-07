@@ -1,6 +1,7 @@
 package com.youxing.duola.home;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
@@ -179,6 +180,11 @@ public class HomeFragment extends DLFragment implements AdapterView.OnItemClickL
             }
             ((HomeListItem) view).setData(productList.get(section));
             return view;
+        }
+
+        @Override
+        public int getBackgroundColorForRow() {
+            return Color.TRANSPARENT;
         }
 
         @Override
