@@ -56,7 +56,7 @@
                 <category android:name="android.intent.category.BROWSABLE" />
 
                 <data
-                    android:host="ordersubmit"
+                    android:host="fillorder"
                     android:scheme="duola" />
             </intent-filter>
         </activity>
@@ -119,6 +119,39 @@
                     android:scheme="duola" />
             </intent-filter>
         </activity>
+
+        <activity
+            android:name=".login.LoginActivity"
+            android:screenOrientation="portrait"
+            android:label="登录">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:host="login"
+                    android:scheme="duola" />
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name=".login.RegisterActivity"
+            android:screenOrientation="portrait"
+            android:label="注册">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:host="register"
+                    android:scheme="duola" />
+            </intent-filter>
+        </activity>
+
         <activity
             android:name=".wxapi.WXPayEntryActivity"
             android:exported="true"

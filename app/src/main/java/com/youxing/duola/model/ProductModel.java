@@ -1,11 +1,11 @@
 package com.youxing.duola.model;
 
-import com.youxing.common.model.NetModel;
+import com.youxing.common.model.BaseModel;
 
 /**
  * Created by Jun Deng on 15/6/18.
  */
-public class ProductModel extends NetModel {
+public class ProductModel extends BaseModel {
 
     private Product data;
 

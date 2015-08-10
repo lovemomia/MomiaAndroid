@@ -15,21 +15,18 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ProgressBar;
-import android.widget.TextView;
 
 import com.youxing.common.app.YXActivity;
 import com.youxing.duola.R;
 import com.youxing.duola.RootTabActivity;
-import com.youxing.duola.views.TitleBarButton;
+import com.youxing.duola.views.TitleBar;
 
 /**
  * Created by Jun Deng on 15/6/4.
  */
 public class DLActivity extends YXActivity {
 
-    protected TextView titleTv;
-    protected TitleBarButton titleLeftBtn;
-    protected TitleBarButton titleRightBtn;
+    protected TitleBar titleBar;
 
     private View loadingView;
     private Dialog managerDialog;
@@ -57,9 +54,7 @@ public class DLActivity extends YXActivity {
                         R.layout.layout_custom_titlebar_light);
             }
 
-            titleLeftBtn = (TitleBarButton) findViewById(R.id.title_left_btn);
-            titleRightBtn = (TitleBarButton) findViewById(R.id.title_right_btn);
-            titleTv = (TextView) findViewById(android.R.id.title);
+            titleBar = (TitleBar) findViewById(R.id.titleBar);
             setTitle(getTitle());
             if (!(this instanceof RootTabActivity)) {
                 setTitleLeftButton(R.drawable.ic_action_back, new View.OnClickListener() {
@@ -79,27 +74,27 @@ public class DLActivity extends YXActivity {
     @Override
     public void setTitle(CharSequence title) {
         super.setTitle(title);
-        if (titleTv != null) {
-            titleTv.setText(title);
-        }
+        titleBar.getTitleTv().setText(title);
     }
 
     @Override
     public void setTitle(int titleId) {
         super.setTitle(titleId);
-        if (titleTv != null) {
-            titleTv.setText(titleId);
-        }
+        titleBar.getTitleTv().setText(titleId);
+    }
+
+    public TitleBar getTitleBar() {
+        return titleBar;
     }
 
     public void setTitleLeftButton(int imageResId, View.OnClickListener listener) {
-        titleLeftBtn.setIcon(imageResId);
-        titleLeftBtn.setOnClickListener(listener);
+        titleBar.getLeftBtn().setIcon(imageResId);
+        titleBar.getLeftBtn().setOnClickListener(listener);
     }
 
     public void setTitleRightButton(int imageResId, View.OnClickListener listener) {
-        titleRightBtn.setIcon(imageResId);
-        titleRightBtn.setOnClickListener(listener);
+        titleBar.getRightBtn().setIcon(imageResId);
+        titleBar.getRightBtn().setOnClickListener(listener);
     }
 
     @Override
@@ -160,6 +155,10 @@ public class DLActivity extends YXActivity {
         loadingDialog.setOnCancelListener(cancelListener);
         loadingDialog.show();
         managerDialog = loadingDialog;
+    }
+
+    public void showDialog(Context context, String message) {
+        showDialog(context, null, message, "确定", null, null, null);
     }
 
     public void showDialog(Context context, String title, String message, String ok) {

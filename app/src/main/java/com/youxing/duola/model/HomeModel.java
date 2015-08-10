@@ -1,13 +1,13 @@
 package com.youxing.duola.model;
 
-import com.youxing.common.model.NetModel;
+import com.youxing.common.model.BaseModel;
 
 import java.util.List;
 
 /**
  * Created by Jun Deng on 15/6/17.
  */
-public class HomeModel extends NetModel {
+public class HomeModel extends BaseModel {
 
     private HomeData data;
 

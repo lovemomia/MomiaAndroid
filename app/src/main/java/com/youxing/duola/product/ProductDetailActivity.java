@@ -9,7 +9,7 @@ import android.widget.ListView;
 
 import com.youxing.common.adapter.GroupStyleAdapter;
 import com.youxing.common.app.Constants;
-import com.youxing.common.model.NetModel;
+import com.youxing.common.model.BaseModel;
 import com.youxing.common.services.http.CacheType;
 import com.youxing.common.services.http.HttpService;
 import com.youxing.common.services.http.RequestHandler;
@@ -66,7 +66,7 @@ public class ProductDetailActivity extends DLActivity implements View.OnClickLis
     private void requestData() {
         showLoading();
 
-        String url = Constants.DOMAIN_ONLINE + "/product";
+        String url = Constants.domain() + "/product";
 
         List<NameValuePair> params = new ArrayList<>();
         params.add(new BasicNameValuePair("id", getIntent().getData().getQueryParameter("id")));
@@ -80,12 +80,12 @@ public class ProductDetailActivity extends DLActivity implements View.OnClickLis
 
 
         } else if (v.getId() == R.id.buy) {
-            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("duola://ordersubmit")));
+            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("duola://fillorder")));
         }
     }
 
     @Override
-    public void onRequestFinish(NetModel response) {
+    public void onRequestFinish(BaseModel response) {
         dismissLoading();
 
         product = ((ProductModel)response).getData();
@@ -93,7 +93,7 @@ public class ProductDetailActivity extends DLActivity implements View.OnClickLis
     }
 
     @Override
-    public void onRequestFailed(NetModel error) {
+    public void onRequestFailed(BaseModel error) {
         dismissLoading();
         showDialog(this, "对不起", error.getErrmsg(), "确定");
     }

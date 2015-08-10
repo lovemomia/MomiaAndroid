@@ -10,7 +10,7 @@ import com.android.volley.toolbox.Volley;
 import com.youxing.common.app.Constants;
 import com.youxing.common.app.Enviroment;
 import com.youxing.common.app.YXApplication;
-import com.youxing.common.model.NetModel;
+import com.youxing.common.model.BaseModel;
 import com.youxing.common.utils.SignTool;
 
 import org.apache.http.NameValuePair;
@@ -51,15 +51,15 @@ public class HttpService {
      * @param clazz 返回数据model类
      * @param handler 请求回调
      */
-    public static void get(String url, List<NameValuePair> params, CacheType cacheType, Class<? extends NetModel> clazz, final RequestHandler handler) {
+    public static void get(String url, List<NameValuePair> params, CacheType cacheType, Class<? extends BaseModel> clazz, final RequestHandler handler) {
         SignTool.sign(appendBasicParams(params));
 
         String newUrl = appendForms(url, params);
         Log.i("request", "http (GET) " + newUrl);
 
-        Response.Listener<? extends NetModel> listener = new Response.Listener<NetModel>() {
+        Response.Listener<? extends BaseModel> listener = new Response.Listener<BaseModel>() {
             @Override
-            public void onResponse(NetModel response) {
+            public void onResponse(BaseModel response) {
                 if (response.getErrno() == 0) {
                     handler.onRequestFinish(response);
 
@@ -71,7 +71,7 @@ public class HttpService {
         Response.ErrorListener errorListener = new Response.ErrorListener(){
             @Override
             public void onErrorResponse(VolleyError error) {
-                handler.onRequestFailed(new NetModel(-1, Constants.REQUEST_FAILED_FOR_NET));
+                handler.onRequestFailed(new BaseModel(-1, Constants.REQUEST_FAILED_FOR_NET));
             }
         };
 
@@ -81,15 +81,15 @@ public class HttpService {
         getQueue().add(request);
     }
 
-    public static void post(String url, List<NameValuePair> params, Class<? extends NetModel> clazz, final RequestHandler handler) {
+    public static void post(String url, List<NameValuePair> params, Class<? extends BaseModel> clazz, final RequestHandler handler) {
         SignTool.sign(appendBasicParams(params));
 
         String newUrl = appendForms(url, params);
         Log.i("request", "http (POST) " +newUrl);
 
-        Response.Listener<NetModel> listener = new Response.Listener<NetModel>() {
+        Response.Listener<BaseModel> listener = new Response.Listener<BaseModel>() {
             @Override
-            public void onResponse(NetModel response) {
+            public void onResponse(BaseModel response) {
                 if (response.getErrno() == 0) {
                     handler.onRequestFinish(response);
 
@@ -101,7 +101,7 @@ public class HttpService {
         Response.ErrorListener errorListener = new Response.ErrorListener(){
             @Override
             public void onErrorResponse(VolleyError error) {
-                handler.onRequestFailed(new NetModel(-1, Constants.REQUEST_FAILED_FOR_NET));
+                handler.onRequestFailed(new BaseModel(-1, Constants.REQUEST_FAILED_FOR_NET));
             }
         };
 

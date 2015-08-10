@@ -3,17 +3,17 @@ package com.youxing.common.model;
 /**
  * Created by Jun Deng on 15/6/3.
  */
-public class NetModel {
+public class BaseModel {
 
     private int errno;
     private String errmsg;
     private long time;
 
-    public NetModel() {
+    public BaseModel() {
         this(0, "success");
     }
 
-    public NetModel(int errno, String errmsg) {
+    public BaseModel(int errno, String errmsg) {
         this.errno = errno;
         this.errmsg = errmsg;
     }

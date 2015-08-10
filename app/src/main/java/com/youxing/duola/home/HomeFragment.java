@@ -14,7 +14,7 @@ import android.widget.ListView;
 
 import com.youxing.common.adapter.GroupStyleAdapter;
 import com.youxing.common.app.Constants;
-import com.youxing.common.model.NetModel;
+import com.youxing.common.model.BaseModel;
 import com.youxing.common.services.http.CacheType;
 import com.youxing.common.services.http.HttpService;
 import com.youxing.common.services.http.RequestHandler;
@@ -93,7 +93,7 @@ public class HomeFragment extends DLFragment implements AdapterView.OnItemClickL
     private void requestData() {
         getDLActivity().showLoading();
 
-        String url = Constants.DOMAIN_ONLINE + "/home";
+        String url = Constants.domain() + "/home";
 
         List<NameValuePair> params = new ArrayList<>();
         params.add(new BasicNameValuePair("pageindex", String.valueOf(nextPage)));
@@ -122,7 +122,7 @@ public class HomeFragment extends DLFragment implements AdapterView.OnItemClickL
     }
 
     @Override
-    public void onRequestFinish(NetModel response) {
+    public void onRequestFinish(BaseModel response) {
         getDLActivity().dismissLoading();
         if (isRefresh) {
             isRefresh = false;
@@ -142,7 +142,7 @@ public class HomeFragment extends DLFragment implements AdapterView.OnItemClickL
     }
 
     @Override
-    public void onRequestFailed(NetModel error) {
+    public void onRequestFailed(BaseModel error) {
         getDLActivity().dismissLoading();
         if (isRefresh) {
             isRefresh = false;

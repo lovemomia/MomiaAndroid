@@ -1,6 +1,6 @@
 package com.youxing.common.services.http;
 
-import com.youxing.common.model.NetModel;
+import com.youxing.common.model.BaseModel;
 
 /**
  * Created by Jun Deng on 15/6/3.
@@ -15,7 +15,7 @@ public interface RequestHandler {
      *            请求的返回值
      *
      */
-    void onRequestFinish(NetModel response);
+    void onRequestFinish(BaseModel response);
 
     /**
      * 请求成功并返回<br>
@@ -25,5 +25,5 @@ public interface RequestHandler {
      *            请求的错误信息
      *
      */
-    void onRequestFailed(NetModel error);
+    void onRequestFailed(BaseModel error);
 }
