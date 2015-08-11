@@ -15,6 +15,6 @@ public class Constants {
     public static final String DOMAIN_QA = "http://i.momia.cn";
 
     public static String domain() {
-        return DOMAIN_ONLINE;
+        return DOMAIN_QA;
     }
 }

@@ -9,15 +9,6 @@ public class BaseModel {
     private String errmsg;
     private long time;
 
-    public BaseModel() {
-        this(0, "success");
-    }
-
-    public BaseModel(int errno, String errmsg) {
-        this.errno = errno;
-        this.errmsg = errmsg;
-    }
-
     public int getErrno() {
         return errno;
     }
@@ -28,5 +19,17 @@ public class BaseModel {
 
     public long getTime() {
         return time;
+    }
+
+    public void setErrno(int errno) {
+        this.errno = errno;
+    }
+
+    public void setErrmsg(String errmsg) {
+        this.errmsg = errmsg;
+    }
+
+    public void setTime(long time) {
+        this.time = time;
     }
 }

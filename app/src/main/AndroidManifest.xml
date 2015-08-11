@@ -106,7 +106,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".app.WebActivity"
+            android:name=".web.WebActivity"
             android:screenOrientation="portrait" >
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />

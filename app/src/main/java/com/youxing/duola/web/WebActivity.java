@@ -1,9 +1,11 @@
-package com.youxing.duola.app;
+package com.youxing.duola.web;
 
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+
+import com.youxing.duola.app.DLWebActivity;
 
 import java.net.URLDecoder;
 

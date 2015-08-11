@@ -71,7 +71,10 @@ public class HttpService {
         Response.ErrorListener errorListener = new Response.ErrorListener(){
             @Override
             public void onErrorResponse(VolleyError error) {
-                handler.onRequestFailed(new BaseModel(-1, Constants.REQUEST_FAILED_FOR_NET));
+                BaseModel baseModel = new BaseModel();
+                baseModel.setErrno(-1);
+                baseModel.setErrmsg(Constants.REQUEST_FAILED_FOR_NET);
+                handler.onRequestFailed(baseModel);
             }
         };
 
@@ -98,10 +101,13 @@ public class HttpService {
                 }
             }
         };
-        Response.ErrorListener errorListener = new Response.ErrorListener(){
+        Response.ErrorListener errorListener = new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                handler.onRequestFailed(new BaseModel(-1, Constants.REQUEST_FAILED_FOR_NET));
+                BaseModel baseModel = new BaseModel();
+                baseModel.setErrno(-1);
+                baseModel.setErrmsg(Constants.REQUEST_FAILED_FOR_NET);
+                handler.onRequestFailed(baseModel);
             }
         };
 

@@ -67,6 +67,15 @@ public class LoginActivity extends DLActivity implements View.OnClickListener {
         }
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK) {
+            startActivity(getIntent().getStringExtra("_destination"));
+            finish();
+        }
+    }
+
     private boolean check() {
         if (phoneEdit.getText().toString().trim().length() == 0) {
             showDialog(this, "手机号不能为空");
@@ -89,7 +98,7 @@ public class LoginActivity extends DLActivity implements View.OnClickListener {
         HttpService.post(Constants.domain() + "/auth/login", params, AccountModel.class, new RequestHandler() {
             @Override
             public void onRequestFinish(BaseModel response) {
-                dismissLoading();
+                dismissDialog();
 
                 AccountModel model = (AccountModel) response;
                 AccountService.instance().dispatchAccountChanged(model.getData());
@@ -100,6 +109,7 @@ public class LoginActivity extends DLActivity implements View.OnClickListener {
 
             @Override
             public void onRequestFailed(BaseModel error) {
+                dismissDialog();
                 showDialog(LoginActivity.this, error.getErrmsg());
             }
         });

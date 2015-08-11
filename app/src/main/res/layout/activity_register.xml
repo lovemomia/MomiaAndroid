@@ -8,8 +8,10 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="15dp"
+        android:layout_height="50dp"
+        android:gravity="center_vertical"
+        android:paddingLeft="15dp"
+        android:paddingRight="15dp"
         android:background="@color/white">
 
         <TextView
@@ -35,8 +37,10 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="15dp"
+        android:layout_height="50dp"
+        android:gravity="center_vertical"
+        android:paddingLeft="15dp"
+        android:paddingRight="15dp"
         android:background="@color/white">
 
         <TextView
@@ -62,8 +66,10 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="15dp"
+        android:layout_height="50dp"
+        android:gravity="center_vertical"
+        android:paddingLeft="15dp"
+        android:paddingRight="15dp"
         android:background="@color/white">
 
         <TextView
@@ -82,6 +88,7 @@
             android:textSize="@dimen/text_medium"
             android:textColor="@color/text_deep_gray"
             android:hint="请输入手机号"
+            android:inputType="number"
             android:background="@null"/>
 
     </LinearLayout>
@@ -90,8 +97,10 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="15dp"
+        android:layout_height="50dp"
+        android:gravity="center_vertical"
+        android:paddingLeft="15dp"
+        android:paddingRight="15dp"
         android:background="@color/white">
 
         <TextView
@@ -104,19 +113,30 @@
 
         <EditText
             android:id="@+id/register_code_edit"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:textSize="@dimen/text_medium"
             android:textColor="@color/text_deep_gray"
             android:hint="请输入验证码"
             android:background="@null"/>
+
+        <Button
+            android:id="@+id/register_get_code_btn"
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/btn_shape_green"
+            android:padding="5dp"
+            android:textColor="@color/btn_text"
+            android:textSize="@dimen/text_medium"
+            android:text="获取"/>
 
     </LinearLayout>
 
     <include layout="@layout/layout_divider"/>
 
     <Button
-        android:id="@+id/login_btn"
+        android:id="@+id/register_btn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="注册"
@@ -135,17 +155,33 @@
         android:layout_marginTop="10dp">
 
         <CheckBox
+            android:id="@+id/register_cb"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:button="@drawable/ic_checkbox"
+            android:checked="true"/>
 
         <TextView
-            android:id="@+id/login_forget_pwd"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/text_medium"
+            android:textColor="@color/text_gray"
+            android:text="我已阅读并同意"
+            android:paddingTop="15dp"
+            android:paddingLeft="15dp"
+            android:paddingBottom="15dp"/>
+
+        <TextView
+            android:id="@+id/register_service_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="@dimen/text_medium"
             android:textColor="@color/app_theme"
-            android:text="我已阅读并同意哆啦亲子用户服务协议"
-            android:padding="15dp"/>
+            android:text="哆啦亲子用户服务协议"
+            android:paddingTop="15dp"
+            android:paddingLeft="5dp"
+            android:paddingRight="15dp"
+            android:paddingBottom="15dp"/>
 
     </LinearLayout>
 
