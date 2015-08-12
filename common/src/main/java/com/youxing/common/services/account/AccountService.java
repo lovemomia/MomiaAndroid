@@ -40,6 +40,10 @@ public class AccountService {
         return instance;
     }
 
+    public Account account() {
+        return account;
+    }
+
     /**
      * 是否登录
      *

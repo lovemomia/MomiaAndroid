@@ -1,5 +1,6 @@
 package com.youxing.common.services.http;
 
+import com.youxing.common.services.account.AccountService;
 import com.youxing.common.utils.*;
 
 import com.android.volley.Request;
@@ -135,6 +136,10 @@ public class HttpService {
     private static List<NameValuePair> appendBasicParams(List<NameValuePair> forms) {
         if (forms == null) {
             forms = new ArrayList<NameValuePair>();
+        }
+
+        if (AccountService.instance().isLogin()) {
+            forms.add(new BasicNameValuePair("utoken", AccountService.instance().account().getToken()));
         }
 
         forms.add(new BasicNameValuePair("channel", "android"));

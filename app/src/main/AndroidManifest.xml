@@ -46,7 +46,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".order.OrderSubmitActivity"
+            android:name=".order.FillOrderActivity"
             android:label="提交订单"
             android:screenOrientation="portrait" >
             <intent-filter>

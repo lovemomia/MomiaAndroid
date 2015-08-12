@@ -23,7 +23,8 @@
     <!-- 字体颜色 -->
     <color name="text_dark">#000000</color>
     <color name="text_deep_gray">#333333</color>
-    <color name="text_gray">#999999</color>
+    <color name="text_gray">#666666</color>
+    <color name="text_light_gray">#999999</color>
     <color name="text_red">#F67531</color>
     <color name="text_blue">#1ebba6</color>
 

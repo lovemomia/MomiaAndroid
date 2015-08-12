@@ -37,6 +37,7 @@ import java.util.List;
  */
 public class ProductDetailActivity extends DLActivity implements View.OnClickListener, RequestHandler {
 
+    private String id;
     private Product product;
 
     private Adapter adapter;
@@ -45,6 +46,8 @@ public class ProductDetailActivity extends DLActivity implements View.OnClickLis
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_product_detail);
+
+        id = getIntent().getData().getQueryParameter("id");
 
         setTitleRightButton(R.drawable.ic_action_collect, new View.OnClickListener() {
             @Override
@@ -69,7 +72,7 @@ public class ProductDetailActivity extends DLActivity implements View.OnClickLis
         String url = Constants.domain() + "/product";
 
         List<NameValuePair> params = new ArrayList<>();
-        params.add(new BasicNameValuePair("id", getIntent().getData().getQueryParameter("id")));
+        params.add(new BasicNameValuePair("id", id));
 
         HttpService.get(url, params, CacheType.NORMAL, ProductModel.class, this);
     }
@@ -80,7 +83,7 @@ public class ProductDetailActivity extends DLActivity implements View.OnClickLis
 
 
         } else if (v.getId() == R.id.buy) {
-            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("duola://fillorder")));
+            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("duola://fillorder?id=" + id)));
         }
     }
 

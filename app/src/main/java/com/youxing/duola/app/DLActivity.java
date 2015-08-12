@@ -161,6 +161,10 @@ public class DLActivity extends YXActivity {
         showDialog(context, null, message, "确定", null, null, null);
     }
 
+    public void showDialog(Context context, String message, DialogInterface.OnClickListener okListener) {
+        showDialog(context, null, message, "确定", okListener, null, null);
+    }
+
     public void showDialog(Context context, String title, String message, String ok) {
         showDialog(context, title, message, ok, null, null, null);
     }

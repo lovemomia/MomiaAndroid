@@ -6,6 +6,7 @@ import com.android.volley.ParseError;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.toolbox.HttpHeaderParser;
+import com.youxing.common.model.BaseModel;
 
 import java.io.UnsupportedEncodingException;
 import java.util.Map;
