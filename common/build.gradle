@@ -5,7 +5,7 @@ android {
     buildToolsVersion "21.1.0"
 
     defaultConfig {
-        minSdkVersion 8
+        minSdkVersion 9
         targetSdkVersion 21
         versionCode 1
         versionName "1.0"
@@ -23,4 +23,5 @@ dependencies {
     compile 'com.android.support:appcompat-v7:21.0.2'
     compile 'com.mcxiaoke.volley:library:1.0.18'
     compile 'com.alibaba:fastjson:1.2.6'
+    compile 'com.github.mmin18.layoutcast:library:1.+@aar'
 }

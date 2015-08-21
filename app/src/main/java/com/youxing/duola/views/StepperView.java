@@ -25,6 +25,8 @@ public class StepperView extends LinearLayout implements View.OnClickListener {
     private int min;
     private int max;
 
+    private OnNumberChangedListener listener;
+
     public StepperView(Context context) {
         this(context, null);
     }
@@ -58,6 +60,10 @@ public class StepperView extends LinearLayout implements View.OnClickListener {
             num = 0;
         }
         return num;
+    }
+
+    public void setListener(OnNumberChangedListener l) {
+        listener = l;
     }
 
     @Override
@@ -94,9 +100,21 @@ public class StepperView extends LinearLayout implements View.OnClickListener {
             setNumber(getNumber() - 1);
             update();
 
+            if (listener != null) {
+                listener.onNumberChanged(this);
+            }
+
         } else if (v.getId() == R.id.stepper_plus) {
             setNumber(getNumber() + 1);
             update();
+
+            if (listener != null) {
+                listener.onNumberChanged(this);
+            }
         }
+    }
+
+    public interface OnNumberChangedListener {
+        void onNumberChanged(StepperView stepper);
     }
 }

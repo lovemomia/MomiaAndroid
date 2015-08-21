@@ -7,6 +7,7 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.toolbox.HttpHeaderParser;
 import com.youxing.common.model.BaseModel;
+import com.youxing.common.utils.Log;
 
 import java.io.UnsupportedEncodingException;
 import java.util.Map;
@@ -43,6 +44,7 @@ public class FastJsonRequest<T> extends Request<T> {
     protected Response<T> parseNetworkResponse(NetworkResponse response) {
         try {
             String json = new String(response.data, "UTF-8");
+            Log.d("http", json);
             T object = JSON.parseObject(json, clazz);
             return Response.success(object, HttpHeaderParser.parseCacheHeaders(response));
 

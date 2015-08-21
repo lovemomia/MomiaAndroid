@@ -60,7 +60,7 @@ public class DLActivity extends YXActivity {
                 setTitleLeftButton(R.drawable.ic_action_back, new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        finish();
+                        onTitleBackClicked();
                     }
                 });
             }
@@ -69,6 +69,10 @@ public class DLActivity extends YXActivity {
 
     public boolean isDarkTitleBar() {
         return false;
+    }
+
+    public void onTitleBackClicked() {
+        finish();
     }
 
     @Override

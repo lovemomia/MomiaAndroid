@@ -54,4 +54,16 @@ public class SimpleListItem extends LinearLayout {
     public void setShowArrow(boolean show) {
         this.arrowIv.setVisibility(show ? View.VISIBLE : View.GONE);
     }
+
+    public TextView getTitleTv() {
+        return titleTv;
+    }
+
+    public TextView getSubTitleTv() {
+        return subTitleTv;
+    }
+
+    public ImageView getArrowIv() {
+        return arrowIv;
+    }
 }

@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.net.Uri;
 import android.text.TextUtils;
 
+import com.github.mmin18.layoutcast.LayoutCast;
+import com.youxing.common.BuildConfig;
 import com.youxing.common.services.account.AccountService;
 
 /**
@@ -33,6 +35,10 @@ public class YXApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+
+        if (BuildConfig.DEBUG) {
+            LayoutCast.init(this);
+        }
     }
 
     public Intent urlMap(Intent intent) {

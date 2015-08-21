@@ -13,8 +13,7 @@
         android:textColor="@color/text_deep_gray"
         android:layout_gravity="center_vertical"
         android:padding="10dp"
-        android:textSize="@dimen/text_medium"
-        android:text="出行人"/>
+        android:textSize="@dimen/text_medium"/>
 
     <TextView
         android:id="@+id/subTitle"
@@ -24,8 +23,7 @@
         android:layout_gravity="center_vertical"
         android:paddingLeft="10dp"
         android:paddingRight="10dp"
-        android:textSize="@dimen/text_small"
-        android:text="1成人1儿童"/>
+        android:textSize="@dimen/text_small"/>
 
     <ImageView
         android:id="@+id/arrow"
@@ -33,6 +31,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
         android:layout_marginRight="10dp"
+        android:visibility="gone"
         android:src="@drawable/ic_arrow"/>
 
 </com.youxing.duola.views.SimpleListItem>

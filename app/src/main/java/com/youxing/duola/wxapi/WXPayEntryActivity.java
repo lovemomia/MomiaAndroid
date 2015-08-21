@@ -4,6 +4,7 @@ package com.youxing.duola.wxapi;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 
@@ -45,13 +46,20 @@ public class WXPayEntryActivity extends Activity implements IWXAPIEventHandler{
 
 	@Override
 	public void onResp(BaseResp resp) {
-		Log.d(TAG, "onPayFinish, errCode = " + resp.errCode);
-
 		if (resp.getType() == ConstantsAPI.COMMAND_PAY_BY_WX) {
-			AlertDialog.Builder builder = new AlertDialog.Builder(this);
-			builder.setTitle("提示");
-			builder.setMessage("微信支付结果：" + resp.errStr +";code=" + String.valueOf(resp.errCode));
-			builder.show();
+			if (resp.errCode == 0) {
+				Intent intent = new Intent("com.youxing.duola.broadcast.PAY_RESULT");
+				intent.putExtra("errCode", resp.errCode);
+				sendBroadcast(intent);
+				finish();
+
+			} else {
+				AlertDialog.Builder builder = new AlertDialog.Builder(this);
+				builder.setTitle("提示");
+				builder.setMessage("微信支付失败：" + resp.errStr + ";code=" + String.valueOf(resp.errCode));
+				builder.show();
+			}
+
 		}
 	}
 }

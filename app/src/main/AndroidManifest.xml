@@ -10,6 +10,7 @@
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
     <uses-permission android:name="android.permission.BAIDU_LOCATION_SERVICE" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="com.android.launcher.permission.READ_SETTINGS" />
@@ -28,6 +29,7 @@
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
+
             </intent-filter>
         </activity>
         <activity
@@ -60,6 +62,7 @@
                     android:scheme="duola" />
             </intent-filter>
         </activity>
+
         <activity
             android:name=".pay.CashierActivity"
             android:label="收银台"
@@ -71,10 +74,27 @@
                 <category android:name="android.intent.category.BROWSABLE" />
 
                 <data
-                    android:host="cashier"
+                    android:host="cashpay"
                     android:scheme="duola" />
             </intent-filter>
         </activity>
+
+        <activity
+            android:name=".pay.PayResultActivity"
+            android:label="支付结果"
+            android:screenOrientation="portrait" >
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:host="payresult"
+                    android:scheme="duola" />
+            </intent-filter>
+        </activity>
+
         <activity
             android:name=".order.TripPersonActivity"
             android:label="选择出行人"
@@ -157,6 +177,21 @@
             android:exported="true"
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />
+
+        <!-- debug tools -->
+        <activity android:name="com.github.mmin18.layoutcast.ResetActivity" />
+
+        <!-- alipay -->
+        <activity
+            android:name="com.alipay.sdk.app.H5PayActivity" android:configChanges="orientation|keyboardHidden|navigation" android:exported="false"
+            android:screenOrientation="behind" >
+        </activity>
+        <activity
+            android:name="com.alipay.sdk.auth.AuthActivity" android:configChanges="orientation|keyboardHidden|navigation" android:exported="false"
+            android:screenOrientation="behind" >
+        </activity>
+        <!-- alipay end -->
+
     </application>
 
 </manifest>

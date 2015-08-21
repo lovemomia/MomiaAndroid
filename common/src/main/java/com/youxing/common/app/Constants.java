@@ -7,14 +7,29 @@ package com.youxing.common.app;
  */
 public class Constants {
 
+    public static final boolean DEBUG = true;
+
     public static final String REQUEST_FAILED_FOR_NET = "网络异常，请稍后再试";
 
-    public static final String WECHAT_APP_ID = "wxf2f565574a968187";
+    public static final String WECHAT_APP_ID = "wx50b2ac03c88ad6e7";
 
     public static final String DOMAIN_ONLINE = "http://i.duolaqinzi.com";
     public static final String DOMAIN_QA = "http://i.momia.cn";
 
+    public static final String DOMAIN_ONLINE_HTTPS = "https://i.duolaqinzi.com";
+    public static final String DOMAIN_QA_HTTPS = "https://i.momia.cn";
+
     public static String domain() {
-        return DOMAIN_QA;
+        if (DEBUG) {
+            return DOMAIN_QA;
+        }
+        return DOMAIN_ONLINE;
+    }
+
+    public static String domainHttps() {
+        if (DEBUG) {
+            return DOMAIN_QA_HTTPS;
+        }
+        return DOMAIN_ONLINE_HTTPS;
     }
 }

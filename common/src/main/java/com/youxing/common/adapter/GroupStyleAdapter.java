@@ -86,14 +86,14 @@ public abstract class GroupStyleAdapter extends BasicAdapter {
             return view;
         } else {
             View view = getViewForRow(convertView, parent, indexPath.section, indexPath.row);
-            view.setBackgroundColor(getBackgroundColorForRow());
+            view.setBackgroundColor(getBackgroundColorForRow(indexPath));
             return view;
         }
     }
 
     abstract public View getViewForRow(View convertView, ViewGroup parent, int section, int row);
 
-    public int getBackgroundColorForRow() {
+    public int getBackgroundColorForRow(IndexPath indexPath) {
         return Color.WHITE;
     }
 

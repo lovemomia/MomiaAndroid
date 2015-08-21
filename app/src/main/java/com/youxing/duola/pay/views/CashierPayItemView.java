@@ -2,6 +2,7 @@ package com.youxing.duola.pay.views;
 
 import android.content.Context;
 import android.util.AttributeSet;
+import android.view.LayoutInflater;
 import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -34,6 +35,10 @@ public class CashierPayItemView extends LinearLayout {
         titleTv = (TextView)findViewById(R.id.title);
         subTitleTv = (TextView)findViewById(R.id.subTitle);
         checkBoxCb = (CheckBox)findViewById(R.id.checkbox);
+    }
+
+    public static CashierPayItemView create(Context context) {
+        return (CashierPayItemView) LayoutInflater.from(context).inflate(R.layout.layout_cashier_item_pay, null);
     }
 
     public void setIcon(int resId) {
