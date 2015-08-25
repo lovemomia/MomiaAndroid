@@ -14,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewParent;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ProgressBar;
@@ -136,19 +137,13 @@ public class DLActivity extends YXActivity {
         if (loadingView == null) {
             loadingView = new ProgressBar(this);
         } else {
-            ViewGroup parent = (ViewGroup) loadingView.getParent();
-            if (parent != null) {
-                parent.removeView(loadingView);
-            }
+            wm.removeView(loadingView);
         }
         wm.addView(loadingView, params);
     }
 
     public void dismissLoading() {
         if (loadingView != null) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT && loadingView.isAttachedToWindow()) {
-                return;
-            }
             WindowManager wm = (WindowManager) getSystemService(WINDOW_SERVICE);
             wm.removeView(loadingView);
             loadingView = null;

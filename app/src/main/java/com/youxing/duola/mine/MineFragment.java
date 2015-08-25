@@ -60,13 +60,6 @@ public class MineFragment extends DLFragment implements AdapterView.OnItemClickL
         if (rebuild) {
             titleBar.getTitleTv().setText("我的");
 
-            titleBar.getRightBtn().setText("登出");
-            titleBar.getRightBtn().setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    AccountService.instance().dispatchAccountChanged(null);
-                }
-            });
             AccountService.instance().addListener(this);
         }
     }

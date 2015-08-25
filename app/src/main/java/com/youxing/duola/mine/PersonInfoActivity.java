@@ -1,28 +1,26 @@
 package com.youxing.duola.mine;
 
 import android.app.AlertDialog;
+import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.database.Cursor;
-import android.graphics.Bitmap;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
-import android.provider.MediaStore;
 import android.text.TextUtils;
-import android.text.format.DateFormat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.alibaba.fastjson.JSON;
 import com.youxing.common.adapter.GroupStyleAdapter;
 import com.youxing.common.app.Constants;
 import com.youxing.common.model.Account;
@@ -33,7 +31,6 @@ import com.youxing.common.services.account.AccountService;
 import com.youxing.common.services.http.CacheType;
 import com.youxing.common.services.http.HttpService;
 import com.youxing.common.services.http.RequestHandler;
-import com.youxing.common.utils.Log;
 import com.youxing.common.utils.UnitTools;
 import com.youxing.common.views.CircularImage;
 import com.youxing.duola.R;
@@ -46,23 +43,18 @@ import com.youxing.duola.views.StepperView;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
-import java.util.Locale;
 
 /**
  * Created by Jun Deng on 15/8/24.
  */
 public class PersonInfoActivity extends DLActivity implements StepperView.OnNumberChangedListener, AdapterView.OnItemClickListener {
-
-    private static final int REQUEST_IMAGE_CAMERA = 1;
-    private static final int REQUEST_IMAGE_PHONE = 2;
 
     private ListView listView;
     private Adapter adapter;
@@ -120,6 +112,71 @@ public class PersonInfoActivity extends DLActivity implements StepperView.OnNumb
         if (section == 0) {
             if (row == 0) {
                 pickPhoto();
+            } else if (row == 1) {
+                // 昵称
+                showInputDialog("请输入昵称", new OnInputDoneListener() {
+                    @Override
+                    public void onInputDone(String text) {
+                        requestUpdateNickname(text);
+                    }
+                });
+            }
+        } else if (section == 1) {
+            if (row == 0) {
+                // 性别
+                showSexChooseDialog(new OnInputDoneListener() {
+                    @Override
+                    public void onInputDone(String text) {
+                        requestUpdateSex(text);
+                    }
+                });
+            } else {
+                // 常住地
+                showInputDialog("请输入常住地", new OnInputDoneListener() {
+                    @Override
+                    public void onInputDone(String text) {
+                        requestUpdateAddress(text);
+                    }
+                });
+            }
+        } else {
+            final Child child = account.getChildren().get(section - 2);
+            if (row == 0) {
+                // 昵称
+                showInputDialog("请输入孩子昵称", new OnInputDoneListener() {
+                    @Override
+                    public void onInputDone(String text) {
+                        requestUpdateChildName(child.getId(), text);
+                    }
+                });
+            } else if (row == 1) {
+                // 性别
+                showSexChooseDialog(new OnInputDoneListener() {
+                    @Override
+                    public void onInputDone(String text) {
+                        requestUpdateChildSex(child.getId(), text);
+                    }
+                });
+            } else {
+                // 生日
+                Calendar cal = Calendar.getInstance();
+                int year = cal.get(Calendar.YEAR);
+                int monthOfYear = cal.get(Calendar.MONTH);
+                int dayOfMonth = cal.get(Calendar.DAY_OF_MONTH);
+                if (!TextUtils.isEmpty(child.getBirthday())) {
+                    String []date = child.getBirthday().split("-");
+                    if (date != null && date.length == 3) {
+                        year = Integer.valueOf(date[0]);
+                        monthOfYear = Integer.valueOf(date[1]) - 1;
+                        dayOfMonth = Integer.valueOf(date[2]);
+                    }
+                }
+                new DatePickerDialog(PersonInfoActivity.this, new DatePickerDialog.OnDateSetListener() {
+                    @Override
+                    public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                        requestUpdateChildBirthday(child.getId(), year + "-" + (monthOfYear + 1) + "-" + dayOfMonth);
+                    }
+                }, year, monthOfYear, dayOfMonth).show();
             }
         }
     }
@@ -176,15 +233,10 @@ public class PersonInfoActivity extends DLActivity implements StepperView.OnNumb
                     if (Build.VERSION.SDK_INT < 19) {
                         strImgPath = photoPicker.parseImgPath(data);
                         if (!TextUtils.isEmpty(strImgPath)) {
-                            // sharePhoto.setImageBitmap(parseThumbnail(strImgPath));
-//                            addThumb(parseThumbnail(strImgPath));
                             requestUploadImage(new File(strImgPath));
                         }
                     } else {
                         if (data != null) {
-                            // sharePhoto
-                            // .setImageBitmap(parseThumbnail(data.getData()));
-//                            addThumb(parseThumbnail(data.getData()));
                             strImgPath = photoPicker.getPath(PersonInfoActivity.this, data.getData());
                             requestUploadImage(new File(strImgPath));
                         }
@@ -195,7 +247,7 @@ public class PersonInfoActivity extends DLActivity implements StepperView.OnNumb
     }
 
     private void requestUploadImage(File file) {
-//        showLoading();
+        showLoading();
 
         HttpService.uploadImage(file, new RequestHandler() {
             @Override
@@ -206,12 +258,8 @@ public class PersonInfoActivity extends DLActivity implements StepperView.OnNumb
 
             @Override
             public void onRequestFailed(BaseModel error) {
-//                dismissLoading();
-                showDialog(PersonInfoActivity.this, error.getErrmsg(), new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                    }
-                });
+                dismissLoading();
+                showDialog(PersonInfoActivity.this, error.getErrmsg());
             }
         });
     }
@@ -233,19 +281,255 @@ public class PersonInfoActivity extends DLActivity implements StepperView.OnNumb
             @Override
             public void onRequestFailed(BaseModel error) {
                 dismissLoading();
-                showDialog(PersonInfoActivity.this, error.getErrmsg(), new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        finish();
-                    }
-                });
+                showDialog(PersonInfoActivity.this, error.getErrmsg());
             }
         });
     }
 
+    private void requestUpdateNickname(String nickname) {
+        showLoading();
+        List<NameValuePair> params = new ArrayList<>();
+        params.add(new BasicNameValuePair("nickname", nickname));
+        HttpService.post(Constants.domain() + "/user/nickname", params, AccountModel.class, new RequestHandler() {
+            @Override
+            public void onRequestFinish(BaseModel response) {
+                dismissLoading();
+
+                AccountModel model = (AccountModel) response;
+                PersonInfoActivity.this.account = model.getData();
+                AccountService.instance().dispatchAccountChanged(model.getData());
+                adapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onRequestFailed(BaseModel error) {
+                dismissLoading();
+                showDialog(PersonInfoActivity.this, error.getErrmsg());
+            }
+        });
+    }
+
+    private void requestUpdateSex(String sex) {
+        showLoading();
+        List<NameValuePair> params = new ArrayList<>();
+        params.add(new BasicNameValuePair("sex", sex));
+        HttpService.post(Constants.domain() + "/user/sex", params, AccountModel.class, new RequestHandler() {
+            @Override
+            public void onRequestFinish(BaseModel response) {
+                dismissLoading();
+
+                AccountModel model = (AccountModel) response;
+                PersonInfoActivity.this.account = model.getData();
+                AccountService.instance().dispatchAccountChanged(model.getData());
+                adapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onRequestFailed(BaseModel error) {
+                dismissLoading();
+                showDialog(PersonInfoActivity.this, error.getErrmsg());
+            }
+        });
+    }
+
+    private void requestUpdateAddress(String address) {
+        showLoading();
+        List<NameValuePair> params = new ArrayList<>();
+        params.add(new BasicNameValuePair("address", address));
+        HttpService.post(Constants.domain() + "/user/address", params, AccountModel.class, new RequestHandler() {
+            @Override
+            public void onRequestFinish(BaseModel response) {
+                dismissLoading();
+
+                AccountModel model = (AccountModel) response;
+                PersonInfoActivity.this.account = model.getData();
+                AccountService.instance().dispatchAccountChanged(model.getData());
+                adapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onRequestFailed(BaseModel error) {
+                dismissLoading();
+                showDialog(PersonInfoActivity.this, error.getErrmsg());
+            }
+        });
+    }
+
+    private void requestUpdateChildName(long id, String name) {
+        showLoading();
+        List<NameValuePair> params = new ArrayList<>();
+        params.add(new BasicNameValuePair("cid", String.valueOf(id)));
+        params.add(new BasicNameValuePair("name", name));
+        HttpService.post(Constants.domain() + "/user/child/name", params, AccountModel.class, new RequestHandler() {
+            @Override
+            public void onRequestFinish(BaseModel response) {
+                dismissLoading();
+
+                AccountModel model = (AccountModel) response;
+                PersonInfoActivity.this.account = model.getData();
+                AccountService.instance().dispatchAccountChanged(model.getData());
+                adapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onRequestFailed(BaseModel error) {
+                dismissLoading();
+                showDialog(PersonInfoActivity.this, error.getErrmsg());
+            }
+        });
+    }
+
+    private void requestUpdateChildSex(long id, String sex) {
+        showLoading();
+        List<NameValuePair> params = new ArrayList<>();
+        params.add(new BasicNameValuePair("cid", String.valueOf(id)));
+        params.add(new BasicNameValuePair("sex", sex));
+        HttpService.post(Constants.domain() + "/user/child/sex", params, AccountModel.class, new RequestHandler() {
+            @Override
+            public void onRequestFinish(BaseModel response) {
+                dismissLoading();
+
+                AccountModel model = (AccountModel) response;
+                PersonInfoActivity.this.account = model.getData();
+                AccountService.instance().dispatchAccountChanged(model.getData());
+                adapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onRequestFailed(BaseModel error) {
+                dismissLoading();
+                showDialog(PersonInfoActivity.this, error.getErrmsg());
+            }
+        });
+    }
+
+    private void requestUpdateChildBirthday(long id, String date) {
+        showLoading();
+        List<NameValuePair> params = new ArrayList<>();
+        params.add(new BasicNameValuePair("cid", String.valueOf(id)));
+        params.add(new BasicNameValuePair("birthday", date));
+        HttpService.post(Constants.domain() + "/user/child/birthday", params, AccountModel.class, new RequestHandler() {
+            @Override
+            public void onRequestFinish(BaseModel response) {
+                dismissLoading();
+
+                AccountModel model = (AccountModel) response;
+                PersonInfoActivity.this.account = model.getData();
+                AccountService.instance().dispatchAccountChanged(model.getData());
+                adapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onRequestFailed(BaseModel error) {
+                dismissLoading();
+                showDialog(PersonInfoActivity.this, error.getErrmsg());
+            }
+        });
+    }
+
+    private void requestAddChild() {
+        showLoading();
+
+        Child child = new Child();
+        child.setName("毛毛");
+        child.setSex("男");
+        child.setBirthday("2015-07-01");
+        List<Child> children = new ArrayList<>();
+        children.add(child);
+
+        List<NameValuePair> params = new ArrayList<>();
+        params.add(new BasicNameValuePair("children", JSON.toJSONString(children)));
+        HttpService.post(Constants.domain() + "/user/child", params, AccountModel.class, new RequestHandler() {
+            @Override
+            public void onRequestFinish(BaseModel response) {
+                dismissLoading();
+
+                AccountModel model = (AccountModel) response;
+                PersonInfoActivity.this.account = model.getData();
+                AccountService.instance().dispatchAccountChanged(model.getData());
+                adapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onRequestFailed(BaseModel error) {
+                dismissLoading();
+                showDialog(PersonInfoActivity.this, error.getErrmsg());
+            }
+        });
+    }
+
+    private void requestDelChild() {
+        showLoading();
+
+        Child child = account.getChildren().get(account.getChildren().size() - 1);
+
+        List<NameValuePair> params = new ArrayList<>();
+        params.add(new BasicNameValuePair("cid", String.valueOf(child.getId())));
+        HttpService.post(Constants.domain() + "/user/child/delete", params, AccountModel.class, new RequestHandler() {
+            @Override
+            public void onRequestFinish(BaseModel response) {
+                dismissLoading();
+
+                AccountModel model = (AccountModel) response;
+                PersonInfoActivity.this.account = model.getData();
+                AccountService.instance().dispatchAccountChanged(model.getData());
+                adapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onRequestFailed(BaseModel error) {
+                dismissLoading();
+                showDialog(PersonInfoActivity.this, error.getErrmsg());
+            }
+        });
+    }
+
+    private void showInputDialog(String title, final OnInputDoneListener listener) {
+        final EditText input = new EditText(this);
+        new AlertDialog.Builder(this).setTitle(title)
+                .setIcon(android.R.drawable.ic_dialog_info)
+                .setView(input).setPositiveButton("确定", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                listener.onInputDone(input.getText().toString());
+            }
+        }).setNegativeButton("取消", null).show();
+    }
+
+    private void showSexChooseDialog(final OnInputDoneListener listener) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(PersonInfoActivity.this);
+        builder.setItems(new String[]{"男", "女"}, new DialogInterface.OnClickListener() {
+
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                switch (which) {
+                    case 0:
+                        listener.onInputDone(new String("男"));
+                        break;
+
+                    case 1:
+                        listener.onInputDone(new String("女"));
+                        break;
+                }
+            }
+        });
+        Dialog dialog = builder.create();
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.show();
+    }
+
     @Override
     public void onNumberChanged(StepperView stepper) {
+        int number = stepper.getNumber();
+        if (number < account.getChildren().size()) {
+            requestDelChild();
+        } else if (number > account.getChildren().size()) {
+            requestAddChild();
+        }
+    }
 
+    interface OnInputDoneListener {
+        void onInputDone(String text);
     }
 
     class Adapter extends GroupStyleAdapter {
