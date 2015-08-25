@@ -192,6 +192,22 @@
         </activity>
         <!-- alipay end -->
 
+        <activity
+            android:name=".mine.PersonInfoActivity"
+            android:screenOrientation="portrait"
+            android:label="个人信息">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:host="personinfo"
+                    android:scheme="duola" />
+            </intent-filter>
+        </activity>
+
     </application>
 
 </manifest>

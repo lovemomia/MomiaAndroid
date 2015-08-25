@@ -50,6 +50,7 @@ public class StepperView extends LinearLayout implements View.OnClickListener {
 
     public void setNumber(int number) {
         numberTv.setText(String.valueOf(number));
+        update();
     }
 
     public int getNumber() {

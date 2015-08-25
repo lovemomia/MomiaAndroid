@@ -18,6 +18,7 @@ import com.youxing.duola.R;
  */
 public class SimpleListItem extends LinearLayout {
 
+    private ImageView iconIv;
     private TextView titleTv;
     private TextView subTitleTv;
     private ImageView arrowIv;
@@ -38,9 +39,15 @@ public class SimpleListItem extends LinearLayout {
     @Override
     protected void onFinishInflate() {
         super.onFinishInflate();
+        iconIv = (ImageView) findViewById(R.id.icon);
         titleTv = (TextView)findViewById(R.id.title);
         subTitleTv = (TextView) findViewById(R.id.subTitle);
         arrowIv = (ImageView) findViewById(R.id.arrow);
+    }
+
+    public void setIcon(int iconResId) {
+        iconIv.setImageResource(iconResId);
+        iconIv.setVisibility(View.VISIBLE);
     }
 
     public void setTitle(String title) {
@@ -53,6 +60,10 @@ public class SimpleListItem extends LinearLayout {
 
     public void setShowArrow(boolean show) {
         this.arrowIv.setVisibility(show ? View.VISIBLE : View.GONE);
+    }
+
+    public ImageView getIconIv() {
+        return iconIv;
     }
 
     public TextView getTitleTv() {

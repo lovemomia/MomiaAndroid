@@ -42,6 +42,9 @@ import java.util.List;
 public class HomeFragment extends DLFragment implements AdapterView.OnItemClickListener,
         SwipeRefreshLayout.OnRefreshListener, RequestHandler {
 
+    private View rootView;
+    private boolean rebuild;
+
     private SwipeRefreshLayout swipeLayout;
     private TitleBar titleBar;
     private ListView listView;
@@ -55,25 +58,39 @@ public class HomeFragment extends DLFragment implements AdapterView.OnItemClickL
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.activity_home, null);
-        titleBar = (TitleBar) view.findViewById(R.id.titleBar);
-        listView = (ListView)view.findViewById(R.id.listView);
-        listView.setOnItemClickListener(this);
+        if (rootView == null) {
+            rootView = inflater.inflate(R.layout.activity_home, null);
 
-        swipeLayout = (SwipeRefreshLayout)view.findViewById(R.id.refresh);
-        swipeLayout.setOnRefreshListener(this);
-        swipeLayout.setColorSchemeResources(android.R.color.holo_blue_bright, android.R.color.holo_green_light,
-                android.R.color.holo_orange_light, android.R.color.holo_red_light);
-        return view;
+            titleBar = (TitleBar) rootView.findViewById(R.id.titleBar);
+            listView = (ListView)rootView.findViewById(R.id.listView);
+            listView.setOnItemClickListener(this);
+
+            swipeLayout = (SwipeRefreshLayout)rootView.findViewById(R.id.refresh);
+            swipeLayout.setOnRefreshListener(this);
+            swipeLayout.setColorSchemeResources(android.R.color.holo_blue_bright, android.R.color.holo_green_light,
+                    android.R.color.holo_orange_light, android.R.color.holo_red_light);
+
+            rebuild = true;
+        } else {
+            rebuild = false;
+        }
+
+        ViewGroup parent = (ViewGroup) rootView.getParent();
+        if (parent != null) {
+            parent.removeView(rootView);
+        }
+        return rootView;
     }
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        initTitle();
+        if (rebuild) {
+            initTitle();
 
-        requestData();
+            requestData();
+        }
     }
 
     private void initTitle() {
@@ -121,9 +138,8 @@ public class HomeFragment extends DLFragment implements AdapterView.OnItemClickL
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        int section = adapter.getIndexForPosition(position).section;
-        int pos = hasBannel ? section - 1 : section;
-        Product product = productList.get(pos);
+        int section = adapter.getIndexForPosition(hasBannel ? position - 1 : position).section;
+        Product product = productList.get(section);
         startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("duola://product?id=" + product.getId())));
     }
 

@@ -1,6 +1,8 @@
 package com.youxing.duola.product.views;
 
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
@@ -13,6 +15,7 @@ import com.youxing.common.app.Enviroment;
 import com.youxing.common.utils.UnitTools;
 import com.youxing.common.views.YXNetworkImageView;
 import com.youxing.duola.R;
+import com.youxing.duola.app.DLApplication;
 import com.youxing.duola.model.Product;
 import com.youxing.duola.views.SimpleListItem;
 
@@ -43,13 +46,19 @@ public class ProductDetailContentView extends LinearLayout {
         int padding = UnitTools.dip2px(getContext(), 10);
         List<Product.BodyItem> bodys = contentItem.getBody();
         for (int i = 0; i < bodys.size(); i++) {
-            Product.BodyItem body = bodys.get(i);
+            final Product.BodyItem body = bodys.get(i);
 
             if (!TextUtils.isEmpty(body.getLink())) {
                 // 链接
                 View view = LayoutInflater.from(getContext()).inflate(R.layout.layout_product_detail_link, null);
                 TextView tv = (TextView) view.findViewById(R.id.title);
                 tv.setText(body.getText());
+                view.setOnClickListener(new OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        getContext().startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(body.getLink())));
+                    }
+                });
                 this.addView(view);
 
             } else if (!TextUtils.isEmpty(body.getImg())) {

@@ -1,6 +1,7 @@
 package com.youxing.common.services.http;
 
 import com.youxing.common.services.account.AccountService;
+import com.youxing.common.services.http.volley.PhotoMultipartRequest;
 import com.youxing.common.utils.*;
 
 import com.android.volley.Request;
@@ -17,6 +18,7 @@ import com.youxing.common.utils.SignTool;
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -53,9 +55,10 @@ public class HttpService {
      * @param handler 请求回调
      */
     public static void get(String url, List<NameValuePair> params, CacheType cacheType, Class<? extends BaseModel> clazz, final RequestHandler handler) {
-        SignTool.sign(appendBasicParams(params));
+        List<NameValuePair> allParams = appendBasicParams(params);
+        SignTool.sign(allParams);
 
-        String newUrl = appendForms(url, params);
+        String newUrl = appendForms(url, allParams);
         Log.i("request", "http (GET) " + newUrl);
 
         Response.Listener<? extends BaseModel> listener = new Response.Listener<BaseModel>() {
@@ -85,10 +88,20 @@ public class HttpService {
         getQueue().add(request);
     }
 
+    /**
+     *
+     * 发起一个POST请求
+     *
+     * @param url
+     * @param params
+     * @param clazz
+     * @param handler
+     */
     public static void post(String url, List<NameValuePair> params, Class<? extends BaseModel> clazz, final RequestHandler handler) {
-        SignTool.sign(appendBasicParams(params));
+        List<NameValuePair> allParams = appendBasicParams(params);
+        SignTool.sign(allParams);
 
-        String newUrl = appendForms(url, params);
+        String newUrl = appendForms(url, allParams);
         Log.i("request", "http (POST) " +newUrl);
 
         Response.Listener<BaseModel> listener = new Response.Listener<BaseModel>() {
@@ -116,6 +129,37 @@ public class HttpService {
         // 请求加上Tag,用于取消请求
         request.setTag(handler);
         getQueue().add(request);
+    }
+
+    /**
+     * 上传图片
+     *
+     * @param imageFile
+     * @param handler
+     */
+    public static void uploadImage(File imageFile, final RequestHandler handler) {
+        Response.Listener<BaseModel> listener = new Response.Listener<BaseModel>() {
+            @Override
+            public void onResponse(BaseModel response) {
+                if (response.getErrno() == 0) {
+                    handler.onRequestFinish(response);
+
+                } else {
+                    handler.onRequestFailed(response);
+                }
+            }
+        };
+        Response.ErrorListener errorListener = new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                BaseModel baseModel = new BaseModel();
+                baseModel.setErrno(-1);
+                baseModel.setErrmsg(Constants.REQUEST_FAILED_FOR_NET);
+                handler.onRequestFailed(baseModel);
+            }
+        };
+        PhotoMultipartRequest imageUploadReq = new PhotoMultipartRequest(Constants.domainUploadImage() + "/upload/image", errorListener, listener, imageFile);
+        getQueue().add(imageUploadReq);
     }
 
     /**
@@ -158,12 +202,14 @@ public class HttpService {
             sb.append("?");
         }
 
-        for (NameValuePair from : forms) {
-            String value = from.getValue();
-            if (value == null || "null".equals(value)) {
-                continue;
+        if (forms != null) {
+            for (NameValuePair from : forms) {
+                String value = from.getValue();
+                if (value == null || "null".equals(value)) {
+                    continue;
+                }
+                sb.append("&").append(from.getName()).append("=").append(value);
             }
-            sb.append("&").append(from.getName()).append("=").append(value);
         }
 
         return sb.toString();

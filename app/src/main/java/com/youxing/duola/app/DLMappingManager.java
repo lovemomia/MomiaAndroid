@@ -9,6 +9,7 @@ public class DLMappingManager extends MappingManager {
 
     public DLMappingManager() {
         putPage("fillorder", new MappingPage("fillorder", true));
+        putPage("personinfo", new MappingPage("personinfo", true));
     }
 
 }

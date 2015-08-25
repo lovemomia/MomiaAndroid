@@ -1,7 +1,9 @@
 package com.youxing.common.services.account;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.text.TextUtils;
 
 import com.alibaba.fastjson.JSON;

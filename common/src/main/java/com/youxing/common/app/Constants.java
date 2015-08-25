@@ -19,6 +19,9 @@ public class Constants {
     public static final String DOMAIN_ONLINE_HTTPS = "https://i.duolaqinzi.com";
     public static final String DOMAIN_QA_HTTPS = "https://i.momia.cn";
 
+    public static final String DOMAIN_ONLINE_UPLOAD_IMAGE = "http://s.duolaqinzi.com";
+    public static final String DOMAIN_QA_UPLOAD_IMAGE = "http://upload.momia.cn";
+
     public static String domain() {
         if (DEBUG) {
             return DOMAIN_QA;
@@ -31,5 +34,12 @@ public class Constants {
             return DOMAIN_QA_HTTPS;
         }
         return DOMAIN_ONLINE_HTTPS;
+    }
+
+    public static String domainUploadImage() {
+        if (DEBUG) {
+            return DOMAIN_QA_UPLOAD_IMAGE;
+        }
+        return DOMAIN_ONLINE_UPLOAD_IMAGE;
     }
 }

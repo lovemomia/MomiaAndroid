@@ -16,6 +16,11 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    packagingOptions {
+        exclude 'META-INF/DEPENDENCIES'
+        exclude 'META-INF/NOTICE'
+        exclude 'META-INF/LICENSE'
+    }
 }
 
 dependencies {
@@ -24,4 +29,6 @@ dependencies {
     compile 'com.mcxiaoke.volley:library:1.0.18'
     compile 'com.alibaba:fastjson:1.2.6'
     compile 'com.github.mmin18.layoutcast:library:1.+@aar'
+    compile files('libs/httpcore-4.3.1.jar')
+    compile files('libs/httpmime-4.3.1.jar')
 }

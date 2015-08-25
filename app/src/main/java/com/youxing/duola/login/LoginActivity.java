@@ -3,6 +3,7 @@ package com.youxing.duola.login;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -103,7 +104,11 @@ public class LoginActivity extends DLActivity implements View.OnClickListener {
                 AccountModel model = (AccountModel) response;
                 AccountService.instance().dispatchAccountChanged(model.getData());
 
-                startActivity(getIntent().getStringExtra("_destination"));
+                String destination = getIntent().getStringExtra("_destination");
+                if (!TextUtils.isEmpty(destination)) {
+                    startActivity(getIntent().getStringExtra("_destination"));
+                }
+
                 finish();
             }
 

@@ -1,17 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.youxing.duola.views.SimpleListItem xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="horizontal" android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="center_vertical"
     android:paddingTop="10dp"
     android:paddingBottom="10dp">
-
-    <ImageView
-        android:id="@+id/icon"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:visibility="gone"
-        android:paddingLeft="10dp"/>
 
     <TextView
         android:id="@+id/title"
@@ -22,21 +15,17 @@
         android:padding="10dp"
         android:textSize="@dimen/text_medium"/>
 
-    <TextView
-        android:id="@+id/subTitle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textColor="@color/text_deep_gray"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp"
-        android:textSize="@dimen/text_small"/>
+    <com.youxing.common.views.CircularImage
+        android:id="@+id/avatar"
+        android:layout_width="45dp"
+        android:layout_height="45dp"
+        android:layout_marginRight="10dp"/>
 
     <ImageView
         android:id="@+id/arrow"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginRight="10dp"
-        android:visibility="gone"
         android:src="@drawable/ic_arrow"/>
 
-</com.youxing.duola.views.SimpleListItem>
+</LinearLayout>
