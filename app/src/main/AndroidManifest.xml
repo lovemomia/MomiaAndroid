@@ -29,7 +29,6 @@
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
-
             </intent-filter>
         </activity>
         <activity
@@ -62,7 +61,6 @@
                     android:scheme="duola" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".pay.CashierActivity"
             android:label="收银台"
@@ -78,7 +76,6 @@
                     android:scheme="duola" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".pay.PayResultActivity"
             android:label="支付结果"
@@ -94,7 +91,6 @@
                     android:scheme="duola" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".order.TripPersonActivity"
             android:label="选择出行人"
@@ -139,11 +135,10 @@
                     android:scheme="duola" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".login.LoginActivity"
-            android:screenOrientation="portrait"
-            android:label="登录">
+            android:label="登录"
+            android:screenOrientation="portrait" >
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
 
@@ -155,11 +150,10 @@
                     android:scheme="duola" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".login.RegisterActivity"
-            android:screenOrientation="portrait"
-            android:label="注册">
+            android:label="注册"
+            android:screenOrientation="portrait" >
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
 
@@ -171,7 +165,6 @@
                     android:scheme="duola" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".wxapi.WXPayEntryActivity"
             android:exported="true"
@@ -183,19 +176,23 @@
 
         <!-- alipay -->
         <activity
-            android:name="com.alipay.sdk.app.H5PayActivity" android:configChanges="orientation|keyboardHidden|navigation" android:exported="false"
+            android:name="com.alipay.sdk.app.H5PayActivity"
+            android:configChanges="orientation|keyboardHidden|navigation"
+            android:exported="false"
             android:screenOrientation="behind" >
         </activity>
         <activity
-            android:name="com.alipay.sdk.auth.AuthActivity" android:configChanges="orientation|keyboardHidden|navigation" android:exported="false"
+            android:name="com.alipay.sdk.auth.AuthActivity"
+            android:configChanges="orientation|keyboardHidden|navigation"
+            android:exported="false"
             android:screenOrientation="behind" >
         </activity>
         <!-- alipay end -->
 
         <activity
             android:name=".mine.PersonInfoActivity"
-            android:screenOrientation="portrait"
-            android:label="个人信息">
+            android:label="个人信息"
+            android:screenOrientation="portrait" >
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
 
@@ -208,6 +205,21 @@
             </intent-filter>
         </activity>
 
+        <activity
+            android:name=".mine.MyOrderListActivity"
+            android:label="我的订单"
+            android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:host="myorderlist"
+                    android:scheme="duola" />
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>

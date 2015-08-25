@@ -80,6 +80,10 @@ public class MineFragment extends DLFragment implements AdapterView.OnItemClickL
         GroupStyleAdapter.IndexPath indexPath = adapter.getIndexForPosition(position);
         if (indexPath.section == 0) {
             startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("duola://personinfo")));
+        } else if (indexPath.section == 1) {
+            if (indexPath.row == 0) {
+                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("duola://myorderlist")));
+            }
         }
     }
 
