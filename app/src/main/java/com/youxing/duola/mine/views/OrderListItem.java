@@ -33,6 +33,7 @@ public class OrderListItem extends LinearLayout {
     protected void onFinishInflate() {
         super.onFinishInflate();
         iconIv = (YXNetworkImageView) findViewById(R.id.icon);
+        iconIv.setDefaultImageResId(R.color.bg_image);
         titleTv = (TextView) findViewById(R.id.title);
         priceTv = (TextView) findViewById(R.id.price);
         peopleTv = (TextView) findViewById(R.id.people);

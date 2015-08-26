@@ -140,7 +140,7 @@ public class HomeFragment extends DLFragment implements AdapterView.OnItemClickL
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         int section = adapter.getIndexForPosition(hasBannel ? position - 1 : position).section;
         Product product = productList.get(section);
-        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("duola://product?id=" + product.getId())));
+        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("duola://productdetail?id=" + product.getId())));
     }
 
     @Override

@@ -42,7 +42,7 @@
                 <category android:name="android.intent.category.BROWSABLE" />
 
                 <data
-                    android:host="product"
+                    android:host="productdetail"
                     android:scheme="duola" />
             </intent-filter>
         </activity>
@@ -217,6 +217,22 @@
 
                 <data
                     android:host="myorderlist"
+                    android:scheme="duola" />
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name=".mine.OrderDetailActivity"
+            android:label="订单详情"
+            android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:host="orderdetail"
                     android:scheme="duola" />
             </intent-filter>
         </activity>

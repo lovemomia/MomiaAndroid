@@ -1,5 +1,7 @@
 package com.youxing.duola.mine;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -106,7 +108,12 @@ public class OrderListFragment extends DLFragment implements AdapterView.OnItemC
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
+        Object item = parent.getItemAtPosition(position);
+        if (item instanceof Order) {
+            Order order = (Order) item;
+            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("duola://orderdetail?oid=" +
+                    order.getId() + "&pid=" + order.getProductId())));
+        }
     }
 
     class Adapter extends BasicAdapter {

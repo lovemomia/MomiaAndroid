@@ -10,7 +10,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.text.TextUtils;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -33,7 +32,7 @@ import com.youxing.common.utils.UnitTools;
 import com.youxing.duola.R;
 import com.youxing.duola.app.DLActivity;
 import com.youxing.duola.model.AlipayOrderModel;
-import com.youxing.duola.model.PostOrderModel;
+import com.youxing.duola.model.OrderDetailModel;
 import com.youxing.duola.model.WechatPayModel;
 import com.youxing.duola.pay.views.CashierPayItemView;
 import com.youxing.duola.utils.PriceUtils;
@@ -54,7 +53,7 @@ import java.util.List;
 public class CashierActivity extends DLActivity implements View.OnClickListener,
         AdapterView.OnItemClickListener {
 
-    private PostOrderModel order;
+    private OrderDetailModel order;
 
     private CashierPayItemView alipayItem;
     private CashierPayItemView wechatItem;
@@ -128,7 +127,7 @@ public class CashierActivity extends DLActivity implements View.OnClickListener,
         setContentView(R.layout.activity_cashier);
 
         String pom = getIntent().getData().getQueryParameter("pom");
-        order = JSON.parseObject(pom, PostOrderModel.class);
+        order = JSON.parseObject(pom, OrderDetailModel.class);
 
         ListView listView = (ListView)findViewById(R.id.listView);
         adapter = new Adapter();

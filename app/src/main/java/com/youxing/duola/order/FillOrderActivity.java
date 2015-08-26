@@ -16,15 +16,13 @@ import com.alibaba.fastjson.JSON;
 import com.youxing.common.adapter.GroupStyleAdapter;
 import com.youxing.common.app.Constants;
 import com.youxing.common.model.BaseModel;
-import com.youxing.common.services.account.AccountService;
 import com.youxing.common.services.http.CacheType;
 import com.youxing.common.services.http.HttpService;
 import com.youxing.common.services.http.RequestHandler;
 import com.youxing.duola.R;
 import com.youxing.duola.app.DLActivity;
-import com.youxing.duola.model.AccountModel;
 import com.youxing.duola.model.FillOrderModel;
-import com.youxing.duola.model.PostOrderModel;
+import com.youxing.duola.model.OrderDetailModel;
 import com.youxing.duola.model.Sku;
 import com.youxing.duola.order.views.OrderNumberItem;
 import com.youxing.duola.order.views.OrderSkuItem;
@@ -127,12 +125,12 @@ public class FillOrderActivity extends DLActivity implements View.OnClickListene
         List<NameValuePair> params = new ArrayList<>();
         params.add(new BasicNameValuePair("order", JSON.toJSONString(submitOrder)));
 
-        HttpService.post(Constants.domainHttps() + "/order", params, PostOrderModel.class, new RequestHandler() {
+        HttpService.post(Constants.domainHttps() + "/order", params, OrderDetailModel.class, new RequestHandler() {
             @Override
             public void onRequestFinish(BaseModel response) {
                 dismissDialog();
 
-                PostOrderModel model = (PostOrderModel) response;
+                OrderDetailModel model = (OrderDetailModel) response;
                 startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("duola://cashpay?pom=" + JSON.toJSONString(model))));
             }
 
