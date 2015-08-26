@@ -94,12 +94,7 @@ public class PersonInfoActivity extends DLActivity implements StepperView.OnNumb
             @Override
             public void onRequestFailed(BaseModel error) {
                 dismissLoading();
-                showDialog(PersonInfoActivity.this, error.getErrmsg(), new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        finish();
-                    }
-                });
+                showDialog(PersonInfoActivity.this, error.getErrmsg());
             }
         });
     }

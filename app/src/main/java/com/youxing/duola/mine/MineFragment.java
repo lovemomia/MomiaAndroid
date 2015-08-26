@@ -83,6 +83,8 @@ public class MineFragment extends DLFragment implements AdapterView.OnItemClickL
         } else if (indexPath.section == 1) {
             if (indexPath.row == 0) {
                 startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("duola://myorderlist")));
+            } else {
+                startActivity("duola://couponlist");
             }
         }
     }

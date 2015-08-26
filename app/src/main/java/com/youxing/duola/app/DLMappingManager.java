@@ -10,6 +10,9 @@ public class DLMappingManager extends MappingManager {
     public DLMappingManager() {
         putPage("fillorder", new MappingPage("fillorder", true));
         putPage("personinfo", new MappingPage("personinfo", true));
+        putPage("couponlist", new MappingPage("couponlist", true));
+        putPage("orderdetail", new MappingPage("orderdetail", true));
+        putPage("myorderlist", new MappingPage("myorderlist", true));
     }
 
 }

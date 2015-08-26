@@ -9,7 +9,7 @@ public class Sku {
 
     private String desc;
     private int limit;
-    private int minPrice;
+    private double minPrice;
     private boolean needRealName;
     private long productId;
     private long skuId;
@@ -34,11 +34,11 @@ public class Sku {
         this.limit = limit;
     }
 
-    public int getMinPrice() {
+    public double getMinPrice() {
         return minPrice;
     }
 
-    public void setMinPrice(int minPrice) {
+    public void setMinPrice(double minPrice) {
         this.minPrice = minPrice;
     }
 

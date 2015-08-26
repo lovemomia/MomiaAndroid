@@ -26,12 +26,14 @@ import com.tencent.mm.sdk.openapi.WXAPIFactory;
 import com.youxing.common.adapter.GroupStyleAdapter;
 import com.youxing.common.app.Constants;
 import com.youxing.common.model.BaseModel;
+import com.youxing.common.services.http.CacheType;
 import com.youxing.common.services.http.HttpService;
 import com.youxing.common.services.http.RequestHandler;
 import com.youxing.common.utils.UnitTools;
 import com.youxing.duola.R;
 import com.youxing.duola.app.DLActivity;
 import com.youxing.duola.model.AlipayOrderModel;
+import com.youxing.duola.model.CouponPriceModel;
 import com.youxing.duola.model.OrderDetailModel;
 import com.youxing.duola.model.WechatPayModel;
 import com.youxing.duola.pay.views.CashierPayItemView;
@@ -53,7 +55,12 @@ import java.util.List;
 public class CashierActivity extends DLActivity implements View.OnClickListener,
         AdapterView.OnItemClickListener {
 
+    private static final int REQUEST_CODE_COUPON = 1;
+
     private OrderDetailModel order;
+
+    private CouponPriceModel couponPrice;
+    private long couponId;
 
     private CashierPayItemView alipayItem;
     private CashierPayItemView wechatItem;
@@ -146,7 +153,46 @@ public class CashierActivity extends DLActivity implements View.OnClickListener,
     }
 
     @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == REQUEST_CODE_COUPON && resultCode == RESULT_OK) {
+            couponId = data.getLongExtra("coupon", 0);
+            requestRefreshPrice(couponId);
+        }
+    }
+
+    private void requestRefreshPrice(long couponId) {
+        showLoading();
+
+        List<NameValuePair> params = new ArrayList<>();
+        params.add(new BasicNameValuePair("oid", String.valueOf(order.getData().getId())));
+        params.add(new BasicNameValuePair("coupon", String.valueOf(couponId)));
+        HttpService.get(Constants.domain() + "/coupon", params, CacheType.DISABLE, CouponPriceModel.class, new RequestHandler() {
+            @Override
+            public void onRequestFinish(BaseModel response) {
+                dismissLoading();
+                couponPrice = (CouponPriceModel)response;
+                adapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onRequestFailed(BaseModel error) {
+                dismissLoading();
+                showDialog(CashierActivity.this, error.getErrmsg());
+            }
+        });
+    }
+
+    @Override
     public void onClick(View v) {
+        // 0元购
+        if (order.getData().getTotalFee() == 0 || (couponPrice != null && couponPrice.getData() == 0)) {
+            startActivity("duola://payresult?oid=" + order.getData().getId()
+                    + "&pid=" + order.getData().getProductId() + "&sid=" + order.getData().getSkuId()
+                    + "&coupon=" + couponId + "&free=1");
+            return;
+        }
+
         if (alipayItem.isChecked()) {
             // 支付宝支付
             startAlipay();
@@ -265,7 +311,11 @@ public class CashierActivity extends DLActivity implements View.OnClickListener,
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         GroupStyleAdapter.IndexPath indexPath = adapter.getIndexForPosition(position);
-        if (indexPath.section == 2) {
+        if (indexPath.section == 1) {
+            startActivityForResult("duola://couponlist?oid=" +
+                    order.getData().getId() + "&select=1", REQUEST_CODE_COUPON);
+
+        } else if (indexPath.section == 2) {
             if (indexPath.row == 0) {
                 alipayItem.setChecked(false);
                 wechatItem.setChecked(true);
@@ -329,7 +379,11 @@ public class CashierActivity extends DLActivity implements View.OnClickListener,
                     listItem.setShowArrow(true);
                 } else {
                     listItem.setTitle("还需支付");
-                    listItem.setSubTitle("￥" + PriceUtils.formatPriceString(order.getData().getTotalFee()));
+                    if (couponPrice != null) {
+                        listItem.setSubTitle("￥" + PriceUtils.formatPriceString(couponPrice.getData()));
+                    } else {
+                        listItem.setSubTitle("￥" + PriceUtils.formatPriceString(order.getData().getTotalFee()));
+                    }
                 }
                 view = listItem;
 

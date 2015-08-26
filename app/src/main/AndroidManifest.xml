@@ -236,6 +236,23 @@
                     android:scheme="duola" />
             </intent-filter>
         </activity>
+
+        <activity
+            android:name=".mine.CouponListActivity"
+            android:label="我的红包"
+            android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:host="couponlist"
+                    android:scheme="duola" />
+            </intent-filter>
+        </activity>
+
     </application>
 
 </manifest>

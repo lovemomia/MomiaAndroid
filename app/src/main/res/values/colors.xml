@@ -26,6 +26,7 @@
     <color name="text_gray">#666666</color>
     <color name="text_light_gray">#999999</color>
     <color name="text_red">#F67531</color>
+    <color name="text_yellow">#FFCC06</color>
     <color name="text_blue">#1ebba6</color>
 
 </resources>

@@ -137,12 +137,7 @@ public class FillOrderActivity extends DLActivity implements View.OnClickListene
             @Override
             public void onRequestFailed(BaseModel error) {
                 dismissDialog();
-                showDialog(FillOrderActivity.this, error.getErrmsg(), new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        finish();
-                    }
-                });
+                showDialog(FillOrderActivity.this, error.getErrmsg());
             }
         });
     }

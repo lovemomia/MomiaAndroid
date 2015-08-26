@@ -64,7 +64,7 @@ public class SignTool {
         for (String key : keys) {
             String value = kv.get(key);
             if (value == null) {
-                value = "";
+                continue;
             }
             sysSign.append(key + "=" + kv.get(key));
         }
