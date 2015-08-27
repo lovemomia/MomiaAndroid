@@ -85,16 +85,28 @@ public class MineFragment extends DLFragment implements AdapterView.OnItemClickL
             startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("duola://personinfo")));
         } else if (section == 1) {
             if (row == 0) {
+                // 我的订单
                 startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("duola://myorderlist")));
             } else {
+                // 我的红包
                 startActivity("duola://couponlist");
             }
+        } else if (section == 2) {
+            // 我要爆料
+            startActivity("duola://web?url=http://m.duolaqinzi.com/recommend");
+
         } else if (section == 3) {
             if (row == 0) {
                 // 我的收藏
+                startActivity("duola://myfav");
             } else {
                 // 出行人
                 startActivity("duola://orderperson");
+            }
+        } else if (section == 4) {
+            if (row == 0) {
+                // 意见反馈
+                startActivity("duola://feedback");
             }
         }
     }
@@ -107,7 +119,7 @@ public class MineFragment extends DLFragment implements AdapterView.OnItemClickL
 
         @Override
         public int getCountInSection(int section) {
-            if (section == 0) {
+            if (section == 0 || section == 2) {
                 return 1;
             }
             return 2;
@@ -155,14 +167,14 @@ public class MineFragment extends DLFragment implements AdapterView.OnItemClickL
                         simpleListItem.setIcon(R.drawable.ic_mine_coupon);
                     }
                 } else if (section == 2) {
-                    if (row == 0) {
-                        simpleListItem.setTitle("成为领队");
-                        simpleListItem.setIcon(R.drawable.ic_mine_leader);
-
-                    } else {
+//                    if (row == 0) {
+//                        simpleListItem.setTitle("成为领队");
+//                        simpleListItem.setIcon(R.drawable.ic_mine_leader);
+//
+//                    } else {
                         simpleListItem.setTitle("我要爆料");
                         simpleListItem.setIcon(R.drawable.ic_mine_recommend);
-                    }
+//                    }
                 } else if (section == 3) {
                     if (row == 0) {
                         simpleListItem.setTitle("我的收藏");

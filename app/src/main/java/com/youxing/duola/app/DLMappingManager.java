@@ -22,6 +22,8 @@ public class DLMappingManager extends MappingManager {
         putPage("orderperson", new MappingPage("orderperson", true));
         // 更新（新增）出行人
         putPage("orderupdateperson", new MappingPage("orderupdateperson", true));
+        // 我的收藏
+        putPage("myfav", new MappingPage("myfav", true));
     }
 
 }

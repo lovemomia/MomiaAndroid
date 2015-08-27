@@ -3,6 +3,7 @@ package com.youxing.duola.home.views;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -58,7 +59,12 @@ public class HomeListItem extends RelativeLayout {
         titleTv.setText(product.getTitle());
         addressTv.setText(product.getRegion());
         dateTv.setText(product.getScheduler());
-        numberTv.setText(product.getJoined() + "人报名");
+        if (product.getJoined() > 0) {
+            numberTv.setText(product.getJoined() + "人报名");
+            numberTv.setVisibility(View.VISIBLE);
+        } else {
+            numberTv.setVisibility(View.GONE);
+        }
         priceTv.setText(PriceUtils.formatPriceString(product.getPrice()));
     }
 }

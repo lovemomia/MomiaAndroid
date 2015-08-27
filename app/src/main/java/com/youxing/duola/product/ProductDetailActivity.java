@@ -5,7 +5,9 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.youxing.common.adapter.GroupStyleAdapter;
 import com.youxing.common.app.Constants;
@@ -40,6 +42,7 @@ public class ProductDetailActivity extends DLActivity implements View.OnClickLis
     private String id;
     private Product product;
 
+    private TextView buyBtn;
     private Adapter adapter;
 
     @Override
@@ -52,12 +55,45 @@ public class ProductDetailActivity extends DLActivity implements View.OnClickLis
         setTitleRightButton(R.drawable.ic_action_collect, new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (product == null) {
+                    return;
+                }
+                if (product.isFavored()) {
+                    List<NameValuePair> params = new ArrayList<>();
+                    params.add(new BasicNameValuePair("id", String.valueOf(product.getId())));
+                    HttpService.post(Constants.domain() + "/product/unfavor", params, BaseModel.class, new RequestHandler() {
+                        @Override
+                        public void onRequestFinish(BaseModel response) {
+                            product.setFavored(false);
+                            getTitleBar().getRightBtn().setIcon(R.drawable.ic_action_collect);
+                        }
 
+                        @Override
+                        public void onRequestFailed(BaseModel error) {
+                        }
+                    });
+
+                } else {
+                    List<NameValuePair> params = new ArrayList<>();
+                    params.add(new BasicNameValuePair("id", String.valueOf(product.getId())));
+                    HttpService.post(Constants.domain() + "/product/favor", params, BaseModel.class, new RequestHandler() {
+                        @Override
+                        public void onRequestFinish(BaseModel response) {
+                            product.setFavored(true);
+                            getTitleBar().getRightBtn().setIcon(R.drawable.ic_action_collected);
+                        }
+
+                        @Override
+                        public void onRequestFailed(BaseModel error) {
+                        }
+                    });
+                }
             }
         });
 
         findViewById(R.id.share).setOnClickListener(this);
-        findViewById(R.id.buy).setOnClickListener(this);
+        buyBtn = (TextView) findViewById(R.id.buy);
+        buyBtn.setOnClickListener(this);
 
         ListView listView = (ListView) findViewById(R.id.listView);
         adapter = new Adapter();
@@ -92,6 +128,19 @@ public class ProductDetailActivity extends DLActivity implements View.OnClickLis
         dismissDialog();
 
         product = ((ProductModel)response).getData();
+        if (product.isSoldOut() || product.isOpened()) {
+            if (product.isSoldOut()) {
+                buyBtn.setText("报名人数已满");
+            } else {
+                buyBtn.setText("报名已结束");
+            }
+            buyBtn.setEnabled(false);
+        }
+        if (product.isFavored()) {
+            getTitleBar().getRightBtn().setIcon(R.drawable.ic_action_collected);
+        } else {
+            getTitleBar().getRightBtn().setIcon(R.drawable.ic_action_collect);
+        }
         adapter.notifyDataSetChanged();
     }
 

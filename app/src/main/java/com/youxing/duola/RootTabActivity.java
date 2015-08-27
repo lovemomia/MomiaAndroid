@@ -7,6 +7,7 @@ import android.view.Window;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.igexin.sdk.PushManager;
 import com.youxing.duola.app.DLActivity;
 import com.youxing.duola.home.HomeFragment;
 import com.youxing.duola.mine.MineFragment;
@@ -37,6 +38,9 @@ public class RootTabActivity extends DLActivity {
                         createTabItem("我的",
                                 R.drawable.ic_tab_mine)),
                 MineFragment.class, null);
+
+        // 个推
+        PushManager.getInstance().initialize(this.getApplicationContext());
     }
 
     private View createTabItem(String name, int iconRes) {

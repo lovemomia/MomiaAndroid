@@ -57,7 +57,12 @@ public class ProductDetailHeaderView extends RelativeLayout implements ViewPager
 
     public void setData(Product product) {
         titleTv.setText(product.getTitle());
-        numberTv.setText(product.getJoined() + "人已报名");
+        if (product.getJoined() > 0) {
+            numberTv.setText(product.getJoined() + "人已报名");
+            numberTv.setVisibility(View.VISIBLE);
+        } else {
+            numberTv.setVisibility(View.GONE);
+        }
         priceTv.setText(PriceUtils.formatPriceString(product.getPrice()));
 
         pageCount = product.getImgs().size();

@@ -9,6 +9,7 @@ import android.widget.TextView;
 import com.youxing.common.views.YXNetworkImageView;
 import com.youxing.duola.R;
 import com.youxing.duola.model.OrderDetailModel;
+import com.youxing.duola.model.Product;
 import com.youxing.duola.utils.PriceUtils;
 
 /**
@@ -46,6 +47,14 @@ public class ProductListItem extends LinearLayout {
     }
 
     public void setData(OrderDetailModel.OrderDetailData data) {
+        iconIv.setImageUrl(data.getCover());
+        titleTv.setText(data.getTitle());
+        dateTv.setText(data.getScheduler());
+        addressTv.setText(data.getAddress());
+        priceTv.setText(PriceUtils.formatPriceString(data.getPrice()));
+    }
+
+    public void setData(Product data) {
         iconIv.setImageUrl(data.getCover());
         titleTv.setText(data.getTitle());
         dateTv.setText(data.getScheduler());

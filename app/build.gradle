@@ -32,4 +32,6 @@ dependencies {
     compile project(':common')
     compile files('libs/libammsdk.jar')
     compile files('libs/alipaySDK-20150724.jar')
+    compile files('libs/GetuiSDK2.6.0.0.jar')
+    compile files('libs/GetuiExt-2.0.3.jar')
 }
