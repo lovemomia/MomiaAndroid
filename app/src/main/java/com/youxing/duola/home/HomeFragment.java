@@ -1,7 +1,6 @@
 package com.youxing.duola.home;
 
 import android.content.Intent;
-import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
@@ -13,13 +12,12 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
-import com.youxing.common.adapter.GroupStyleAdapter;
+import com.youxing.common.adapter.BasicAdapter;
 import com.youxing.common.app.Constants;
 import com.youxing.common.model.BaseModel;
 import com.youxing.common.services.http.CacheType;
 import com.youxing.common.services.http.HttpService;
 import com.youxing.common.services.http.RequestHandler;
-import com.youxing.common.utils.UnitTools;
 import com.youxing.duola.R;
 import com.youxing.duola.app.DLFragment;
 import com.youxing.duola.home.views.HomeHeaderView;
@@ -50,11 +48,13 @@ public class HomeFragment extends DLFragment implements AdapterView.OnItemClickL
     private ListView listView;
     private Adapter adapter;
 
+    private List<HomeModel.HomeBanner> bannerList = new ArrayList<>();
     private List<Product> productList = new ArrayList<>();
-    private int nextPage;
+    private int nextPage = -1;
 
     private boolean isRefresh;
     private boolean hasBannel;
+    private boolean isEmpty;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -64,6 +64,8 @@ public class HomeFragment extends DLFragment implements AdapterView.OnItemClickL
             titleBar = (TitleBar) rootView.findViewById(R.id.titleBar);
             listView = (ListView)rootView.findViewById(R.id.listView);
             listView.setOnItemClickListener(this);
+            adapter = new Adapter();
+            listView.setAdapter(adapter);
 
             swipeLayout = (SwipeRefreshLayout)rootView.findViewById(R.id.refresh);
             swipeLayout.setOnRefreshListener(this);
@@ -117,7 +119,7 @@ public class HomeFragment extends DLFragment implements AdapterView.OnItemClickL
         String url = Constants.domain() + "/home";
 
         List<NameValuePair> params = new ArrayList<>();
-        params.add(new BasicNameValuePair("pageindex", String.valueOf(nextPage)));
+        params.add(new BasicNameValuePair("pageindex", String.valueOf(nextPage == -1 ? 0 : nextPage)));
 
         HttpService.get(url, params, CacheType.NORMAL, HomeModel.class, this);
     }
@@ -125,22 +127,20 @@ public class HomeFragment extends DLFragment implements AdapterView.OnItemClickL
     @Override
     public void onRefresh() {
         isRefresh = true;
-        nextPage = 0;
+        nextPage = -1;
+        bannerList.clear();
         productList.clear();
+        hasBannel = false;
+        isEmpty = false;
         requestData();
-    }
-
-    private HomeHeaderView createHeaderView(List<HomeModel.HomeBanner> banners) {
-        HomeHeaderView header = HomeHeaderView.create(getActivity());
-        header.setData(banners);
-        return header;
     }
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        int section = adapter.getIndexForPosition(hasBannel ? position - 1 : position).section;
-        Product product = productList.get(section);
-        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("duola://productdetail?id=" + product.getId())));
+        if (hasBannel) {
+            Product product = productList.get(position - 1);
+            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("duola://productdetail?id=" + product.getId())));
+        }
     }
 
     @Override
@@ -153,25 +153,25 @@ public class HomeFragment extends DLFragment implements AdapterView.OnItemClickL
         HomeModel homeModel = (HomeModel) response;
         productList.addAll(homeModel.getData().getProducts());
 
+        if (homeModel.getData().getBanners() != null && homeModel.getData().getBanners().size() > 0) {
+            bannerList.addAll(homeModel.getData().getBanners());
+            hasBannel = true;
+        }
+
         if (nextPage == 0) {
             getDLActivity().dismissDialog();
-
-            if (homeModel.getData().getBanners() != null && homeModel.getData().getBanners().size() > 0) {
-                listView.addHeaderView(createHeaderView(homeModel.getData().getBanners()));
-                hasBannel = true;
-            }
-
-            adapter = new Adapter();
-            listView.setAdapter(adapter);
-        } else {
-            new Handler().post(new Runnable() {
-                @Override
-                public void run() {
-                    adapter.notifyDataSetChanged();
-                }
-            });
         }
         nextPage = homeModel.getData().getNextpage();
+        if (nextPage == 0) {
+            isEmpty = true;
+        }
+
+        new Handler().post(new Runnable() {
+            @Override
+            public void run() {
+                adapter.notifyDataSetChanged();
+            }
+        });
     }
 
     @Override
@@ -181,61 +181,69 @@ public class HomeFragment extends DLFragment implements AdapterView.OnItemClickL
             isRefresh = false;
             swipeLayout.setRefreshing(false);
         }
-        getDLActivity().showDialog(getDLActivity(), "对不起", error.getErrmsg(), "确定");
+        getDLActivity().showDialog(getDLActivity(), error.getErrmsg());
     }
 
-    class Adapter extends GroupStyleAdapter {
+    class Adapter extends BasicAdapter {
 
-        public Adapter() {
-            super(getDLActivity());
-        }
+        private Object BANNEL = new Object();
 
         @Override
-        public int getSectionCount() {
-            if (nextPage > 0) {
-                return productList.size() + 1;
-            }
-            return productList.size();
-        }
-
-        @Override
-        public int getCountInSection(int section) {
-            if (nextPage > 0 && section == getSectionCount() - 1) {
+        public int getCount() {
+            if (nextPage == -1) {
                 return 0;
             }
-            return 1;
+
+            if (hasBannel) {
+                return productList.size() + 2;
+            }
+            return productList.size() + 1;
         }
 
         @Override
-        public View getViewForRow(View convertView, ViewGroup parent, int section, int row) {
+        public Object getItem(int position) {
+            int pos = position;
+            if (hasBannel) {
+                pos -= 1;
+                if (position == 0) {
+                    return BANNEL;
+                }
+            }
+
+            if (pos < productList.size()) {
+                return productList.get(pos);
+            }
+            return isEmpty ? EMPTY : LOADING;
+        }
+
+        @Override
+        public long getItemId(int position) {
+            return position;
+        }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+            Object item = getItem(position);
             View view = convertView;
-            if (!(view instanceof HomeListItem)) {
-                view = HomeListItem.create(getDLActivity());
-            }
-            ((HomeListItem) view).setData(productList.get(section));
-            return view;
-        }
+            if (item == BANNEL) {
+                HomeHeaderView header = HomeHeaderView.create(getActivity());
+                header.setData(bannerList);
+                view = header;
 
-        @Override
-        public int getBackgroundColorForRow(IndexPath indexPath) {
-            return Color.TRANSPARENT;
-        }
-
-        @Override
-        public int getHeightForSectionView(int section) {
-            return UnitTools.dip2px(getActivity(), 10);
-        }
-
-        @Override
-        public View getViewForSection(View convertView, ViewGroup parent, int section) {
-            if (nextPage > 0 && section == getSectionCount() - 1) {
+            } else if (item == EMPTY) {
+                view = getEmptyView("- 更多活动尽请期待 -", parent, convertView);
+            } else if (item == LOADING) {
+                view = getLoadingView(parent, convertView);
                 requestData();
-                return getLoadingView(parent, convertView);
+            } else {
+                if (!(view instanceof HomeListItem)) {
+                    view = HomeListItem.create(getDLActivity());
+                }
+                ((HomeListItem) view).setData((Product)item);
             }
-            View view = super.getViewForSection(convertView, parent, section);
-            view.setBackgroundResource(R.color.bg_window);
             return view;
         }
+
     }
 
     @Override
