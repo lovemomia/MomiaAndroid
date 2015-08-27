@@ -69,7 +69,7 @@ public class ProductDetailContentView extends LinearLayout {
                 lp.setMargins(padding, 0, padding, padding);
                 iv.setLayoutParams(lp);
                 iv.setScaleType(ImageView.ScaleType.CENTER_CROP);
-                iv.setBackgroundResource(R.color.bg_image);
+                iv.setBackgroundResource(R.drawable.bg_default_image);
                 iv.setImageUrl(body.getImg());
 
                 addView(iv);

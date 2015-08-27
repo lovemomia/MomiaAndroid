@@ -38,7 +38,7 @@ public class ProductListItem extends LinearLayout {
     protected void onFinishInflate() {
         super.onFinishInflate();
         iconIv = (YXNetworkImageView) findViewById(R.id.icon);
-        iconIv.setDefaultImageResId(R.color.bg_image);
+        iconIv.setDefaultImageResId(R.drawable.bg_default_image);
         titleTv = (TextView) findViewById(R.id.title);
         dateTv = (TextView) findViewById(R.id.date);
         addressTv = (TextView) findViewById(R.id.address);

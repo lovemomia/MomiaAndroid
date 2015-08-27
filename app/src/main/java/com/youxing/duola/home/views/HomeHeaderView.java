@@ -32,11 +32,6 @@ public class HomeHeaderView extends FrameLayout implements ViewPager.OnPageChang
 
     private int pageCount;
 
-//    String[] imgArray = new String[]{"http://m.chanyouji.cn/index-cover/45546-1628868.jpg",
-//            "http://m.chanyouji.cn/index-cover/27926-894425.jpg",
-//            "http://m.chanyouji.cn/index-cover/331-13837.jpg"};
-
-
     Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
@@ -88,6 +83,7 @@ public class HomeHeaderView extends FrameLayout implements ViewPager.OnPageChang
             YXNetworkImageView imageView = new YXNetworkImageView(getContext());
             imageView.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
             imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
+            imageView.setDefaultImageResId(R.drawable.bg_default_image);
             imageView.setImageUrl(banner.getCover());
             imageView.setOnClickListener(new OnClickListener() {
                 @Override

@@ -15,9 +15,11 @@ import android.widget.ListView;
 import com.youxing.common.adapter.BasicAdapter;
 import com.youxing.common.app.Constants;
 import com.youxing.common.model.BaseModel;
+import com.youxing.common.model.City;
 import com.youxing.common.services.http.CacheType;
 import com.youxing.common.services.http.HttpService;
 import com.youxing.common.services.http.RequestHandler;
+import com.youxing.common.utils.CityManager;
 import com.youxing.duola.R;
 import com.youxing.duola.app.DLFragment;
 import com.youxing.duola.home.views.HomeHeaderView;
@@ -38,7 +40,7 @@ import java.util.List;
  * Created by Jun Deng on 15/8/3.
  */
 public class HomeFragment extends DLFragment implements AdapterView.OnItemClickListener,
-        SwipeRefreshLayout.OnRefreshListener, RequestHandler {
+        SwipeRefreshLayout.OnRefreshListener, RequestHandler, CityManager.CityChangeListener {
 
     private View rootView;
     private boolean rebuild;
@@ -93,12 +95,14 @@ public class HomeFragment extends DLFragment implements AdapterView.OnItemClickL
 
             requestData();
         }
+
+        CityManager.instance().addListener(this);
     }
 
     private void initTitle() {
-        titleBar.getTitleTv().setText("哆啦亲子");
+        titleBar.getTitleTv().setText("松果亲子");
 
-        titleBar.getLeftBtn().setText("上海");
+        titleBar.getLeftBtn().setText(CityManager.instance().getChoosedCity().getName());
         Drawable img = getResources().getDrawable(R.drawable.ic_arrow_down);
         img.setBounds(0, 0, img.getMinimumWidth(), img.getMinimumHeight());
         titleBar.getLeftBtn().getTextView().setCompoundDrawables(null, null, img, null);
@@ -106,7 +110,7 @@ public class HomeFragment extends DLFragment implements AdapterView.OnItemClickL
         titleBar.getLeftBtn().getTextView().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                startActivity("duola://citylist");
             }
         });
     }
@@ -133,6 +137,12 @@ public class HomeFragment extends DLFragment implements AdapterView.OnItemClickL
         hasBannel = false;
         isEmpty = false;
         requestData();
+    }
+
+    @Override
+    public void onCityChanged(City newCity) {
+        onRefresh();
+        titleBar.getLeftBtn().setText(newCity.getName());
     }
 
     @Override
@@ -249,6 +259,7 @@ public class HomeFragment extends DLFragment implements AdapterView.OnItemClickL
     @Override
     public void onDestroy() {
         HttpService.abort(this);
+        CityManager.instance().removeListener(this);
         super.onDestroy();
     }
 

@@ -53,6 +53,7 @@ public class HomeListItem extends RelativeLayout {
         RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(width, width * 3/4);
         lp.setMargins(UnitTools.dip2px(getContext(), 10), 0, UnitTools.dip2px(getContext(), 10), 0);
         coverIv.setLayoutParams(lp);
+        coverIv.setDefaultImageResId(R.drawable.bg_default_image);
         coverIv.setImageUrl(product.getCover());
         titleTv.setText(product.getTitle());
         addressTv.setText(product.getRegion());

@@ -187,7 +187,7 @@ public class HttpService {
         }
 
         forms.add(new BasicNameValuePair("channel", "android"));
-        forms.add(new BasicNameValuePair("city", "1"));
+        forms.add(new BasicNameValuePair("city", String.valueOf(CityManager.instance().getChoosedCity().getId())));
         forms.add(new BasicNameValuePair("device", "nexus"));
         forms.add(new BasicNameValuePair("net", "wifi"));
         forms.add(new BasicNameValuePair("os", "4.3"));

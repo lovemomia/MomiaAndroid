@@ -285,6 +285,22 @@
             </intent-filter>
         </activity>
 
+        <activity
+            android:name=".home.CityListActivity"
+            android:label="选择城市"
+            android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:host="citylist"
+                    android:scheme="duola" />
+            </intent-filter>
+        </activity>
+
     </application>
 
 </manifest>
