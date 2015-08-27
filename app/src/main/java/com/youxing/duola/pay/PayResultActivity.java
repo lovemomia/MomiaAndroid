@@ -1,7 +1,6 @@
 package com.youxing.duola.pay;
 
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -67,7 +66,7 @@ public class PayResultActivity extends DLActivity implements View.OnClickListene
     }
 
     private void freePay() {
-        showLoading();
+        showLoadingDialog(this);
 
         List<NameValuePair> params = new ArrayList<>();
         params.add(new BasicNameValuePair("oid", oid));
@@ -78,7 +77,7 @@ public class PayResultActivity extends DLActivity implements View.OnClickListene
         HttpService.post(Constants.domainHttps() + "/payment/prepay/free", params, PayCheckModel.class, new RequestHandler() {
             @Override
             public void onRequestFinish(BaseModel response) {
-                dismissLoading();
+                dismissDialog();
 
                 model = (PayCheckModel) response;
                 paySuccess = true;
@@ -86,7 +85,7 @@ public class PayResultActivity extends DLActivity implements View.OnClickListene
 
             @Override
             public void onRequestFailed(BaseModel error) {
-                dismissLoading();
+                dismissDialog();
                 titleTv.setText("购买失败");
                 descTv.setText("请重新确认订单，如有问题可拨打客服热线：021-62578700");
                 leftBtn.setText("联系客服");
@@ -96,7 +95,7 @@ public class PayResultActivity extends DLActivity implements View.OnClickListene
     }
 
     private void checkPayResult() {
-        showLoading();
+        showLoadingDialog(this);
 
         List<NameValuePair> params = new ArrayList<>();
         params.add(new BasicNameValuePair("oid", oid));
@@ -106,7 +105,7 @@ public class PayResultActivity extends DLActivity implements View.OnClickListene
         HttpService.post(Constants.domainHttps() + "/payment/check", params, PayCheckModel.class, new RequestHandler() {
             @Override
             public void onRequestFinish(BaseModel response) {
-                dismissLoading();
+                dismissDialog();
 
                 model = (PayCheckModel) response;
                 paySuccess = true;
@@ -114,7 +113,7 @@ public class PayResultActivity extends DLActivity implements View.OnClickListene
 
             @Override
             public void onRequestFailed(BaseModel error) {
-                dismissLoading();
+                dismissDialog();
                 titleTv.setText("购买失败");
                 descTv.setText("请重新确认订单，如有问题可拨打客服热线：021-62578700");
                 leftBtn.setText("联系客服");

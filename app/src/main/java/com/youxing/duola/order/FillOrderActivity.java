@@ -4,6 +4,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -59,6 +60,7 @@ public class FillOrderActivity extends DLActivity implements View.OnClickListene
     private int selectSkuIndex = -1;
     private int selectAdultNum;
     private int selectChildNum;
+    private boolean isSelectPerson;
     private SubmitOrder submitOrder;
 
     private StepperGroup stepperGroup;
@@ -80,7 +82,7 @@ public class FillOrderActivity extends DLActivity implements View.OnClickListene
     }
 
     private void requestOrder() {
-        showLoading();
+        showLoadingDialog(this);
 
         List<NameValuePair> params = new ArrayList<>();
         params.add(new BasicNameValuePair("id", getIntent().getData().getQueryParameter("id")));
@@ -88,7 +90,7 @@ public class FillOrderActivity extends DLActivity implements View.OnClickListene
         HttpService.get(Constants.domain() + "/product/order", params, CacheType.DISABLE, FillOrderModel.class, new RequestHandler() {
             @Override
             public void onRequestFinish(BaseModel response) {
-                dismissLoading();
+                dismissDialog();
 
                 FillOrderModel model = (FillOrderModel) response;
                 FillOrderActivity.this.model = model;
@@ -99,7 +101,7 @@ public class FillOrderActivity extends DLActivity implements View.OnClickListene
 
             @Override
             public void onRequestFailed(BaseModel error) {
-                dismissLoading();
+                dismissDialog();
                 showDialog(FillOrderActivity.this, error.getErrmsg(), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
@@ -153,6 +155,12 @@ public class FillOrderActivity extends DLActivity implements View.OnClickListene
         submitOrder.productId = sku.getProductId();
         submitOrder.skuId = sku.getSkuId();
         submitOrder.mobile = model.getData().getContacts().getMobile();
+        updatePrices();
+
+        return true;
+    }
+
+    private void updatePrices() {
         submitOrder.prices.clear();
 
         int i = 0;
@@ -169,17 +177,11 @@ public class FillOrderActivity extends DLActivity implements View.OnClickListene
             }
             i ++;
         }
-
-        return true;
     }
 
     @Override
     public void onClick(View v) {
-        if (v.getId() == R.id.add) {
-            startActivityForResult(new Intent(Intent.ACTION_VIEW,
-                    Uri.parse("duola://tripperson")), REQUEST_CODE_SELECT_PERSON);
-
-        } else if (v.getId() == R.id.done) {
+        if (v.getId() == R.id.done) {
             requestSubmitOrder();
         }
     }
@@ -194,7 +196,13 @@ public class FillOrderActivity extends DLActivity implements View.OnClickListene
                 }
                 if (isSkuSelectAble(model.getData().getSkus().get(ip.row))) {
                     selectSkuIndex = ip.row;
+
+                    //reset
                     stepperGroup = null;
+                    selectAdultNum = 0;
+                    selectChildNum = 0;
+                    isSelectPerson = false;
+
                     adapter.notifyDataSetChanged();
                 }
 
@@ -202,6 +210,35 @@ public class FillOrderActivity extends DLActivity implements View.OnClickListene
                 isShowAllSku = true;
                 adapter.notifyDataSetChanged();
             }
+        } else if (ip.section == 2) {
+            Sku sku = model.getData().getSkus().get(selectSkuIndex);
+            if (sku.isNeedRealName() && ip.row == 0) {
+                if (selectAdultNum > 0 || selectChildNum > 0) {
+                    Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("duola://orderperson"));
+                    intent.putExtra("select", true);
+                    intent.putExtra("adult", selectAdultNum);
+                    intent.putExtra("child", selectChildNum);
+                    startActivityForResult(intent, REQUEST_CODE_SELECT_PERSON);
+                }
+
+            } else {
+
+            }
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == REQUEST_CODE_SELECT_PERSON && resultCode == RESULT_OK) {
+            String selectPersons = data.getStringExtra("selectPersons");
+            if (TextUtils.isEmpty(selectPersons)) {
+                return;
+            }
+            List<Long> idList = (List<Long>)JSON.parse(selectPersons);
+            submitOrder.setParticipants(idList);
+            isSelectPerson = true;
+            adapter.notifyDataSetChanged();
         }
     }
 
@@ -294,8 +331,8 @@ public class FillOrderActivity extends DLActivity implements View.OnClickListene
 
             } else if (section == 1) {
                 OrderNumberItem numberItem = OrderNumberItem.create(FillOrderActivity.this);
-                numberItem.setData(model.getData().getSkus().get(selectSkuIndex).getPrices().get(row));
-                view = numberItem;
+                Sku.Price price = model.getData().getSkus().get(selectSkuIndex).getPrices().get(row);
+                numberItem.setData(price);
 
                 if (stepperGroup == null) {
                     stepperGroup = new StepperGroup();
@@ -307,31 +344,48 @@ public class FillOrderActivity extends DLActivity implements View.OnClickListene
                         @Override
                         public void onNumberChanged(StepperView stepper) {
                             double totalPrice = 0;
+                            int adultNum = 0;
+                            int childNum = 0;
                             int i = 0;
                             for (StepperView sv : stepperGroup.getStepperList()) {
                                 int number = sv.getNumber();
-                                double price = model.getData().getSkus().get(selectSkuIndex).getPrices().get(row).getPrice();
+                                Sku.Price skuPrice = model.getData().getSkus().get(selectSkuIndex).getPrices().get(row);
+                                double price = skuPrice.getPrice();
                                 totalPrice += price * number;
+                                adultNum += skuPrice.getAdult() * number;
+                                childNum += skuPrice.getChild() * number;
+
                                 i ++;
                             }
                             priceTv.setText(PriceUtils.formatPriceString(totalPrice));
+                            FillOrderActivity.this.selectAdultNum = adultNum;
+                            FillOrderActivity.this.selectChildNum = childNum;
                         }
                     });
+                } else {
+                    if (row < stepperGroup.getStepperList().size()) {
+                        numberItem.getStepperView().setNumber(stepperGroup.getStepperList().get(row).getNumber());
+                    }
                 }
+
+                view = numberItem;
 
             } else if (section == 2) {
                 SimpleListItem simpleListItem = SimpleListItem.create(FillOrderActivity.this);
+                simpleListItem.setShowArrow(true);
                 Sku sku = model.getData().getSkus().get(selectSkuIndex);
                 if (sku.isNeedRealName() && row == 0) {
                     simpleListItem.setTitle("出行人");
-                    StringBuilder sb = new StringBuilder();
-                    if (selectAdultNum > 0) {
-                        sb.append(selectAdultNum + "成人");
+                    if (isSelectPerson) {
+                        StringBuilder sb = new StringBuilder();
+                        if (selectAdultNum > 0) {
+                            sb.append(selectAdultNum + "成人");
+                        }
+                        if (selectChildNum > 0) {
+                            sb.append(selectChildNum + "小孩");
+                        }
+                        simpleListItem.setSubTitle(sb.toString());
                     }
-                    if (selectChildNum > 0) {
-                        sb.append(selectChildNum + "小孩");
-                    }
-                    simpleListItem.setSubTitle(sb.toString());
 
                 } else {
                     simpleListItem.setTitle("联系人信息");

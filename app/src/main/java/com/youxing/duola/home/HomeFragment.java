@@ -111,7 +111,7 @@ public class HomeFragment extends DLFragment implements AdapterView.OnItemClickL
 
     private void requestData() {
         if (nextPage == 0) {
-            getDLActivity().showLoading();
+            getDLActivity().showLoadingDialog(getActivity(), null, null);
         }
 
         String url = Constants.domain() + "/home";
@@ -154,7 +154,7 @@ public class HomeFragment extends DLFragment implements AdapterView.OnItemClickL
         productList.addAll(homeModel.getData().getProducts());
 
         if (nextPage == 0) {
-            getDLActivity().dismissLoading();
+            getDLActivity().dismissDialog();
 
             if (homeModel.getData().getBanners() != null && homeModel.getData().getBanners().size() > 0) {
                 listView.addHeaderView(createHeaderView(homeModel.getData().getBanners()));
@@ -176,7 +176,7 @@ public class HomeFragment extends DLFragment implements AdapterView.OnItemClickL
 
     @Override
     public void onRequestFailed(BaseModel error) {
-        getDLActivity().dismissLoading();
+        getDLActivity().dismissDialog();
         if (isRefresh) {
             isRefresh = false;
             swipeLayout.setRefreshing(false);

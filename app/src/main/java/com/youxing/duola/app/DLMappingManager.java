@@ -8,11 +8,20 @@ import com.youxing.common.app.MappingManager;
 public class DLMappingManager extends MappingManager {
 
     public DLMappingManager() {
+        // 提交订单
         putPage("fillorder", new MappingPage("fillorder", true));
+        // 个人信息
         putPage("personinfo", new MappingPage("personinfo", true));
+        // 红包列表
         putPage("couponlist", new MappingPage("couponlist", true));
+        // 订单详情
         putPage("orderdetail", new MappingPage("orderdetail", true));
+        // 我的订单列表
         putPage("myorderlist", new MappingPage("myorderlist", true));
+        // 出行人
+        putPage("orderperson", new MappingPage("orderperson", true));
+        // 更新（新增）出行人
+        putPage("orderupdateperson", new MappingPage("orderupdateperson", true));
     }
 
 }

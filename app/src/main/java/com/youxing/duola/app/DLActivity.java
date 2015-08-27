@@ -22,6 +22,7 @@ import android.widget.ProgressBar;
 import com.youxing.common.app.YXActivity;
 import com.youxing.duola.R;
 import com.youxing.duola.RootTabActivity;
+import com.youxing.duola.views.ProgressHUD;
 import com.youxing.duola.views.TitleBar;
 
 /**
@@ -124,47 +125,15 @@ public class DLActivity extends YXActivity {
 
     // *************** UI操作 ***************
 
-    public void showLoading() {
-        WindowManager.LayoutParams params = new WindowManager.LayoutParams(
-                WindowManager.LayoutParams.WRAP_CONTENT,
-                WindowManager.LayoutParams.WRAP_CONTENT,
-                WindowManager.LayoutParams.TYPE_SYSTEM_OVERLAY,
-                0,
-                PixelFormat.TRANSLUCENT);
-        params.gravity = Gravity.CENTER;
-        params.setTitle("Load Average");
-        WindowManager wm = (WindowManager) getSystemService(WINDOW_SERVICE);
-        if (loadingView == null) {
-            loadingView = new ProgressBar(this);
-        } else {
-            wm.removeView(loadingView);
-        }
-        wm.addView(loadingView, params);
-    }
-
-    public void dismissLoading() {
-        if (loadingView != null) {
-            WindowManager wm = (WindowManager) getSystemService(WINDOW_SERVICE);
-            wm.removeView(loadingView);
-            loadingView = null;
-        }
+    public void showLoadingDialog(Context context) {
+        showLoadingDialog(context, null, null);
     }
 
     public void showLoadingDialog(Context context, String msg,
                                      DialogInterface.OnCancelListener cancelListener) {
         dismissDialog();
 
-        ProgressDialog loadingDialog = new ProgressDialog(context);
-
-        String message = msg;
-        String defaultMsg = "正在加载中，请稍候...";
-        if (TextUtils.isEmpty(message)) {
-            message = defaultMsg;
-        }
-        loadingDialog.setMessage(message);
-        loadingDialog.setOnCancelListener(cancelListener);
-        loadingDialog.show();
-        managerDialog = loadingDialog;
+        managerDialog = ProgressHUD.show(context, msg, true, true, cancelListener);
     }
 
     public void showDialog(Context context, String message) {

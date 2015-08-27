@@ -31,6 +31,7 @@ import com.youxing.common.services.account.AccountService;
 import com.youxing.common.services.http.CacheType;
 import com.youxing.common.services.http.HttpService;
 import com.youxing.common.services.http.RequestHandler;
+import com.youxing.common.utils.Log;
 import com.youxing.common.utils.UnitTools;
 import com.youxing.common.views.CircularImage;
 import com.youxing.duola.R;
@@ -43,12 +44,12 @@ import com.youxing.duola.views.StepperView;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
-import org.json.JSONArray;
-import org.json.JSONObject;
 
 import java.io.File;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -78,12 +79,12 @@ public class PersonInfoActivity extends DLActivity implements StepperView.OnNumb
     }
 
     public void requestData() {
-        showLoading();
+        showLoadingDialog(this);
 
         HttpService.get(Constants.domain() + "/user", null, CacheType.DISABLE, AccountModel.class, new RequestHandler() {
             @Override
             public void onRequestFinish(BaseModel response) {
-                dismissLoading();
+                dismissDialog();
 
                 AccountModel model = (AccountModel) response;
                 PersonInfoActivity.this.account = model.getData();
@@ -93,8 +94,13 @@ public class PersonInfoActivity extends DLActivity implements StepperView.OnNumb
 
             @Override
             public void onRequestFailed(BaseModel error) {
-                dismissLoading();
-                showDialog(PersonInfoActivity.this, error.getErrmsg());
+                dismissDialog();
+                showDialog(PersonInfoActivity.this, error.getErrmsg(), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        finish();
+                    }
+                });
             }
         });
     }
@@ -155,23 +161,25 @@ public class PersonInfoActivity extends DLActivity implements StepperView.OnNumb
             } else {
                 // 生日
                 Calendar cal = Calendar.getInstance();
-                int year = cal.get(Calendar.YEAR);
-                int monthOfYear = cal.get(Calendar.MONTH);
-                int dayOfMonth = cal.get(Calendar.DAY_OF_MONTH);
                 if (!TextUtils.isEmpty(child.getBirthday())) {
-                    String []date = child.getBirthday().split("-");
-                    if (date != null && date.length == 3) {
-                        year = Integer.valueOf(date[0]);
-                        monthOfYear = Integer.valueOf(date[1]) - 1;
-                        dayOfMonth = Integer.valueOf(date[2]);
+                    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+                    try {
+                        Date date = dateFormat.parse(child.getBirthday());
+                        cal.setTime(date);
+                    } catch (Exception e) {
+                        Log.e("PersonInfoActivity", "parse birthday fail", e);
                     }
                 }
                 new DatePickerDialog(PersonInfoActivity.this, new DatePickerDialog.OnDateSetListener() {
                     @Override
                     public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                        requestUpdateChildBirthday(child.getId(), year + "-" + (monthOfYear + 1) + "-" + dayOfMonth);
+                        Calendar cal = Calendar.getInstance();
+                        cal.set(year, monthOfYear, dayOfMonth);
+                        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+                        String birthday = dateFormat.format(cal.getTime());
+                        requestUpdateChildBirthday(child.getId(), birthday);
                     }
-                }, year, monthOfYear, dayOfMonth).show();
+                }, cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH)).show();
             }
         }
     }
@@ -242,7 +250,7 @@ public class PersonInfoActivity extends DLActivity implements StepperView.OnNumb
     }
 
     private void requestUploadImage(File file) {
-        showLoading();
+        showLoadingDialog(this);
 
         HttpService.uploadImage(file, new RequestHandler() {
             @Override
@@ -253,7 +261,7 @@ public class PersonInfoActivity extends DLActivity implements StepperView.OnNumb
 
             @Override
             public void onRequestFailed(BaseModel error) {
-                dismissLoading();
+                dismissDialog();
                 showDialog(PersonInfoActivity.this, error.getErrmsg());
             }
         });
@@ -265,7 +273,7 @@ public class PersonInfoActivity extends DLActivity implements StepperView.OnNumb
         HttpService.post(Constants.domain() + "/user/avatar", params, AccountModel.class, new RequestHandler() {
             @Override
             public void onRequestFinish(BaseModel response) {
-                dismissLoading();
+                dismissDialog();
 
                 AccountModel model = (AccountModel) response;
                 PersonInfoActivity.this.account = model.getData();
@@ -275,20 +283,20 @@ public class PersonInfoActivity extends DLActivity implements StepperView.OnNumb
 
             @Override
             public void onRequestFailed(BaseModel error) {
-                dismissLoading();
+                dismissDialog();
                 showDialog(PersonInfoActivity.this, error.getErrmsg());
             }
         });
     }
 
     private void requestUpdateNickname(String nickname) {
-        showLoading();
+        showLoadingDialog(this);
         List<NameValuePair> params = new ArrayList<>();
         params.add(new BasicNameValuePair("nickname", nickname));
         HttpService.post(Constants.domain() + "/user/nickname", params, AccountModel.class, new RequestHandler() {
             @Override
             public void onRequestFinish(BaseModel response) {
-                dismissLoading();
+                dismissDialog();
 
                 AccountModel model = (AccountModel) response;
                 PersonInfoActivity.this.account = model.getData();
@@ -298,20 +306,20 @@ public class PersonInfoActivity extends DLActivity implements StepperView.OnNumb
 
             @Override
             public void onRequestFailed(BaseModel error) {
-                dismissLoading();
+                dismissDialog();
                 showDialog(PersonInfoActivity.this, error.getErrmsg());
             }
         });
     }
 
     private void requestUpdateSex(String sex) {
-        showLoading();
+        showLoadingDialog(this);
         List<NameValuePair> params = new ArrayList<>();
         params.add(new BasicNameValuePair("sex", sex));
         HttpService.post(Constants.domain() + "/user/sex", params, AccountModel.class, new RequestHandler() {
             @Override
             public void onRequestFinish(BaseModel response) {
-                dismissLoading();
+                dismissDialog();
 
                 AccountModel model = (AccountModel) response;
                 PersonInfoActivity.this.account = model.getData();
@@ -321,20 +329,20 @@ public class PersonInfoActivity extends DLActivity implements StepperView.OnNumb
 
             @Override
             public void onRequestFailed(BaseModel error) {
-                dismissLoading();
+                dismissDialog();
                 showDialog(PersonInfoActivity.this, error.getErrmsg());
             }
         });
     }
 
     private void requestUpdateAddress(String address) {
-        showLoading();
+        showLoadingDialog(this);
         List<NameValuePair> params = new ArrayList<>();
         params.add(new BasicNameValuePair("address", address));
         HttpService.post(Constants.domain() + "/user/address", params, AccountModel.class, new RequestHandler() {
             @Override
             public void onRequestFinish(BaseModel response) {
-                dismissLoading();
+                dismissDialog();
 
                 AccountModel model = (AccountModel) response;
                 PersonInfoActivity.this.account = model.getData();
@@ -344,21 +352,21 @@ public class PersonInfoActivity extends DLActivity implements StepperView.OnNumb
 
             @Override
             public void onRequestFailed(BaseModel error) {
-                dismissLoading();
+                dismissDialog();
                 showDialog(PersonInfoActivity.this, error.getErrmsg());
             }
         });
     }
 
     private void requestUpdateChildName(long id, String name) {
-        showLoading();
+        showLoadingDialog(this);
         List<NameValuePair> params = new ArrayList<>();
         params.add(new BasicNameValuePair("cid", String.valueOf(id)));
         params.add(new BasicNameValuePair("name", name));
         HttpService.post(Constants.domain() + "/user/child/name", params, AccountModel.class, new RequestHandler() {
             @Override
             public void onRequestFinish(BaseModel response) {
-                dismissLoading();
+                dismissDialog();
 
                 AccountModel model = (AccountModel) response;
                 PersonInfoActivity.this.account = model.getData();
@@ -368,21 +376,21 @@ public class PersonInfoActivity extends DLActivity implements StepperView.OnNumb
 
             @Override
             public void onRequestFailed(BaseModel error) {
-                dismissLoading();
+                dismissDialog();
                 showDialog(PersonInfoActivity.this, error.getErrmsg());
             }
         });
     }
 
     private void requestUpdateChildSex(long id, String sex) {
-        showLoading();
+        showLoadingDialog(this);
         List<NameValuePair> params = new ArrayList<>();
         params.add(new BasicNameValuePair("cid", String.valueOf(id)));
         params.add(new BasicNameValuePair("sex", sex));
         HttpService.post(Constants.domain() + "/user/child/sex", params, AccountModel.class, new RequestHandler() {
             @Override
             public void onRequestFinish(BaseModel response) {
-                dismissLoading();
+                dismissDialog();
 
                 AccountModel model = (AccountModel) response;
                 PersonInfoActivity.this.account = model.getData();
@@ -392,21 +400,21 @@ public class PersonInfoActivity extends DLActivity implements StepperView.OnNumb
 
             @Override
             public void onRequestFailed(BaseModel error) {
-                dismissLoading();
+                dismissDialog();
                 showDialog(PersonInfoActivity.this, error.getErrmsg());
             }
         });
     }
 
     private void requestUpdateChildBirthday(long id, String date) {
-        showLoading();
+        showLoadingDialog(this);
         List<NameValuePair> params = new ArrayList<>();
         params.add(new BasicNameValuePair("cid", String.valueOf(id)));
         params.add(new BasicNameValuePair("birthday", date));
         HttpService.post(Constants.domain() + "/user/child/birthday", params, AccountModel.class, new RequestHandler() {
             @Override
             public void onRequestFinish(BaseModel response) {
-                dismissLoading();
+                dismissDialog();
 
                 AccountModel model = (AccountModel) response;
                 PersonInfoActivity.this.account = model.getData();
@@ -416,14 +424,14 @@ public class PersonInfoActivity extends DLActivity implements StepperView.OnNumb
 
             @Override
             public void onRequestFailed(BaseModel error) {
-                dismissLoading();
+                dismissDialog();
                 showDialog(PersonInfoActivity.this, error.getErrmsg());
             }
         });
     }
 
     private void requestAddChild() {
-        showLoading();
+        showLoadingDialog(this);
 
         Child child = new Child();
         child.setName("毛毛");
@@ -437,7 +445,7 @@ public class PersonInfoActivity extends DLActivity implements StepperView.OnNumb
         HttpService.post(Constants.domain() + "/user/child", params, AccountModel.class, new RequestHandler() {
             @Override
             public void onRequestFinish(BaseModel response) {
-                dismissLoading();
+                dismissDialog();
 
                 AccountModel model = (AccountModel) response;
                 PersonInfoActivity.this.account = model.getData();
@@ -447,14 +455,14 @@ public class PersonInfoActivity extends DLActivity implements StepperView.OnNumb
 
             @Override
             public void onRequestFailed(BaseModel error) {
-                dismissLoading();
+                dismissDialog();
                 showDialog(PersonInfoActivity.this, error.getErrmsg());
             }
         });
     }
 
     private void requestDelChild() {
-        showLoading();
+        showLoadingDialog(this);
 
         Child child = account.getChildren().get(account.getChildren().size() - 1);
 
@@ -463,7 +471,7 @@ public class PersonInfoActivity extends DLActivity implements StepperView.OnNumb
         HttpService.post(Constants.domain() + "/user/child/delete", params, AccountModel.class, new RequestHandler() {
             @Override
             public void onRequestFinish(BaseModel response) {
-                dismissLoading();
+                dismissDialog();
 
                 AccountModel model = (AccountModel) response;
                 PersonInfoActivity.this.account = model.getData();
@@ -473,7 +481,7 @@ public class PersonInfoActivity extends DLActivity implements StepperView.OnNumb
 
             @Override
             public void onRequestFailed(BaseModel error) {
-                dismissLoading();
+                dismissDialog();
                 showDialog(PersonInfoActivity.this, error.getErrmsg());
             }
         });

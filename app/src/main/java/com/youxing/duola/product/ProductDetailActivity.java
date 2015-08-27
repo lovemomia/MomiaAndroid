@@ -67,7 +67,7 @@ public class ProductDetailActivity extends DLActivity implements View.OnClickLis
     }
 
     private void requestData() {
-        showLoading();
+        showLoadingDialog(this);
 
         String url = Constants.domain() + "/product";
 
@@ -89,7 +89,7 @@ public class ProductDetailActivity extends DLActivity implements View.OnClickLis
 
     @Override
     public void onRequestFinish(BaseModel response) {
-        dismissLoading();
+        dismissDialog();
 
         product = ((ProductModel)response).getData();
         adapter.notifyDataSetChanged();
@@ -97,7 +97,7 @@ public class ProductDetailActivity extends DLActivity implements View.OnClickLis
 
     @Override
     public void onRequestFailed(BaseModel error) {
-        dismissLoading();
+        dismissDialog();
         showDialog(this, "对不起", error.getErrmsg(), "确定");
     }
 

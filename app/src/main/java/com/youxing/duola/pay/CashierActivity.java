@@ -162,7 +162,7 @@ public class CashierActivity extends DLActivity implements View.OnClickListener,
     }
 
     private void requestRefreshPrice(long couponId) {
-        showLoading();
+        showLoadingDialog(this);
 
         List<NameValuePair> params = new ArrayList<>();
         params.add(new BasicNameValuePair("oid", String.valueOf(order.getData().getId())));
@@ -170,14 +170,14 @@ public class CashierActivity extends DLActivity implements View.OnClickListener,
         HttpService.get(Constants.domain() + "/coupon", params, CacheType.DISABLE, CouponPriceModel.class, new RequestHandler() {
             @Override
             public void onRequestFinish(BaseModel response) {
-                dismissLoading();
+                dismissDialog();
                 couponPrice = (CouponPriceModel)response;
                 adapter.notifyDataSetChanged();
             }
 
             @Override
             public void onRequestFailed(BaseModel error) {
-                dismissLoading();
+                dismissDialog();
                 showDialog(CashierActivity.this, error.getErrmsg());
             }
         });

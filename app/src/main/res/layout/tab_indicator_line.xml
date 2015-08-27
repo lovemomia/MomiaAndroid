@@ -7,6 +7,7 @@
     <View
         android:layout_width="0.5dp"
         android:layout_height="23dp"
-        android:background="@color/bg_image" />
+        android:background="@color/bg_image"
+        android:visibility="gone"/>
 
 </LinearLayout>

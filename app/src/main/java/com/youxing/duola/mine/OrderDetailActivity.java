@@ -63,7 +63,7 @@ public class OrderDetailActivity extends DLActivity implements AdapterView.OnIte
     }
 
     private void requestData() {
-        showLoading();
+        showLoadingDialog(this);
 
         List<NameValuePair> params = new ArrayList<>();
         params.add(new BasicNameValuePair("oid", oid));
@@ -71,14 +71,14 @@ public class OrderDetailActivity extends DLActivity implements AdapterView.OnIte
         HttpService.get(Constants.domain() + "/user/order/detail", params, CacheType.DISABLE, OrderDetailModel.class, new RequestHandler() {
             @Override
             public void onRequestFinish(BaseModel response) {
-                dismissLoading();
+                dismissDialog();
                 model = (OrderDetailModel) response;
                 adapter.notifyDataSetChanged();
             }
 
             @Override
             public void onRequestFailed(BaseModel error) {
-                dismissLoading();
+                dismissDialog();
                 showDialog(OrderDetailActivity.this, error.getErrmsg());
             }
         });

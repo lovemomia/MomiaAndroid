@@ -78,13 +78,23 @@ public class MineFragment extends DLFragment implements AdapterView.OnItemClickL
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         GroupStyleAdapter.IndexPath indexPath = adapter.getIndexForPosition(position);
-        if (indexPath.section == 0) {
+        int section = indexPath.section;
+        int row = indexPath.row;
+
+        if (section == 0) {
             startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("duola://personinfo")));
-        } else if (indexPath.section == 1) {
-            if (indexPath.row == 0) {
+        } else if (section == 1) {
+            if (row == 0) {
                 startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("duola://myorderlist")));
             } else {
                 startActivity("duola://couponlist");
+            }
+        } else if (section == 3) {
+            if (row == 0) {
+                // 我的收藏
+            } else {
+                // 出行人
+                startActivity("duola://orderperson");
             }
         }
     }

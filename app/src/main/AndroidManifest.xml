@@ -253,6 +253,38 @@
             </intent-filter>
         </activity>
 
+        <activity
+            android:name=".mine.OrderPersonActivity"
+            android:label="出行人"
+            android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:host="orderperson"
+                    android:scheme="duola" />
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name=".mine.OrderUpdatePersonActivity"
+            android:label="编辑出行人"
+            android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:host="orderupdateperson"
+                    android:scheme="duola" />
+            </intent-filter>
+        </activity>
+
     </application>
 
 </manifest>
