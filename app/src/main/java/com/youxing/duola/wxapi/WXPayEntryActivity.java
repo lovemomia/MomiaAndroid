@@ -4,9 +4,7 @@ package com.youxing.duola.wxapi;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 
 import com.tencent.mm.sdk.constants.ConstantsAPI;
 import com.tencent.mm.sdk.modelbase.BaseReq;
@@ -59,7 +57,7 @@ public class WXPayEntryActivity extends Activity implements IWXAPIEventHandler{
 				builder.setMessage("微信支付失败：" + resp.errStr + ";code=" + String.valueOf(resp.errCode));
 				builder.show();
 			}
-
 		}
 	}
+
 }

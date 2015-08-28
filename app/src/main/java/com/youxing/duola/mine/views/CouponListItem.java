@@ -48,5 +48,10 @@ public class CouponListItem extends LinearLayout {
         titleTv.setText(coupon.getTitle());
         descTv.setText(coupon.getDesc());
         dateTv.setText(coupon.getStartTime() + "至" + coupon.getEndTime() + "有效");
+        if (coupon.getStatus() == 1) {
+            tagIv.setImageResource(R.drawable.ic_coupon_tag_green);
+        } else {
+            tagIv.setImageResource(R.drawable.ic_coupon_tag_gray);
+        }
     }
 }

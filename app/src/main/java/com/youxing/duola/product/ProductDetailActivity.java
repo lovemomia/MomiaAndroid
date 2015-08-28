@@ -1,15 +1,26 @@
 package com.youxing.duola.product;
 
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.tencent.mm.sdk.modelmsg.SendMessageToWX;
+import com.tencent.mm.sdk.modelmsg.WXMediaMessage;
+import com.tencent.mm.sdk.modelmsg.WXWebpageObject;
+import com.tencent.mm.sdk.openapi.IWXAPI;
+import com.tencent.mm.sdk.openapi.WXAPIFactory;
 import com.youxing.common.adapter.GroupStyleAdapter;
 import com.youxing.common.app.Constants;
 import com.youxing.common.model.BaseModel;
@@ -26,10 +37,18 @@ import com.youxing.duola.product.views.ProductDetailHeaderView;
 import com.youxing.duola.product.views.ProductDetailInfoView;
 import com.youxing.duola.product.views.ProductDetailPartersView;
 import com.youxing.duola.product.views.ProductDetailTagsView;
+import com.youxing.duola.views.ShareDialog;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -119,7 +138,11 @@ public class ProductDetailActivity extends DLActivity implements View.OnClickLis
     @Override
     public void onClick(View v) {
         if (v.getId() == R.id.share) {
-
+            if (product != null) {
+                ShareDialog shareDialog = new ShareDialog(this, product.getUrl(),
+                        product.getTitle(), product.getAbstracts(), product.getThumb());
+                shareDialog.show();
+            }
 
         } else if (v.getId() == R.id.buy) {
             startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("duola://fillorder?id=" + id)));
@@ -144,7 +167,7 @@ public class ProductDetailActivity extends DLActivity implements View.OnClickLis
         dismissDialog();
 
         product = ((ProductModel)response).getData();
-        if (product.isSoldOut() || product.isOpened()) {
+        if (product.isSoldOut() || !product.isOpened()) {
             if (product.isSoldOut()) {
                 buyBtn.setText("报名人数已满");
             } else {

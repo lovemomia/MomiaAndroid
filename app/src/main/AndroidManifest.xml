@@ -382,6 +382,22 @@
             </intent-filter>
         </activity>
 
+        <activity
+            android:name=".order.ContactActivity"
+            android:label="联系人信息"
+            android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:host="contact"
+                    android:scheme="duola" />
+            </intent-filter>
+        </activity>
+
 
 
 

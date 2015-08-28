@@ -48,6 +48,7 @@ public class FillOrderActivity extends DLActivity implements View.OnClickListene
         AdapterView.OnItemClickListener {
 
     private static final int REQUEST_CODE_SELECT_PERSON = 1;
+    private static final int REQUEST_CODE_CONTACT = 2;
 
     private ListView listView;
     private Adapter adapter;
@@ -222,7 +223,9 @@ public class FillOrderActivity extends DLActivity implements View.OnClickListene
                 }
 
             } else {
-
+                startActivityForResult("duola://contact?name="
+                        + model.getData().getContacts().getName()
+                        + "&phone=" + model.getData().getContacts().getMobile(), REQUEST_CODE_CONTACT);
             }
         }
     }
@@ -230,15 +233,29 @@ public class FillOrderActivity extends DLActivity implements View.OnClickListene
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == REQUEST_CODE_SELECT_PERSON && resultCode == RESULT_OK) {
-            String selectPersons = data.getStringExtra("selectPersons");
-            if (TextUtils.isEmpty(selectPersons)) {
-                return;
+        if (resultCode == RESULT_OK) {
+            if (requestCode == REQUEST_CODE_SELECT_PERSON) {
+                String selectPersons = data.getStringExtra("selectPersons");
+                if (TextUtils.isEmpty(selectPersons)) {
+                    return;
+                }
+                List<Long> idList = (List<Long>)JSON.parse(selectPersons);
+                submitOrder.setParticipants(idList);
+                isSelectPerson = true;
+                adapter.notifyDataSetChanged();
+
+            } else if (requestCode == REQUEST_CODE_CONTACT) {
+                String name = data.getStringExtra("name");
+                if (!TextUtils.isEmpty(name)) {
+                    submitOrder.setContacts(name);
+                    model.getData().getContacts().setName(name);
+                }
+                String phone = data.getStringExtra("phone");
+                if (!TextUtils.isEmpty(phone)) {
+                    submitOrder.setMobile(phone);
+                    model.getData().getContacts().setMobile(phone);
+                }
             }
-            List<Long> idList = (List<Long>)JSON.parse(selectPersons);
-            submitOrder.setParticipants(idList);
-            isSelectPerson = true;
-            adapter.notifyDataSetChanged();
         }
     }
 

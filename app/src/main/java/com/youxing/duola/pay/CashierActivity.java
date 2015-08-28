@@ -207,7 +207,7 @@ public class CashierActivity extends DLActivity implements View.OnClickListener,
         showLoadingDialog(CashierActivity.this, "正在准备支付，请稍候...", null);
 
         // 微信支付
-        final IWXAPI api = WXAPIFactory.createWXAPI(CashierActivity.this, null);
+        final IWXAPI api = WXAPIFactory.createWXAPI(CashierActivity.this, Constants.WECHAT_APP_ID);
         if (!api.isWXAppInstalled() || !api.isWXAppSupportAPI()) {
             dismissDialog();
             showDialog(CashierActivity.this, "使用微信支付功能需要您安装最新的微信客户端");

@@ -14,6 +14,7 @@ import com.youxing.duola.R;
 import com.youxing.duola.RootTabActivity;
 import com.youxing.duola.app.DLActivity;
 import com.youxing.duola.model.PayCheckModel;
+import com.youxing.duola.views.ShareDialog;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
@@ -141,8 +142,12 @@ public class PayResultActivity extends DLActivity implements View.OnClickListene
     public void onClick(View v) {
         if (v.getId() == R.id.pay_result_left_btn) {
             if (paySuccess) {
-                // TODO 分享
-
+                // 分享
+                if (model != null) {
+                    ShareDialog shareDialog = new ShareDialog(this, model.getData().getUrl(),
+                            model.getData().getTitle(), model.getData().getAbstracts(), model.getData().getThumb());
+                    shareDialog.show();
+                }
 
             } else {
                 startActivity("tel://02162578700");
