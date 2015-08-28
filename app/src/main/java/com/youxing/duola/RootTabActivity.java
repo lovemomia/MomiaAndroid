@@ -1,6 +1,5 @@
 package com.youxing.duola;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTabHost;
 import android.view.View;

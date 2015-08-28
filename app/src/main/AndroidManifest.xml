@@ -366,6 +366,23 @@
             </intent-filter>
         </activity>
 
+        <activity
+            android:name=".product.PlayFellowActivity"
+            android:label="玩伴信息"
+            android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:host="productplayfellow"
+                    android:scheme="duola" />
+            </intent-filter>
+        </activity>
+
+
 
 
         <!-- 个推SDK配置开始 -->

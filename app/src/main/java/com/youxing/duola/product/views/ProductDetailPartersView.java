@@ -33,10 +33,10 @@ public class ProductDetailPartersView extends LinearLayout {
         super.onFinishInflate();
     }
 
-    public void setData(Product.Customers customers) {
+    public void setData(final Product product) {
         int padding = UnitTools.dip2px(getContext(), 10);
         this.setPadding(padding, UnitTools.dip2px(getContext(), 15), padding, UnitTools.dip2px(getContext(), 15));
-        List<String> avatars = customers.getAvatars();
+        List<String> avatars = product.getCustomers().getAvatars();
         for (String avatar : avatars) {
             CircularImage image = new CircularImage(getContext());
             LayoutParams lp = new LayoutParams(UnitTools.dip2px(getContext(), 40), UnitTools.dip2px(getContext(), 40));

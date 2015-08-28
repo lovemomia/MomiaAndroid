@@ -63,13 +63,13 @@ public abstract class GroupStyleAdapter extends BasicAdapter {
         return index;
     }
 
-//    @Override
-//    public boolean isEnabled(int position) {
-//        if (isSectionAtPosition(position)) {
-//            return false;
-//        }
-//        return super.isEnabled(position);
-//    }
+    @Override
+    public boolean isEnabled(int position) {
+        if (isSectionAtPosition(position)) {
+            return false;
+        }
+        return super.isEnabled(position);
+    }
 
     @Override
     public boolean areAllItemsEnabled() {
@@ -81,8 +81,10 @@ public abstract class GroupStyleAdapter extends BasicAdapter {
         IndexPath indexPath = getIndexForPosition(position);
         if (indexPath.row == -1) {
             View view = getViewForSection(convertView, parent, indexPath.section);
-            view.setClickable(true);
-            view.setFocusable(true);
+            if (!isEnabled(position)) {
+                view.setClickable(true);
+                view.setFocusable(true);
+            }
             return view;
         } else {
             View view = getViewForRow(convertView, parent, indexPath.section, indexPath.row);

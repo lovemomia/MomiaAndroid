@@ -5,6 +5,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -37,7 +38,8 @@ import java.util.List;
  *
  * Created by Jun Deng on 15/6/11.
  */
-public class ProductDetailActivity extends DLActivity implements View.OnClickListener, RequestHandler {
+public class ProductDetailActivity extends DLActivity implements View.OnClickListener,
+        RequestHandler, AdapterView.OnItemClickListener {
 
     private String id;
     private Product product;
@@ -98,6 +100,7 @@ public class ProductDetailActivity extends DLActivity implements View.OnClickLis
         ListView listView = (ListView) findViewById(R.id.listView);
         adapter = new Adapter();
         listView.setAdapter(adapter);
+        listView.setOnItemClickListener(this);
 
         requestData();
     }
@@ -120,6 +123,19 @@ public class ProductDetailActivity extends DLActivity implements View.OnClickLis
 
         } else if (v.getId() == R.id.buy) {
             startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("duola://fillorder?id=" + id)));
+        }
+    }
+
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        if (product == null) {
+            return;
+        }
+        GroupStyleAdapter.IndexPath indexPath = adapter.getIndexForPosition(position);
+        if (indexPath.section == 2 && indexPath.row == 0 && product.getCustomers().getAvatars() != null
+                && product.getCustomers().getAvatars().size() > 0) {
+            startActivity(new Intent(Intent.ACTION_VIEW,
+                    Uri.parse("duola://productplayfellow?id=" + product.getId())));
         }
     }
 
@@ -226,7 +242,7 @@ public class ProductDetailActivity extends DLActivity implements View.OnClickLis
 
                         } else {
                             view = ProductDetailPartersView.create(ProductDetailActivity.this);
-                            ((ProductDetailPartersView) view).setData(product.getCustomers());
+                            ((ProductDetailPartersView) view).setData(product);
                         }
 
                     } else {
