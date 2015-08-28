@@ -1,15 +1,30 @@
 package com.youxing.duola.push;
 
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.app.NotificationCompat;
+import android.text.TextUtils;
 import android.util.Log;
 
 import com.igexin.sdk.PushConsts;
 import com.igexin.sdk.PushManager;
+import com.youxing.duola.R;
+import com.youxing.duola.RootTabActivity;
 
-public class PushDemoReceiver extends BroadcastReceiver {
+import org.json.JSONObject;
+
+import java.util.HashMap;
+import java.util.Map;
+
+public class PushReceiver extends BroadcastReceiver {
 
     /**
      * 应用未启动, 个推 service已经被唤醒,保存在该时间段内离线消息(此时 GetuiSdkDemoActivity.tLogView == null)
@@ -42,9 +57,7 @@ public class PushDemoReceiver extends BroadcastReceiver {
                     payloadData.append(data);
                     payloadData.append("\n");
 
-//                    if (GetuiSdkDemoActivity.tLogView != null) {
-//                        GetuiSdkDemoActivity.tLogView.append(data + "\n");
-//                    }
+                    showNotification(context, data);
                 }
                 break;
 
@@ -73,5 +86,42 @@ public class PushDemoReceiver extends BroadcastReceiver {
             default:
                 break;
         }
+    }
+
+    private void showNotification(Context context, String message) {
+        JSONObject json;
+        try {
+            json = new JSONObject(message);
+        } catch (Exception e) {
+            return;
+        }
+
+        String action = json.optString("action");
+        if (TextUtils.isEmpty(action)) {
+            action = "duola://home";
+        }
+
+        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(action));
+        if (action.startsWith("duola://home") || action.startsWith("duola://mine")) {
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        }
+
+        PendingIntent pendingIntent = PendingIntent.getActivity(context,
+                message.hashCode(), intent, 0);
+
+        NotificationManager manager = (NotificationManager) context
+                .getSystemService(Context.NOTIFICATION_SERVICE);
+        Bitmap largeIcon = BitmapFactory.decodeResource(context.getResources(), R.mipmap.ic_launcher);
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(
+                context)
+                .setLargeIcon(largeIcon)
+                .setSmallIcon(R.drawable.push)
+                .setContentTitle(json.optString("title"))
+                .setDefaults(
+                        Notification.DEFAULT_LIGHTS
+                                | Notification.DEFAULT_SOUND)
+                .setAutoCancel(true).setContentIntent(pendingIntent)
+                .setContentText(json.optString("content"));
+        manager.notify(message.hashCode(), builder.build());
     }
 }

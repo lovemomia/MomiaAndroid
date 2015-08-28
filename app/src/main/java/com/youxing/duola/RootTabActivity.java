@@ -1,5 +1,6 @@
 package com.youxing.duola;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTabHost;
 import android.view.View;
@@ -41,6 +42,17 @@ public class RootTabActivity extends DLActivity {
 
         // 个推
         PushManager.getInstance().initialize(this.getApplicationContext());
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (getIntent().getData() != null && "mine".equals(getIntent().getData().getHost())) {
+            tabHost.setCurrentTab(1);
+
+        } else {
+            tabHost.setCurrentTab(0);
+        }
     }
 
     private View createTabItem(String name, int iconRes) {
