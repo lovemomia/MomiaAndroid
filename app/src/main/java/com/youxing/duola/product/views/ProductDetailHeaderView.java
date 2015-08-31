@@ -1,8 +1,13 @@
 package com.youxing.duola.product.views;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.text.Html;
+import android.text.SpannableString;
+import android.text.Spanned;
+import android.text.style.ForegroundColorSpan;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -29,6 +34,7 @@ public class ProductDetailHeaderView extends RelativeLayout implements ViewPager
     private TextView titleTv;
     private TextView numberTv;
     private TextView priceTv;
+    private TextView pageNumTv;
 
     private int pageCount;
 
@@ -53,6 +59,7 @@ public class ProductDetailHeaderView extends RelativeLayout implements ViewPager
         titleTv = (TextView) findViewById(R.id.title);
         numberTv = (TextView) findViewById(R.id.number);
         priceTv = (TextView) findViewById(R.id.price);
+        pageNumTv = (TextView) findViewById(R.id.page_num);
     }
 
     public void setData(Product product) {
@@ -81,11 +88,20 @@ public class ProductDetailHeaderView extends RelativeLayout implements ViewPager
         pager.setOnPageChangeListener(this);
 
         pager.setCurrentItem(pageCount * 100);
+
     }
 
     @Override
     public void onPageSelected(int position) {
-        //TODO
+        int current = position % pageCount + 1;
+        String text  = current + "/" + pageCount;
+
+        SpannableString ss = new SpannableString(text);
+        ss.setSpan(new ForegroundColorSpan(Color.WHITE), 0, text.indexOf("/"), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        ss.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.bg_image)),
+                text.indexOf("/"), text.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+        pageNumTv.setText(ss);
     }
 
     @Override

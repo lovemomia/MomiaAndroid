@@ -32,7 +32,6 @@ public class DLActivity extends YXActivity {
 
     protected TitleBar titleBar;
 
-    private View loadingView;
     private Dialog managerDialog;
 
     @Override
@@ -170,7 +169,7 @@ public class DLActivity extends YXActivity {
     }
 
     public void dismissDialog() {
-        if (managerDialog != null) {
+        if (managerDialog != null && managerDialog.isShowing()) {
             managerDialog.dismiss();
         }
     }

@@ -62,7 +62,15 @@
     </LinearLayout>
 
 
-
-
+    <TextView
+        android:id="@+id/page_num"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_page_tag"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
+        android:gravity="center"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="10dp"/>
 
 </com.youxing.duola.product.views.ProductDetailHeaderView>

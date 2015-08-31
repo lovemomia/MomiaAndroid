@@ -7,19 +7,19 @@ import java.util.List;
 /**
  * Created by Jun Deng on 15/8/26.
  */
-public class MyFavListModel extends BaseModel {
+public class ProductListModel extends BaseModel {
 
-    private MyFavLisData data;
+    private ProductListData data;
 
-    public MyFavLisData getData() {
+    public ProductListData getData() {
         return data;
     }
 
-    public void setData(MyFavLisData data) {
+    public void setData(ProductListData data) {
         this.data = data;
     }
 
-    public static class MyFavLisData {
+    public static class ProductListData {
         private long totalCount;
         private int nextIndex;
         private List<Product> list;

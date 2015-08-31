@@ -1,6 +1,7 @@
-package com.youxing.duola.mine;
+package com.youxing.duola.home;
 
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -13,7 +14,7 @@ import com.youxing.common.services.http.CacheType;
 import com.youxing.common.services.http.HttpService;
 import com.youxing.common.services.http.RequestHandler;
 import com.youxing.duola.R;
-import com.youxing.duola.app.DLActivity;
+import com.youxing.duola.app.DLFragment;
 import com.youxing.duola.model.ProductListModel;
 import com.youxing.duola.model.Product;
 import com.youxing.duola.views.EmptyView;
@@ -26,10 +27,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by Jun Deng on 15/8/27.
+ * Created by Jun Deng on 15/8/28.
  */
-public class MyFavActivity extends DLActivity implements AdapterView.OnItemClickListener {
+public class WeekendProductListFragment extends DLFragment implements AdapterView.OnItemClickListener {
 
+    private View rootView;
+    private boolean rebuild;
     private ListView listView;
     private Adapter adapter;
 
@@ -39,20 +42,30 @@ public class MyFavActivity extends DLActivity implements AdapterView.OnItemClick
     private boolean isEnd;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_list);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        if (rootView == null) {
+            rootView = inflater.inflate(R.layout.activity_list, null);
+            listView = (ListView)rootView.findViewById(R.id.listView);
+            adapter = new Adapter();
+            listView.setAdapter(adapter);
+            listView.setOnItemClickListener(this);
+            rebuild = true;
+        } else {
+            rebuild = false;
+        }
 
-        listView = (ListView) findViewById(R.id.listView);
-        adapter = new Adapter();
-        listView.setAdapter(adapter);
-        listView.setOnItemClickListener(this);
+        ViewGroup parent = (ViewGroup) rootView.getParent();
+        if (parent != null) {
+            parent.removeView(rootView);
+        }
+
+        return rootView;
     }
 
     private void requestData() {
         List<NameValuePair> params = new ArrayList<>();
         params.add(new BasicNameValuePair("start", String.valueOf(nextIndex)));
-        HttpService.get(Constants.domain() + "/user/favorite", params, CacheType.DISABLE, ProductListModel.class, new RequestHandler() {
+        HttpService.get(Constants.domain() + "/product/weekend", params, CacheType.DISABLE, ProductListModel.class, new RequestHandler() {
             @Override
             public void onRequestFinish(BaseModel response) {
                 ProductListModel model = (ProductListModel) response;
@@ -69,7 +82,7 @@ public class MyFavActivity extends DLActivity implements AdapterView.OnItemClick
 
             @Override
             public void onRequestFailed(BaseModel error) {
-                showDialog(MyFavActivity.this, error.getErrmsg());
+                getDLActivity().showDialog(getDLActivity(), error.getErrmsg());
             }
         });
     }
@@ -119,8 +132,8 @@ public class MyFavActivity extends DLActivity implements AdapterView.OnItemClick
             Object item = getItem(position);
             View view = null;
             if (item == EMPTY) {
-                String msg = "您还没有收藏活动哦，赶快去浏览一下吧~";
-                EmptyView emptyView = EmptyView.create(MyFavActivity.this);
+                String msg = "还没有活动，敬请期待哦~";
+                EmptyView emptyView = EmptyView.create(getDLActivity());
                 emptyView.setMessage(msg);
                 view = emptyView;
 
@@ -130,7 +143,7 @@ public class MyFavActivity extends DLActivity implements AdapterView.OnItemClick
 
             } else {
                 Product product = (Product) item;
-                ProductListItem couponListItem = ProductListItem.create(MyFavActivity.this);
+                ProductListItem couponListItem = ProductListItem.create(getDLActivity());
                 couponListItem.setData(product);
                 view = couponListItem;
             }
@@ -138,5 +151,4 @@ public class MyFavActivity extends DLActivity implements AdapterView.OnItemClick
         }
 
     }
-
 }

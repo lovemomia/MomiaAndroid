@@ -19,7 +19,7 @@ public class MyOrderListActivity extends DLActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_my_order);
+        setContentView(R.layout.activity_top_tab);
 
         this.viewPagerIndicatorView = (ViewPagerIndicatorView) findViewById(R.id.viewpager_indicator_view);
         List<String> titleList = new ArrayList<>();

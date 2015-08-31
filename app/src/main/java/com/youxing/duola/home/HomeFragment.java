@@ -113,6 +113,13 @@ public class HomeFragment extends DLFragment implements AdapterView.OnItemClickL
                 startActivity("duola://citylist");
             }
         });
+        titleBar.getRightBtn().setIcon(R.drawable.ic_action_date);
+        titleBar.getRightBtn().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity("duola://productcalendar");
+            }
+        });
     }
 
     private void requestData() {
@@ -147,8 +154,12 @@ public class HomeFragment extends DLFragment implements AdapterView.OnItemClickL
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        int index = position;
         if (hasBannel) {
-            Product product = productList.get(position - 1);
+            index -= 1;
+        }
+        if (index >= 0 && index < productList.size()) {
+            Product product = productList.get(index);
             startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("duola://productdetail?id=" + product.getId())));
         }
     }

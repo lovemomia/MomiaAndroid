@@ -43,17 +43,6 @@ public class RootTabActivity extends DLActivity {
         PushManager.getInstance().initialize(this.getApplicationContext());
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        if (getIntent().getData() != null && "mine".equals(getIntent().getData().getHost())) {
-            tabHost.setCurrentTab(1);
-
-        } else {
-            tabHost.setCurrentTab(0);
-        }
-    }
-
     private View createTabItem(String name, int iconRes) {
         View root = getLayoutInflater().inflate(R.layout.layout_tab_item, null);
         ImageView iconView = (ImageView) root.findViewById(R.id.tab_icon);

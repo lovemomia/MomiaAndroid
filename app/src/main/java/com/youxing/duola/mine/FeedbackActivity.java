@@ -8,12 +8,10 @@ import android.widget.Toast;
 
 import com.youxing.common.app.Constants;
 import com.youxing.common.model.BaseModel;
-import com.youxing.common.services.http.CacheType;
 import com.youxing.common.services.http.HttpService;
 import com.youxing.common.services.http.RequestHandler;
 import com.youxing.duola.R;
 import com.youxing.duola.app.DLActivity;
-import com.youxing.duola.model.MyFavListModel;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;

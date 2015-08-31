@@ -1,10 +1,13 @@
 package com.youxing.common.app;
 
 import android.app.Application;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.AssetManager;
 import android.content.res.XmlResourceParser;
 import android.net.Uri;
+import android.os.Bundle;
 import android.os.SystemClock;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -17,6 +20,34 @@ import java.util.HashMap;
  * Created by Jun Deng on 15/6/3.
  */
 public class YXActivity extends FragmentActivity {
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        YXApplication.instance().activityOnCreate(this);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        YXApplication.instance().activityOnResume(this);
+    }
+
+    @Override
+    protected void onPause() {
+        YXApplication.instance().activityOnPause(this);
+
+        super.onPause();
+    }
+
+    @Override
+    protected void onDestroy() {
+        YXApplication.instance().activityOnDestory(this);
+
+        super.onDestroy();
+    }
 
     // ********* URL Mapping ********** //
 
@@ -125,6 +156,33 @@ public class YXActivity extends FragmentActivity {
         }
         manifestUrlMapping.put(myClassName, manifestUrl);
         return manifestUrl;
+    }
+
+    // *************** UI操作 (空方法定义，子类实现) ***************
+
+    public void showLoadingDialog(Context context) {
+    }
+
+    public void showLoadingDialog(Context context, String msg,
+                                  DialogInterface.OnCancelListener cancelListener) {
+    }
+
+    public void showDialog(Context context, String message) {
+    }
+
+    public void showDialog(Context context, String message, DialogInterface.OnClickListener okListener) {
+    }
+
+    public void showDialog(Context context, String title, String message, String ok) {
+    }
+
+    public void showDialog(Context context, String title,
+                           String message, String ok,
+                           DialogInterface.OnClickListener okListener, String cancel,
+                           DialogInterface.OnClickListener cancelListener) {
+    }
+
+    public void dismissDialog() {
     }
 
 }

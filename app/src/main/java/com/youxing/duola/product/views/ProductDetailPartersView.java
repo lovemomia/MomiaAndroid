@@ -4,6 +4,7 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.widget.LinearLayout;
 
+import com.youxing.common.app.Enviroment;
 import com.youxing.common.utils.UnitTools;
 import com.youxing.common.views.CircularImage;
 import com.youxing.duola.R;
@@ -35,12 +36,20 @@ public class ProductDetailPartersView extends LinearLayout {
 
     public void setData(final Product product) {
         int padding = UnitTools.dip2px(getContext(), 10);
-        this.setPadding(padding, UnitTools.dip2px(getContext(), 15), padding, UnitTools.dip2px(getContext(), 15));
+        this.setPadding(padding, padding, padding, padding);
+
+        int size = UnitTools.dip2px(getContext(), 40);
+        int sw = Enviroment.screenWidth(getContext());
+
         List<String> avatars = product.getCustomers().getAvatars();
-        for (String avatar : avatars) {
+        for (int i = 0; i < avatars.size(); i++) {
+            if (sw - padding - (i + 1) * (size + padding) < 0) {
+                break;
+            }
+            String avatar = avatars.get(i);
             CircularImage image = new CircularImage(getContext());
-            LayoutParams lp = new LayoutParams(UnitTools.dip2px(getContext(), 40), UnitTools.dip2px(getContext(), 40));
-            lp.setMargins(0, 0, UnitTools.dip2px(getContext(), 15), 0);
+            LayoutParams lp = new LayoutParams(size, size);
+            lp.setMargins(0, 0, UnitTools.dip2px(getContext(), 10), 0);
             image.setLayoutParams(lp);
             image.setImageUrl(avatar);
             image.setDefaultImageResId(R.drawable.ic_avatar_default);

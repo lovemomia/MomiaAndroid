@@ -33,6 +33,7 @@ public class HttpService {
 
     private volatile static RequestQueue requestQueue;
 
+
     public static RequestQueue getQueue() {
         if (requestQueue == null) {
             synchronized (HttpService.class) {
@@ -68,7 +69,9 @@ public class HttpService {
                     handler.onRequestFinish(response);
 
                 } else {
-                    handler.onRequestFailed(response);
+                    if (!new ServerErrorHandler().handlerError(response.getErrno(), response.getErrmsg())) {
+                        handler.onRequestFailed(response);
+                    }
                 }
             }
         };
@@ -111,7 +114,9 @@ public class HttpService {
                     handler.onRequestFinish(response);
 
                 } else {
-                    handler.onRequestFailed(response);
+                    if (!new ServerErrorHandler().handlerError(response.getErrno(), response.getErrmsg())) {
+                        handler.onRequestFailed(response);
+                    }
                 }
             }
         };

@@ -7,7 +7,7 @@ package com.youxing.common.app;
  */
 public class Constants {
 
-    public static final boolean DEBUG = true;
+    public static final boolean DEBUG = false;
 
     public static final String REQUEST_FAILED_FOR_NET = "网络异常，请稍后再试";
 
