@@ -199,6 +199,21 @@
             </intent-filter>
         </activity>
         <activity
+            android:name=".login.ForgetPwdActivity"
+            android:label="忘记密码"
+            android:screenOrientation="portrait" >
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:host="forgetpwd"
+                    android:scheme="duola" />
+            </intent-filter>
+        </activity>
+        <activity
             android:name=".wxapi.WXPayEntryActivity"
             android:exported="true"
             android:launchMode="singleTop"
@@ -431,6 +446,19 @@
         </activity>
 
 
+        <!-- UMeng-->
+        <meta-data android:value="55e3e29b67e58e6acf001be8" android:name="UMENG_APPKEY"></meta-data>
+        <meta-data android:value="yingyongbao" android:name="UMENG_CHANNEL"/>
+
+        <service
+            android:name="com.umeng.update.net.DownloadingService"
+            android:process=":DownloadingService" >
+        </service>
+        <activity
+            android:name="com.umeng.update.UpdateDialogActivity"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" >
+        </activity>
+        <!-- UMeng end -->
 
         <!-- 个推SDK配置开始 -->
         <!-- 配置的第三方参数属性 -->

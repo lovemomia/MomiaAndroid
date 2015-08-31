@@ -43,7 +43,7 @@ public class ProductListItem extends LinearLayout {
         titleTv = (TextView) findViewById(R.id.title);
         dateTv = (TextView) findViewById(R.id.date);
         addressTv = (TextView) findViewById(R.id.address);
-        priceTv = (TextView) findViewById(R.id.address);
+        priceTv = (TextView) findViewById(R.id.price);
     }
 
     public void setData(OrderDetailModel.OrderDetailData data) {

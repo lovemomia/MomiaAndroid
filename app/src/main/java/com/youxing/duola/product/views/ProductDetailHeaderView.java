@@ -2,9 +2,7 @@ package com.youxing.duola.product.views;
 
 import android.content.Context;
 import android.graphics.Color;
-import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.text.Html;
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.style.ForegroundColorSpan;
@@ -17,11 +15,14 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.youxing.common.adapter.RecyclingPagerAdapter;
 import com.youxing.common.app.Enviroment;
 import com.youxing.common.views.YXNetworkImageView;
 import com.youxing.duola.R;
 import com.youxing.duola.model.Product;
 import com.youxing.duola.utils.PriceUtils;
+
+import java.util.List;
 
 /**
  * Created by Jun Deng on 15/6/16.
@@ -29,7 +30,6 @@ import com.youxing.duola.utils.PriceUtils;
 public class ProductDetailHeaderView extends RelativeLayout implements ViewPager.OnPageChangeListener {
 
     private ViewPager pager;
-    private YXNetworkImageView[] imageViews;
 
     private TextView titleTv;
     private TextView numberTv;
@@ -67,34 +67,31 @@ public class ProductDetailHeaderView extends RelativeLayout implements ViewPager
         if (product.getJoined() > 0) {
             numberTv.setText(product.getJoined() + "人已报名");
             numberTv.setVisibility(View.VISIBLE);
+
         } else {
             numberTv.setVisibility(View.GONE);
         }
         priceTv.setText(PriceUtils.formatPriceString(product.getPrice()));
 
         pageCount = product.getImgs().size();
-
-        imageViews = new YXNetworkImageView[pageCount];
-        for (int i = 0; i < pageCount; i++) {
-            String url = product.getImgs().get(i);
-            YXNetworkImageView imageView = new YXNetworkImageView(getContext());
-            imageView.setLayoutParams(new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT));
-            imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
-            imageView.setImageUrl(url);
-            imageViews[i] = imageView;
+        ImagePagerAdapter adapter = new ImagePagerAdapter(getContext(), product.getImgs());
+        if (pageCount > 1) {
+            adapter.setInfiniteLoop(true);
         }
-
-        pager.setAdapter(new Adapter());
+        pager.setAdapter(adapter);
         pager.setOnPageChangeListener(this);
+        pager.setCurrentItem(Integer.MAX_VALUE / 2 - Integer.MAX_VALUE / 2 % pageCount);
 
-        pager.setCurrentItem(pageCount * 100);
-
+        if (pageCount <= 1) {
+            pageNumTv.setVisibility(View.GONE);
+            return;
+        }
     }
 
     @Override
     public void onPageSelected(int position) {
         int current = position % pageCount + 1;
-        String text  = current + "/" + pageCount;
+        String text = current + "/" + pageCount;
 
         SpannableString ss = new SpannableString(text);
         ss.setSpan(new ForegroundColorSpan(Color.WHITE), 0, text.indexOf("/"), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
@@ -113,28 +110,72 @@ public class ProductDetailHeaderView extends RelativeLayout implements ViewPager
 
     }
 
-    class Adapter extends PagerAdapter {
+    public class ImagePagerAdapter extends RecyclingPagerAdapter {
+
+        private Context context;
+        private List<String> imgs;
+
+        private int           size;
+        private boolean       isInfiniteLoop;
+
+        public ImagePagerAdapter(Context context, List<String> imgs) {
+            this.context = context;
+            this.imgs = imgs;
+            this.size = pageCount;
+            isInfiniteLoop = false;
+        }
 
         @Override
         public int getCount() {
-            return pageCount > 1 ? Integer.MAX_VALUE : 1;
+            // Infinite loop
+            return isInfiniteLoop ? Integer.MAX_VALUE : pageCount;
+        }
+
+        /**
+         * get really position
+         *
+         * @param position
+         * @return
+         */
+        private int getPosition(int position) {
+            return isInfiniteLoop ? position % size : position;
         }
 
         @Override
-        public boolean isViewFromObject(View view, Object object) {
-            return view == object;
-        }
-
-        @Override
-        public void destroyItem(ViewGroup container, int position, Object object) {
-        }
-
-        @Override
-        public Object instantiateItem(ViewGroup container, int position) {
-            YXNetworkImageView view = imageViews[position % imageViews.length];
-            container.removeView(view);
-            container.addView(view, 0);
+        public View getView(int position, View view, ViewGroup container) {
+            ViewHolder holder;
+            if (view == null) {
+                holder = new ViewHolder();
+                YXNetworkImageView imageView = new YXNetworkImageView(getContext());
+                imageView.setLayoutParams(new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT));
+                imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
+                imageView.setDefaultImageResId(R.drawable.bg_default_image);
+                view = holder.imageView = imageView;
+                view.setTag(holder);
+            } else {
+                holder = (ViewHolder)view.getTag();
+            }
+            holder.imageView.setImageUrl(imgs.get(getPosition(position)));
             return view;
+        }
+
+        private class ViewHolder {
+            YXNetworkImageView imageView;
+        }
+
+        /**
+         * @return the isInfiniteLoop
+         */
+        public boolean isInfiniteLoop() {
+            return isInfiniteLoop;
+        }
+
+        /**
+         * @param isInfiniteLoop the isInfiniteLoop to set
+         */
+        public ImagePagerAdapter setInfiniteLoop(boolean isInfiniteLoop) {
+            this.isInfiniteLoop = isInfiniteLoop;
+            return this;
         }
     }
 

@@ -8,6 +8,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.igexin.sdk.PushManager;
+import com.umeng.analytics.MobclickAgent;
+import com.umeng.update.UmengUpdateAgent;
 import com.youxing.duola.app.DLActivity;
 import com.youxing.duola.home.HomeFragment;
 import com.youxing.duola.mine.MineFragment;
@@ -41,6 +43,10 @@ public class RootTabActivity extends DLActivity {
 
         // 个推
         PushManager.getInstance().initialize(this.getApplicationContext());
+
+        // Umeng
+        MobclickAgent.updateOnlineConfig(this);
+        UmengUpdateAgent.silentUpdate(this);
     }
 
     private View createTabItem(String name, int iconRes) {

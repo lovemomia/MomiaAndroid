@@ -27,6 +27,7 @@
             android:textSize="@dimen/text_medium"
             android:textColor="@color/text_deep_gray"
             android:hint="请输入手机号"
+            android:inputType="number"
             android:background="@null"/>
 
     </LinearLayout>
@@ -54,6 +55,7 @@
             android:textSize="@dimen/text_medium"
             android:textColor="@color/text_deep_gray"
             android:hint="请输入密码"
+            android:password="true"
             android:background="@null"/>
 
         <include layout="@layout/layout_divider"/>

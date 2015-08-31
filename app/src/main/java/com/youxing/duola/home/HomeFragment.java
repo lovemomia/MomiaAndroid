@@ -9,6 +9,7 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
@@ -20,6 +21,7 @@ import com.youxing.common.services.http.CacheType;
 import com.youxing.common.services.http.HttpService;
 import com.youxing.common.services.http.RequestHandler;
 import com.youxing.common.utils.CityManager;
+import com.youxing.common.utils.UnitTools;
 import com.youxing.duola.R;
 import com.youxing.duola.app.DLFragment;
 import com.youxing.duola.home.views.HomeHeaderView;
@@ -154,10 +156,7 @@ public class HomeFragment extends DLFragment implements AdapterView.OnItemClickL
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        int index = position;
-        if (hasBannel) {
-            index -= 1;
-        }
+        int index = position - 1;
         if (index >= 0 && index < productList.size()) {
             Product product = productList.get(index);
             startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("duola://productdetail?id=" + product.getId())));
@@ -208,29 +207,23 @@ public class HomeFragment extends DLFragment implements AdapterView.OnItemClickL
     class Adapter extends BasicAdapter {
 
         private Object BANNEL = new Object();
+        private Object SECTION = new Object();
 
         @Override
         public int getCount() {
             if (nextPage == -1) {
                 return 0;
             }
-
-            if (hasBannel) {
-                return productList.size() + 2;
-            }
-            return productList.size() + 1;
+            return productList.size() + 2;
         }
 
         @Override
         public Object getItem(int position) {
-            int pos = position;
-            if (hasBannel) {
-                pos -= 1;
-                if (position == 0) {
-                    return BANNEL;
-                }
+            if (position == 0) {
+                return hasBannel ? BANNEL : SECTION;
             }
 
+            int pos = position - 1;
             if (pos < productList.size()) {
                 return productList.get(pos);
             }
@@ -250,6 +243,10 @@ public class HomeFragment extends DLFragment implements AdapterView.OnItemClickL
                 HomeHeaderView header = HomeHeaderView.create(getActivity());
                 header.setData(bannerList);
                 view = header;
+
+            } else if (item == SECTION) {
+                view = new View(getActivity());
+                view.setLayoutParams(new AbsListView.LayoutParams(AbsListView.LayoutParams.MATCH_PARENT, 0));
 
             } else if (item == EMPTY) {
                 view = getEmptyView("- 更多活动尽请期待 -", parent, convertView);

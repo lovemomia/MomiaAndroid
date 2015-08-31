@@ -72,7 +72,10 @@ public class LoginActivity extends DLActivity implements View.OnClickListener {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK) {
-            startActivity(getIntent().getStringExtra("_destination"));
+            String destination = getIntent().getStringExtra("_destination");
+            if (!TextUtils.isEmpty(destination)) {
+                startActivity(destination);
+            }
             finish();
         }
     }

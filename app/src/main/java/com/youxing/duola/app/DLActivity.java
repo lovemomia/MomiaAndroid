@@ -19,6 +19,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ProgressBar;
 
+import com.umeng.analytics.MobclickAgent;
 import com.youxing.common.app.YXActivity;
 import com.youxing.duola.R;
 import com.youxing.duola.RootTabActivity;
@@ -39,6 +40,15 @@ public class DLActivity extends YXActivity {
         super.onCreate(savedInstanceState);
 
         requestWindowFeature(titleFeatureId());
+    }
+
+    public void onResume() {
+        super.onResume();
+        MobclickAgent.onResume(this);
+    }
+    public void onPause() {
+        super.onPause();
+        MobclickAgent.onPause(this);
     }
 
     protected int titleFeatureId() {

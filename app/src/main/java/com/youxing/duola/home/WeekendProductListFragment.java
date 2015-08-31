@@ -71,7 +71,7 @@ public class WeekendProductListFragment extends DLFragment implements AdapterVie
                 ProductListModel model = (ProductListModel) response;
                 productList.addAll(model.getData().getList());
                 nextIndex = model.getData().getNextIndex();
-                if (model.getData().getTotalCount() <= productList.size()) {
+                if (nextIndex <= 0 || model.getData().getTotalCount() <= productList.size()) {
                     isEnd = true;
                 }
                 if (productList.size() == 0) {

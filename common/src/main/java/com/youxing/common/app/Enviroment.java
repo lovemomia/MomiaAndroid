@@ -1,6 +1,8 @@
 package com.youxing.common.app;
 
 import android.content.Context;
+import android.content.pm.ActivityInfo;
+import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
@@ -118,8 +120,20 @@ public class Enviroment {
 	 *
 	 * @return
 	 */
+	private static String channel;
 	public static String channel() {
-		return "android";
+		if (channel == null) {
+			try {
+				ApplicationInfo info = YXApplication.instance().getPackageManager()
+						.getApplicationInfo(YXApplication.instance().getPackageName(),
+								PackageManager.GET_META_DATA);
+				channel = info.metaData.getString("UMENG_CHANNEL");
+
+			} catch (Exception e) {
+				channel = "unknown";
+			}
+		}
+		return channel;
 	}
 
 }
