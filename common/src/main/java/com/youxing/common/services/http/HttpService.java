@@ -191,11 +191,11 @@ public class HttpService {
             forms.add(new BasicNameValuePair("utoken", AccountService.instance().account().getToken()));
         }
 
-        forms.add(new BasicNameValuePair("channel", "android"));
+        forms.add(new BasicNameValuePair("channel", Enviroment.channel()));
         forms.add(new BasicNameValuePair("city", String.valueOf(CityManager.instance().getChoosedCity().getId())));
-        forms.add(new BasicNameValuePair("device", "nexus"));
-        forms.add(new BasicNameValuePair("net", "wifi"));
-        forms.add(new BasicNameValuePair("os", "4.3"));
+        forms.add(new BasicNameValuePair("device", Enviroment.deviceType()));
+        forms.add(new BasicNameValuePair("net", Enviroment.getNetworkType()));
+        forms.add(new BasicNameValuePair("os", Enviroment.osInfo()));
         forms.add(new BasicNameValuePair("terminal", "android"));
         forms.add(new BasicNameValuePair("v", Enviroment.versionName()));
         return forms;

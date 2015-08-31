@@ -107,6 +107,8 @@ public class MineFragment extends DLFragment implements AdapterView.OnItemClickL
             if (row == 0) {
                 // 意见反馈
                 startActivity("duola://feedback");
+            } else {
+                startActivity("duola://about");
             }
         }
     }
@@ -190,7 +192,7 @@ public class MineFragment extends DLFragment implements AdapterView.OnItemClickL
                         simpleListItem.setIcon(R.drawable.ic_mine_feedback);
 
                     } else {
-                        simpleListItem.setTitle("设置");
+                        simpleListItem.setTitle("关于我们");
                         simpleListItem.setIcon(R.drawable.ic_mine_setting);
                     }
                 }
