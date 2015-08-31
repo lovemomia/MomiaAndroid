@@ -1,5 +1,9 @@
 package com.youxing.common.model;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -89,5 +93,51 @@ public class Account {
         this.children = children;
     }
 
+    public String getAgeOfChild() {
+        if (children == null || children.size() == 0) {
+            return null;
+        }
+        Child child = children.get(0);
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        Date date;
+        try {
+            date = format.parse(child.getBirthday());
+        } catch (ParseException e) {
+            return null;
+        }
+
+        Calendar childCalendar = Calendar.getInstance();
+        childCalendar.setTime(date);
+        int childYear = childCalendar.get(Calendar.YEAR);
+        int childMonth = childCalendar.get(Calendar.MONTH);
+        int childDay = childCalendar.get(Calendar.DAY_OF_MONTH);
+
+        Calendar now = Calendar.getInstance();
+        int nowYear = now.get(Calendar.YEAR);
+        int nowMonth = now.get(Calendar.MONTH);
+        int nowDay = childCalendar.get(Calendar.DAY_OF_MONTH);
+
+        if (nowYear < childYear || (nowYear == childYear && nowMonth < childMonth)) {
+            return "还未出生";
+        }
+
+        int age = nowYear - childYear - 1;
+        if ((nowMonth > childMonth) || (nowMonth == childMonth && nowDay >= childDay)) {
+            age++;
+        }
+
+        if (age > 0) {
+            if (age == 1 && nowMonth < childMonth) {
+                int month = 12 + nowMonth - childMonth;
+                return month + "个月";
+            } else {
+                return age + "岁";
+            }
+        }
+
+        // 几个月
+        int month = nowMonth - childMonth;
+        return month + "个月";
+    }
 
 }
