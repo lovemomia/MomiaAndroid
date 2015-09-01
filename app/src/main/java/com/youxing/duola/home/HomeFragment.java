@@ -125,7 +125,7 @@ public class HomeFragment extends DLFragment implements AdapterView.OnItemClickL
     }
 
     private void requestData() {
-        if (nextPage == 0) {
+        if (nextPage == -1) {
             getDLActivity().showLoadingDialog(getActivity(), null, null);
         }
 
@@ -178,7 +178,7 @@ public class HomeFragment extends DLFragment implements AdapterView.OnItemClickL
             hasBannel = true;
         }
 
-        if (nextPage == 0) {
+        if (nextPage == -1) {
             getDLActivity().dismissDialog();
         }
         nextPage = homeModel.getData().getNextpage();
