@@ -59,13 +59,6 @@ public class HomeHeaderView extends FrameLayout implements ViewPager.OnPageChang
         adapter = new ImagePagerAdapter(getContext(), banners).setInfiniteLoop(true);
         pager.setAdapter(adapter);
         pager.setOnPageChangeListener(this);
-        pager.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                int postion = pager.getCurrentItem();
-                getContext().startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(banners.get(adapter.getPosition(postion)).getAction())));
-            }
-        });
         pager.setInterval(2000);
         pager.startAutoScroll();
         pager.setCurrentItem(Integer.MAX_VALUE / 2 - Integer.MAX_VALUE / 2 % pageCount);
@@ -127,6 +120,13 @@ public class HomeHeaderView extends FrameLayout implements ViewPager.OnPageChang
                 imageView.setDefaultImageResId(R.drawable.bg_default_image);
                 view = holder.imageView = imageView;
                 view.setTag(holder);
+                view.setOnClickListener(new OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        int postion = pager.getCurrentItem();
+                        getContext().startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(banners.get(adapter.getPosition(postion)).getAction())));
+                    }
+                });
             } else {
                 holder = (ViewHolder)view.getTag();
             }
