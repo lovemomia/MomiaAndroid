@@ -64,7 +64,7 @@ public class ViewPagerIndicatorView extends LinearLayout implements TabIndicator
             throw new NullPointerException();
         }
 
-        final List<View> viewList = new ArrayList<>();
+        final List<View> viewList = new ArrayList<View>();
 
         for (String title : titleList) {
             View view = pageMap.get(title);
@@ -87,7 +87,7 @@ public class ViewPagerIndicatorView extends LinearLayout implements TabIndicator
             throw new NullPointerException();
         }
 
-        final List<Fragment> pageList = new ArrayList<>();
+        final List<Fragment> pageList = new ArrayList<Fragment>();
 
         for (String title : titleList) {
             Fragment fragment = pageMap.get(title);

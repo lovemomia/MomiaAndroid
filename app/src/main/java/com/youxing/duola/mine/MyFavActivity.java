@@ -33,7 +33,7 @@ public class MyFavActivity extends DLActivity implements AdapterView.OnItemClick
     private ListView listView;
     private Adapter adapter;
 
-    private List<Product> productList = new ArrayList<>();
+    private List<Product> productList = new ArrayList<Product>();
     private int nextIndex;
     private boolean isEmpty;
     private boolean isEnd;
@@ -50,7 +50,7 @@ public class MyFavActivity extends DLActivity implements AdapterView.OnItemClick
     }
 
     private void requestData() {
-        List<NameValuePair> params = new ArrayList<>();
+        List<NameValuePair> params = new ArrayList<NameValuePair>();
         params.add(new BasicNameValuePair("start", String.valueOf(nextIndex)));
         HttpService.get(Constants.domain() + "/user/favorite", params, CacheType.DISABLE, ProductListModel.class, new RequestHandler() {
             @Override

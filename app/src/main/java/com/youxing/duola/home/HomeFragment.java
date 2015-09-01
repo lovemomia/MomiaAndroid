@@ -52,8 +52,8 @@ public class HomeFragment extends DLFragment implements AdapterView.OnItemClickL
     private ListView listView;
     private Adapter adapter;
 
-    private List<HomeModel.HomeBanner> bannerList = new ArrayList<>();
-    private List<Product> productList = new ArrayList<>();
+    private List<HomeModel.HomeBanner> bannerList = new ArrayList<HomeModel.HomeBanner>();
+    private List<Product> productList = new ArrayList<Product>();
     private int nextPage = -1;
 
     private boolean isRefresh;
@@ -131,7 +131,7 @@ public class HomeFragment extends DLFragment implements AdapterView.OnItemClickL
 
         String url = Constants.domain() + "/home";
 
-        List<NameValuePair> params = new ArrayList<>();
+        List<NameValuePair> params = new ArrayList<NameValuePair>();
         params.add(new BasicNameValuePair("pageindex", String.valueOf(nextPage == -1 ? 0 : nextPage)));
 
         HttpService.get(url, params, CacheType.NORMAL, HomeModel.class, this);
@@ -249,7 +249,7 @@ public class HomeFragment extends DLFragment implements AdapterView.OnItemClickL
                 view.setLayoutParams(new AbsListView.LayoutParams(AbsListView.LayoutParams.MATCH_PARENT, 0));
 
             } else if (item == EMPTY) {
-                view = getEmptyView("- 更多活动尽请期待 -", parent, convertView);
+                view = getEmptyView("- 更多活动敬请期待 -", parent, convertView);
             } else if (item == LOADING) {
                 view = getLoadingView(parent, convertView);
                 requestData();

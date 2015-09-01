@@ -1,29 +1,18 @@
 package com.youxing.duola.product;
 
-import android.app.AlertDialog;
-import android.app.Dialog;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
 import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.tencent.mm.sdk.modelmsg.SendMessageToWX;
-import com.tencent.mm.sdk.modelmsg.WXMediaMessage;
-import com.tencent.mm.sdk.modelmsg.WXWebpageObject;
-import com.tencent.mm.sdk.openapi.IWXAPI;
-import com.tencent.mm.sdk.openapi.WXAPIFactory;
 import com.youxing.common.adapter.GroupStyleAdapter;
 import com.youxing.common.app.Constants;
 import com.youxing.common.model.BaseModel;
+import com.youxing.common.services.account.AccountService;
 import com.youxing.common.services.http.CacheType;
 import com.youxing.common.services.http.HttpService;
 import com.youxing.common.services.http.RequestHandler;
@@ -31,8 +20,8 @@ import com.youxing.duola.R;
 import com.youxing.duola.app.DLActivity;
 import com.youxing.duola.model.Product;
 import com.youxing.duola.model.ProductModel;
-import com.youxing.duola.product.views.ProductDetailContentView;
 import com.youxing.duola.product.views.ProductDetailContentHeaderView;
+import com.youxing.duola.product.views.ProductDetailContentView;
 import com.youxing.duola.product.views.ProductDetailHeaderView;
 import com.youxing.duola.product.views.ProductDetailInfoView;
 import com.youxing.duola.product.views.ProductDetailPartersView;
@@ -42,13 +31,6 @@ import com.youxing.duola.views.ShareDialog;
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -79,8 +61,12 @@ public class ProductDetailActivity extends DLActivity implements View.OnClickLis
                 if (product == null) {
                     return;
                 }
+                if (!AccountService.instance().isLogin()) {
+                    AccountService.instance().login(ProductDetailActivity.this, null);
+                    return;
+                }
                 if (product.isFavored()) {
-                    List<NameValuePair> params = new ArrayList<>();
+                    List<NameValuePair> params = new ArrayList<NameValuePair>();
                     params.add(new BasicNameValuePair("id", String.valueOf(product.getId())));
                     HttpService.post(Constants.domain() + "/product/unfavor", params, BaseModel.class, new RequestHandler() {
                         @Override
@@ -95,7 +81,7 @@ public class ProductDetailActivity extends DLActivity implements View.OnClickLis
                     });
 
                 } else {
-                    List<NameValuePair> params = new ArrayList<>();
+                    List<NameValuePair> params = new ArrayList<NameValuePair>();
                     params.add(new BasicNameValuePair("id", String.valueOf(product.getId())));
                     HttpService.post(Constants.domain() + "/product/favor", params, BaseModel.class, new RequestHandler() {
                         @Override
@@ -129,7 +115,7 @@ public class ProductDetailActivity extends DLActivity implements View.OnClickLis
 
         String url = Constants.domain() + "/product";
 
-        List<NameValuePair> params = new ArrayList<>();
+        List<NameValuePair> params = new ArrayList<NameValuePair>();
         params.add(new BasicNameValuePair("id", id));
 
         HttpService.get(url, params, CacheType.NORMAL, ProductModel.class, this);

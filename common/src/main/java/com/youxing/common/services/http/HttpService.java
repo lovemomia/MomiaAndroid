@@ -177,7 +177,7 @@ public class HttpService {
     }
 
     private static Map<String, String> getHeaders() {
-        Map<String, String> headers = new HashMap<>();
+        Map<String, String> headers = new HashMap<String, String>();
         headers.put("User-Agent", "API1.0(com.youxing.duola;Android)");
         return headers;
     }

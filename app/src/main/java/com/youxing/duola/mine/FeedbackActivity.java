@@ -65,7 +65,7 @@ public class FeedbackActivity extends DLActivity {
     private void requestData() {
         showLoadingDialog(this, "正在提交，请稍候...", null);
 
-        List<NameValuePair> params = new ArrayList<>();
+        List<NameValuePair> params = new ArrayList<NameValuePair>();
         params.add(new BasicNameValuePair("content", contentTv.getText().toString()));
         params.add(new BasicNameValuePair("email", emailTv.getText().toString()));
         HttpService.post(Constants.domain() + "/feedback", params, BaseModel.class, new RequestHandler() {

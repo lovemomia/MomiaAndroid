@@ -36,7 +36,7 @@ public class WeekendProductListFragment extends DLFragment implements AdapterVie
     private ListView listView;
     private Adapter adapter;
 
-    private List<Product> productList = new ArrayList<>();
+    private List<Product> productList = new ArrayList<Product>();
     private int nextIndex;
     private boolean isEmpty;
     private boolean isEnd;
@@ -63,7 +63,7 @@ public class WeekendProductListFragment extends DLFragment implements AdapterVie
     }
 
     private void requestData() {
-        List<NameValuePair> params = new ArrayList<>();
+        List<NameValuePair> params = new ArrayList<NameValuePair>();
         params.add(new BasicNameValuePair("start", String.valueOf(nextIndex)));
         HttpService.get(Constants.domain() + "/product/weekend", params, CacheType.DISABLE, ProductListModel.class, new RequestHandler() {
             @Override

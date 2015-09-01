@@ -26,7 +26,7 @@ public class ProductCalendarActivity extends DLActivity {
         setContentView(R.layout.activity_top_tab);
 
         this.viewPagerIndicatorView = (ViewPagerIndicatorView) findViewById(R.id.viewpager_indicator_view);
-        List<String> titleList = new ArrayList<>();
+        List<String> titleList = new ArrayList<String>();
 
         String tab1 = "周末";
         titleList.add(tab1);

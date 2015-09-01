@@ -85,7 +85,7 @@ public class FillOrderActivity extends DLActivity implements View.OnClickListene
     private void requestOrder() {
         showLoadingDialog(this);
 
-        List<NameValuePair> params = new ArrayList<>();
+        List<NameValuePair> params = new ArrayList<NameValuePair>();
         params.add(new BasicNameValuePair("id", getIntent().getData().getQueryParameter("id")));
 
         HttpService.get(Constants.domain() + "/product/order", params, CacheType.DISABLE, FillOrderModel.class, new RequestHandler() {
@@ -125,7 +125,7 @@ public class FillOrderActivity extends DLActivity implements View.OnClickListene
             }
         });
 
-        List<NameValuePair> params = new ArrayList<>();
+        List<NameValuePair> params = new ArrayList<NameValuePair>();
         params.add(new BasicNameValuePair("order", JSON.toJSONString(submitOrder)));
 
         HttpService.post(Constants.domainHttps() + "/order", params, OrderDetailModel.class, new RequestHandler() {
@@ -436,7 +436,7 @@ public class FillOrderActivity extends DLActivity implements View.OnClickListene
         String contacts;
         String mobile;
         List<Long> participants;
-        List<SubmitPrice> prices = new ArrayList<>();
+        List<SubmitPrice> prices = new ArrayList<SubmitPrice>();
 
         public long getProductId() {
             return productId;

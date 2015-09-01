@@ -10,9 +10,19 @@ android {
         targetSdkVersion 21
         versionCode 1
         versionName "1.0"
+        manifestPlaceholders = [CHANNEL_NAME:"Unspecified"]
+    }
+    signingConfigs {
+        myConfig{
+            storeFile file("youxing.keystore")
+            storePassword "111111"
+            keyAlias "youxing.keystore"
+            keyPassword "111111"
+        }
     }
     buildTypes {
         release {
+            signingConfig  signingConfigs.myConfig
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
@@ -22,6 +32,22 @@ android {
         exclude 'META-INF/NOTICE'
         exclude 'META-INF/LICENSE'
     }
+    productFlavors {
+        yingyongbao {
+            manifestPlaceholders = [ CHANNEL_NAME:"yingyongbao"]
+        }
+        umeng {
+            manifestPlaceholders = [ CHANNEL_NAME:"umeng" ]
+        }
+        wandoujia {
+            manifestPlaceholders = [ CHANNEL_NAME:"wandoujia" ]
+        }
+    }
+
+    lintOptions {
+        abortOnError false
+    }
+
 }
 
 dependencies {

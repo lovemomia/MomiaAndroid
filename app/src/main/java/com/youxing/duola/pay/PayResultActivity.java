@@ -69,7 +69,7 @@ public class PayResultActivity extends DLActivity implements View.OnClickListene
     private void freePay() {
         showLoadingDialog(this);
 
-        List<NameValuePair> params = new ArrayList<>();
+        List<NameValuePair> params = new ArrayList<NameValuePair>();
         params.add(new BasicNameValuePair("oid", oid));
         params.add(new BasicNameValuePair("pid", pid));
         params.add(new BasicNameValuePair("sid", sid));
@@ -98,7 +98,7 @@ public class PayResultActivity extends DLActivity implements View.OnClickListene
     private void checkPayResult() {
         showLoadingDialog(this);
 
-        List<NameValuePair> params = new ArrayList<>();
+        List<NameValuePair> params = new ArrayList<NameValuePair>();
         params.add(new BasicNameValuePair("oid", oid));
         params.add(new BasicNameValuePair("pid", pid));
         params.add(new BasicNameValuePair("sid", sid));

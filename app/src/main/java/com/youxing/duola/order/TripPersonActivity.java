@@ -31,7 +31,7 @@ public class TripPersonActivity extends DLActivity implements AdapterView.OnItem
 
     private Adapter adapter;
 
-    private List<Person> personList = new ArrayList<>();
+    private List<Person> personList = new ArrayList<Person>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

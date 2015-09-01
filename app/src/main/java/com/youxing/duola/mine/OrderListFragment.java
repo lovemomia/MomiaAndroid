@@ -39,7 +39,7 @@ public class OrderListFragment extends DLFragment implements AdapterView.OnItemC
     private ListView listView;
     private Adapter adapter;
 
-    private List<Order> orderList = new ArrayList<>();
+    private List<Order> orderList = new ArrayList<Order>();
     private boolean isEmpty;
     private boolean isEnd;
     private int status = 1;
@@ -81,7 +81,7 @@ public class OrderListFragment extends DLFragment implements AdapterView.OnItemC
 
     private void requestData() {
         int start = orderList.size();
-        List<NameValuePair> params = new ArrayList<>();
+        List<NameValuePair> params = new ArrayList<NameValuePair>();
         params.add(new BasicNameValuePair("status", String.valueOf(status)));
         params.add(new BasicNameValuePair("start", String.valueOf(start)));
         params.add(new BasicNameValuePair("count", "20"));

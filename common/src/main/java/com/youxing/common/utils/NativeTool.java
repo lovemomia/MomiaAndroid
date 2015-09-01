@@ -2,6 +2,7 @@ package com.youxing.common.utils;
 
 import android.util.Log;
 
+@SuppressWarnings("ALL")
 public class NativeTool {
 	
 	/**

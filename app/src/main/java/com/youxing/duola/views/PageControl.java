@@ -21,7 +21,7 @@ import java.util.List;
 public class PageControl extends LinearLayout {
 
     private Context context;
-    private List<ImageView> dots = new ArrayList<>();
+    private List<ImageView> dots = new ArrayList<ImageView>();
 
     public PageControl(Context context) {
         this(context, null);

@@ -8,7 +8,7 @@ import java.util.Map;
  */
 public class MappingManager {
 
-    public Map<String, MappingPage> map = new HashMap<>();
+    public Map<String, MappingPage> map = new HashMap<String, MappingPage>();
 
     public void putPage(String host, MappingPage page) {
         map.put(host, page);

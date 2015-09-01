@@ -164,7 +164,7 @@ public class CashierActivity extends DLActivity implements View.OnClickListener,
     private void requestRefreshPrice(long couponId) {
         showLoadingDialog(this);
 
-        List<NameValuePair> params = new ArrayList<>();
+        List<NameValuePair> params = new ArrayList<NameValuePair>();
         params.add(new BasicNameValuePair("oid", String.valueOf(order.getData().getId())));
         params.add(new BasicNameValuePair("coupon", String.valueOf(couponId)));
         HttpService.get(Constants.domain() + "/coupon", params, CacheType.DISABLE, CouponPriceModel.class, new RequestHandler() {
@@ -214,7 +214,7 @@ public class CashierActivity extends DLActivity implements View.OnClickListener,
             return;
         }
 
-        List<NameValuePair> params = new ArrayList<>();
+        List<NameValuePair> params = new ArrayList<NameValuePair>();
         params.add(new BasicNameValuePair("trade_type", "APP"));
         params.add(new BasicNameValuePair("oid", String.valueOf(order.getData().getId())));
         params.add(new BasicNameValuePair("pid", String.valueOf(order.getData().getProductId())));
@@ -258,7 +258,7 @@ public class CashierActivity extends DLActivity implements View.OnClickListener,
     public void startAlipay() {
         showLoadingDialog(CashierActivity.this, "正在准备支付，请稍候...", null);
 
-        List<NameValuePair> params = new ArrayList<>();
+        List<NameValuePair> params = new ArrayList<NameValuePair>();
         params.add(new BasicNameValuePair("trade_type", "APP"));
         params.add(new BasicNameValuePair("oid", String.valueOf(order.getData().getId())));
         params.add(new BasicNameValuePair("pid", String.valueOf(order.getData().getProductId())));

@@ -111,7 +111,7 @@ public class OrderPersonActivity extends DLActivity implements AdapterView.OnIte
     }
 
     private List<Long> selectIds() {
-        List<Long> selectList = new ArrayList<>();
+        List<Long> selectList = new ArrayList<Long>();
         int adultNum = 0;
         int childNum = 0;
         for (OrderPerson person : model.getData()) {

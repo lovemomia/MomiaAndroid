@@ -74,7 +74,7 @@ public class OrderUpdatePersonActivity extends DLActivity implements AdapterView
     private void requestData() {
         showLoadingDialog(this);
 
-        List<NameValuePair> params = new ArrayList<>();
+        List<NameValuePair> params = new ArrayList<NameValuePair>();
         params.add(new BasicNameValuePair("id", personId));
         HttpService.get(Constants.domain() + "/participant", params, CacheType.DISABLE, OrderPersonModel.class, new RequestHandler() {
             @Override
@@ -119,7 +119,7 @@ public class OrderUpdatePersonActivity extends DLActivity implements AdapterView
 
             String path = isUpdate ? "/participant/update" : "/participant";
 
-            List<NameValuePair> params = new ArrayList<>();
+            List<NameValuePair> params = new ArrayList<NameValuePair>();
             params.add(new BasicNameValuePair("participant", JSON.toJSONString(person)));
             HttpService.post(Constants.domain() + path, params, BaseModel.class, new RequestHandler() {
                 @Override

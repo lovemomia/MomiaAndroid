@@ -268,7 +268,7 @@ public class PersonInfoActivity extends DLActivity implements StepperView.OnNumb
     }
 
     private void requestUpdateAvatar(String url) {
-        List<NameValuePair> params = new ArrayList<>();
+        List<NameValuePair> params = new ArrayList<NameValuePair>();
         params.add(new BasicNameValuePair("avatar", url));
         HttpService.post(Constants.domain() + "/user/avatar", params, AccountModel.class, new RequestHandler() {
             @Override
@@ -291,7 +291,7 @@ public class PersonInfoActivity extends DLActivity implements StepperView.OnNumb
 
     private void requestUpdateNickname(String nickname) {
         showLoadingDialog(this);
-        List<NameValuePair> params = new ArrayList<>();
+        List<NameValuePair> params = new ArrayList<NameValuePair>();
         params.add(new BasicNameValuePair("nickname", nickname));
         HttpService.post(Constants.domain() + "/user/nickname", params, AccountModel.class, new RequestHandler() {
             @Override
@@ -314,7 +314,7 @@ public class PersonInfoActivity extends DLActivity implements StepperView.OnNumb
 
     private void requestUpdateSex(String sex) {
         showLoadingDialog(this);
-        List<NameValuePair> params = new ArrayList<>();
+        List<NameValuePair> params = new ArrayList<NameValuePair>();
         params.add(new BasicNameValuePair("sex", sex));
         HttpService.post(Constants.domain() + "/user/sex", params, AccountModel.class, new RequestHandler() {
             @Override
@@ -337,7 +337,7 @@ public class PersonInfoActivity extends DLActivity implements StepperView.OnNumb
 
     private void requestUpdateAddress(String address) {
         showLoadingDialog(this);
-        List<NameValuePair> params = new ArrayList<>();
+        List<NameValuePair> params = new ArrayList<NameValuePair>();
         params.add(new BasicNameValuePair("address", address));
         HttpService.post(Constants.domain() + "/user/address", params, AccountModel.class, new RequestHandler() {
             @Override
@@ -360,7 +360,7 @@ public class PersonInfoActivity extends DLActivity implements StepperView.OnNumb
 
     private void requestUpdateChildName(long id, String name) {
         showLoadingDialog(this);
-        List<NameValuePair> params = new ArrayList<>();
+        List<NameValuePair> params = new ArrayList<NameValuePair>();
         params.add(new BasicNameValuePair("cid", String.valueOf(id)));
         params.add(new BasicNameValuePair("name", name));
         HttpService.post(Constants.domain() + "/user/child/name", params, AccountModel.class, new RequestHandler() {
@@ -384,7 +384,7 @@ public class PersonInfoActivity extends DLActivity implements StepperView.OnNumb
 
     private void requestUpdateChildSex(long id, String sex) {
         showLoadingDialog(this);
-        List<NameValuePair> params = new ArrayList<>();
+        List<NameValuePair> params = new ArrayList<NameValuePair>();
         params.add(new BasicNameValuePair("cid", String.valueOf(id)));
         params.add(new BasicNameValuePair("sex", sex));
         HttpService.post(Constants.domain() + "/user/child/sex", params, AccountModel.class, new RequestHandler() {
@@ -408,7 +408,7 @@ public class PersonInfoActivity extends DLActivity implements StepperView.OnNumb
 
     private void requestUpdateChildBirthday(long id, String date) {
         showLoadingDialog(this);
-        List<NameValuePair> params = new ArrayList<>();
+        List<NameValuePair> params = new ArrayList<NameValuePair>();
         params.add(new BasicNameValuePair("cid", String.valueOf(id)));
         params.add(new BasicNameValuePair("birthday", date));
         HttpService.post(Constants.domain() + "/user/child/birthday", params, AccountModel.class, new RequestHandler() {
@@ -437,10 +437,10 @@ public class PersonInfoActivity extends DLActivity implements StepperView.OnNumb
         child.setName("毛毛");
         child.setSex("男");
         child.setBirthday("2015-07-01");
-        List<Child> children = new ArrayList<>();
+        List<Child> children = new ArrayList<Child>();
         children.add(child);
 
-        List<NameValuePair> params = new ArrayList<>();
+        List<NameValuePair> params = new ArrayList<NameValuePair>();
         params.add(new BasicNameValuePair("children", JSON.toJSONString(children)));
         HttpService.post(Constants.domain() + "/user/child", params, AccountModel.class, new RequestHandler() {
             @Override
@@ -466,7 +466,7 @@ public class PersonInfoActivity extends DLActivity implements StepperView.OnNumb
 
         Child child = account.getChildren().get(account.getChildren().size() - 1);
 
-        List<NameValuePair> params = new ArrayList<>();
+        List<NameValuePair> params = new ArrayList<NameValuePair>();
         params.add(new BasicNameValuePair("cid", String.valueOf(child.getId())));
         HttpService.post(Constants.domain() + "/user/child/delete", params, AccountModel.class, new RequestHandler() {
             @Override

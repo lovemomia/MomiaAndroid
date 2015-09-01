@@ -35,7 +35,7 @@ public class CouponListActivity extends DLActivity implements AdapterView.OnItem
     private ListView listView;
     private Adapter adapter;
 
-    private List<Coupon> couponList = new ArrayList<>();
+    private List<Coupon> couponList = new ArrayList<Coupon>();
     private boolean isEmpty;
     private boolean isEnd;
     private int status = 1; // 1.未使用 2.已使用 3.已过期
@@ -65,7 +65,7 @@ public class CouponListActivity extends DLActivity implements AdapterView.OnItem
 
     private void requestData() {
         int start = couponList.size();
-        List<NameValuePair> params = new ArrayList<>();
+        List<NameValuePair> params = new ArrayList<NameValuePair>();
         params.add(new BasicNameValuePair("status", String.valueOf(status)));
         params.add(new BasicNameValuePair("start", String.valueOf(start)));
         params.add(new BasicNameValuePair("count", "20"));

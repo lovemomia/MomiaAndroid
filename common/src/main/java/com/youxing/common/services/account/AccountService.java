@@ -1,5 +1,6 @@
 package com.youxing.common.services.account;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -26,7 +27,9 @@ public class AccountService {
     private Context context;
     private Account account;
 
-    private List<AccountChangeListener> listenerList = new ArrayList<>();
+    private LoginListener loginListener;
+
+    private List<AccountChangeListener> listenerList = new ArrayList<AccountChangeListener>();
 
     public AccountService(Context context) {
         this.context = context;
@@ -46,6 +49,22 @@ public class AccountService {
         return account;
     }
 
+    public void login(Activity act, LoginListener listener) {
+        loginListener = listener;
+        act.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("duola://login")));
+    }
+
+    public void logout() {
+        dispatchAccountChanged(null);
+    }
+
+    public void cancelLogin() {
+        if (loginListener != null) {
+            loginListener.onLoginFailed();
+            loginListener = null;
+        }
+    }
+
     /**
      * 是否登录
      *
@@ -56,10 +75,15 @@ public class AccountService {
     }
 
     public void dispatchAccountChanged(Account newAccount) {
+        if (loginListener != null && newAccount != null) {
+            loginListener.onLoginSuccess();
+            loginListener = null;
+        }
+
         this.account = newAccount;
         saveAccount(newAccount);
 
-        for(AccountChangeListener listener : listenerList) {
+        for (AccountChangeListener listener : listenerList) {
             listener.onAccountChange(this);
         }
     }
@@ -107,5 +131,10 @@ public class AccountService {
 
     private SharedPreferences sharedPreferences() {
         return context.getSharedPreferences(context.getPackageName(), Context.MODE_PRIVATE);
+    }
+
+    public interface LoginListener {
+        void onLoginSuccess();
+        void onLoginFailed();
     }
 }

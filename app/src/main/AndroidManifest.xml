@@ -448,7 +448,7 @@
 
         <!-- UMeng-->
         <meta-data android:value="55e3e29b67e58e6acf001be8" android:name="UMENG_APPKEY"></meta-data>
-        <meta-data android:value="yingyongbao" android:name="UMENG_CHANNEL"/>
+        <meta-data android:value="${CHANNEL_NAME}" android:name="UMENG_CHANNEL"/>
 
         <service
             android:name="com.umeng.update.net.DownloadingService"

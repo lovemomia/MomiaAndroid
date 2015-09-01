@@ -8,7 +8,7 @@ import java.util.List;
  */
 public class StepperGroup implements StepperView.OnNumberChangedListener {
 
-    private List<StepperView> stepperList = new ArrayList<>();
+    private List<StepperView> stepperList = new ArrayList<StepperView>();
 
     private int min;
     private int max;

@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import com.youxing.common.utils.UnitTools;
 
+@SuppressWarnings("ALL")
 public abstract class BasicAdapter extends BaseAdapter {
 	public static final Object LOADING = new Object();
 	public static final Object ERROR = new Object();
@@ -25,7 +26,7 @@ public abstract class BasicAdapter extends BaseAdapter {
 			loadingTV = (TextView) createSimpleListItem18(parent.getContext());
 			loadingTV.setTag(LOADING);
 		}
-		loadingTV.setText("正在加载，请稍侯...");
+		loadingTV.setText("正在加载...");
 		return loadingTV;
 	}
 

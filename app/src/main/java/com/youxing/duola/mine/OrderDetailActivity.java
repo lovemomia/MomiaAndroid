@@ -65,7 +65,7 @@ public class OrderDetailActivity extends DLActivity implements AdapterView.OnIte
     private void requestData() {
         showLoadingDialog(this);
 
-        List<NameValuePair> params = new ArrayList<>();
+        List<NameValuePair> params = new ArrayList<NameValuePair>();
         params.add(new BasicNameValuePair("oid", oid));
         params.add(new BasicNameValuePair("pid", pid));
         HttpService.get(Constants.domain() + "/user/order/detail", params, CacheType.DISABLE, OrderDetailModel.class, new RequestHandler() {
@@ -180,14 +180,14 @@ public class OrderDetailActivity extends DLActivity implements AdapterView.OnIte
                 } else {
                     OrderDetailInfoView infoView = new OrderDetailInfoView(OrderDetailActivity.this);
                     if (section == 1) {
-                        List<NameValuePair> infoList = new ArrayList<>();
+                        List<NameValuePair> infoList = new ArrayList<NameValuePair>();
                         infoList.add(new BasicNameValuePair("订单编号：", String.valueOf(model.getData().getId())));
                         infoList.add(new BasicNameValuePair("下单时间：", model.getData().getAddTime()));
                         infoList.add(new BasicNameValuePair("数         量：", String.valueOf(model.getData().getCount())));
                         infoList.add(new BasicNameValuePair("总         价：", PriceUtils.formatPriceString(model.getData().getPrice())));
                         infoView.setInfo(infoList);
                     } else {
-                        List<NameValuePair> infoList = new ArrayList<>();
+                        List<NameValuePair> infoList = new ArrayList<NameValuePair>();
                         infoList.add(new BasicNameValuePair("姓         名：", model.getData().getContacts()));
                         infoList.add(new BasicNameValuePair("手         机：", model.getData().getMobile()));
                         infoView.setInfo(infoList);

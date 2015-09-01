@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.widget.Toast;
 
 import com.tencent.mm.sdk.constants.ConstantsAPI;
 import com.tencent.mm.sdk.modelbase.BaseReq;
@@ -52,10 +53,8 @@ public class WXPayEntryActivity extends Activity implements IWXAPIEventHandler{
 				finish();
 
 			} else {
-				AlertDialog.Builder builder = new AlertDialog.Builder(this);
-				builder.setTitle("提示");
-				builder.setMessage("微信支付失败：" + resp.errStr + ";code=" + String.valueOf(resp.errCode));
-				builder.show();
+				Toast.makeText(this, "支付失败", Toast.LENGTH_SHORT).show();
+				finish();
 			}
 		}
 	}

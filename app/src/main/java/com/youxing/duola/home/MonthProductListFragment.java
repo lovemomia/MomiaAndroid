@@ -37,7 +37,7 @@ public class MonthProductListFragment extends DLFragment implements AdapterView.
     private ListView listView;
     private Adapter adapter;
 
-    private List<ProductCalendarMonthModel.ProductCalendarGroup> groups = new ArrayList<>();
+    private List<ProductCalendarMonthModel.ProductCalendarGroup> groups = new ArrayList<ProductCalendarMonthModel.ProductCalendarGroup>();
     private boolean isEmpty;
 
     @Override
@@ -70,7 +70,7 @@ public class MonthProductListFragment extends DLFragment implements AdapterView.
     private void requestData() {
         getDLActivity().showLoadingDialog(getActivity());
 
-        List<NameValuePair> params = new ArrayList<>();
+        List<NameValuePair> params = new ArrayList<NameValuePair>();
         params.add(new BasicNameValuePair("month", String.valueOf(getArguments().getInt("month"))));
         HttpService.get(Constants.domain() + "/product/month", params, CacheType.DISABLE, ProductCalendarMonthModel.class, new RequestHandler() {
             @Override

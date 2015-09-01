@@ -21,7 +21,7 @@ public class CityManager {
     private static final String TAG = "CityManager";
 
     private Context context;
-    private List<CityChangeListener> listenerList = new ArrayList<>();
+    private List<CityChangeListener> listenerList = new ArrayList<CityChangeListener>();
     private City choosedCity;
 
     public CityManager(Context context) {

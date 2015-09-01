@@ -85,7 +85,7 @@ public class ForgetPwdActivity extends DLActivity implements View.OnClickListene
     private void requestVercode() {
         showLoadingDialog(this, "正在获取验证码，请稍候...", null);
 
-        List<NameValuePair> params = new ArrayList<>();
+        List<NameValuePair> params = new ArrayList<NameValuePair>();
         params.add(new BasicNameValuePair("mobile", phoneEdit.getText().toString().trim()));
 //        params.add(new BasicNameValuePair("type", "forgetpwd"));
 
@@ -118,7 +118,7 @@ public class ForgetPwdActivity extends DLActivity implements View.OnClickListene
     private void requestForgetpwd() {
         showLoadingDialog(this);
 
-        List<NameValuePair> params = new ArrayList<>();
+        List<NameValuePair> params = new ArrayList<NameValuePair>();
         params.add(new BasicNameValuePair("mobile", phoneEdit.getText().toString().trim()));
         params.add(new BasicNameValuePair("password", pwdEdit.getText().toString().trim()));
         params.add(new BasicNameValuePair("code", codeEdit.getText().toString().trim()));
