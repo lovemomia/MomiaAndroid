@@ -117,8 +117,9 @@ public class Account {
         int nowMonth = now.get(Calendar.MONTH);
         int nowDay = childCalendar.get(Calendar.DAY_OF_MONTH);
 
+        StringBuilder sb = new StringBuilder(child.getSex() + "孩");
         if (nowYear < childYear || (nowYear == childYear && nowMonth < childMonth)) {
-            return "还未出生";
+            return sb.append("还未出生").toString();
         }
 
         int age = nowYear - childYear - 1;
@@ -129,15 +130,15 @@ public class Account {
         if (age > 0) {
             if (age == 1 && nowMonth < childMonth) {
                 int month = 12 + nowMonth - childMonth;
-                return month + "个月";
+                return sb.append(month + "个月").toString();
             } else {
-                return age + "岁";
+                return sb.append(age + "岁").toString();
             }
         }
 
         // 几个月
         int month = nowMonth - childMonth;
-        return month + "个月";
+        return sb.append(month + "个月").toString();
     }
 
 }

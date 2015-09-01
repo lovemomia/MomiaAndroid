@@ -141,7 +141,7 @@ public class MineFragment extends DLFragment implements AdapterView.OnItemClickL
                     Account account = AccountService.instance().account();
                     headerView.getAvartaIv().setImageUrl(account.getAvatar());
                     headerView.getNameTv().setText(account.getNickName());
-                    headerView.getAgeTv().setText(account.getSex() + "孩" + account.getAgeOfChild());
+                    headerView.getAgeTv().setText( account.getAgeOfChild());
                     view = headerView;
 
                 } else {

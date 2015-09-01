@@ -19,6 +19,7 @@ import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
 
 import java.io.File;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -213,7 +214,7 @@ public class HttpService {
                 if (value == null || "null".equals(value)) {
                     continue;
                 }
-                sb.append("&").append(from.getName()).append("=").append(value);
+                sb.append("&").append(from.getName()).append("=").append(URLEncoder.encode(value));
             }
         }
 

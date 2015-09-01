@@ -46,6 +46,7 @@ import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
 
 import java.io.File;
+import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -507,11 +508,11 @@ public class PersonInfoActivity extends DLActivity implements StepperView.OnNumb
             public void onClick(DialogInterface dialog, int which) {
                 switch (which) {
                     case 0:
-                        listener.onInputDone(new String("男"));
+                        listener.onInputDone("男");
                         break;
 
                     case 1:
-                        listener.onInputDone(new String("女"));
+                        listener.onInputDone("女");
                         break;
                 }
             }
