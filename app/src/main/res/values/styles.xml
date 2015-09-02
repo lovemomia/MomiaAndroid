@@ -14,6 +14,7 @@
         <item name="android:windowTitleSize">45dip</item>item>
         <item name="android:windowTitleBackgroundStyle">@style/CustomWindowTitleBackground</item>
         <item name="android:windowBackground">@color/bg_window</item>
+        <item name="android:windowIsTranslucent">true</item>
     </style>
 
     <style name="CustomWindowTitleBackground">

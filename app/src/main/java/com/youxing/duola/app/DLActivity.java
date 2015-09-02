@@ -37,9 +37,8 @@ public class DLActivity extends YXActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
         requestWindowFeature(titleFeatureId());
+        super.onCreate(savedInstanceState);
     }
 
     public void onResume() {

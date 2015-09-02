@@ -16,10 +16,12 @@ import org.xmlpull.v1.XmlPullParser;
 
 import java.util.HashMap;
 
+import me.imid.swipebacklayout.lib.app.SwipeBackActivity;
+
 /**
  * Created by Jun Deng on 15/6/3.
  */
-public class YXActivity extends FragmentActivity {
+public class YXActivity extends SwipeBackActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
