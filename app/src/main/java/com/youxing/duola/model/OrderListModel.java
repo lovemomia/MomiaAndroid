@@ -21,6 +21,7 @@ public class OrderListModel extends BaseModel {
 
     public static class OrderListData {
         private long totalCount;
+        private long nextIndex;
         private List<Order> list;
 
         public long getTotalCount() {
@@ -37,6 +38,14 @@ public class OrderListModel extends BaseModel {
 
         public void setList(List<Order> list) {
             this.list = list;
+        }
+
+        public long getNextIndex() {
+            return nextIndex;
+        }
+
+        public void setNextIndex(long nextIndex) {
+            this.nextIndex = nextIndex;
         }
     }
 }

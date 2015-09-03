@@ -90,7 +90,7 @@ public class OrderListFragment extends DLFragment implements AdapterView.OnItemC
             public void onRequestFinish(BaseModel response) {
                 OrderListModel model = (OrderListModel) response;
                 orderList.addAll(model.getData().getList());
-                if (model.getData().getTotalCount() <= orderList.size()) {
+                if (model.getData().getNextIndex() == 0 || model.getData().getTotalCount() <= orderList.size()) {
                     isEnd = true;
                 }
                 if (orderList.size() == 0) {
