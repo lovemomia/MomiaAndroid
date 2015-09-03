@@ -42,6 +42,9 @@ android {
         wandoujia {
             manifestPlaceholders = [ CHANNEL_NAME:"wandoujia" ]
         }
+        songguo {
+            manifestPlaceholders = [ CHANNEL_NAME:"songguo" ]
+        }
     }
 
     lintOptions {
