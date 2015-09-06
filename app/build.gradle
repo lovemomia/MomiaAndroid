@@ -45,6 +45,18 @@ android {
         songguo {
             manifestPlaceholders = [ CHANNEL_NAME:"songguo" ]
         }
+        xiaomi {
+            manifestPlaceholders = [ CHANNEL_NAME:"xiaomi" ]
+        }
+        baidu {
+            manifestPlaceholders = [ CHANNEL_NAME:"baidu" ]
+        }
+        baidu91 {
+            manifestPlaceholders = [ CHANNEL_NAME:"baidu91" ]
+        }
+        anzhuo {
+            manifestPlaceholders = [ CHANNEL_NAME:"anzhuo" ]
+        }
     }
 
     lintOptions {
