@@ -134,7 +134,7 @@ public class HomeFragment extends DLFragment implements AdapterView.OnItemClickL
         List<NameValuePair> params = new ArrayList<NameValuePair>();
         params.add(new BasicNameValuePair("pageindex", String.valueOf(nextPage == -1 ? 0 : nextPage)));
 
-        HttpService.get(url, params, CacheType.NORMAL, HomeModel.class, this);
+        HttpService.get(url, params, CacheType.DISABLE, HomeModel.class, this);
     }
 
     @Override

@@ -1,7 +1,6 @@
 package com.youxing.common.app;
 
 import android.content.Context;
-import android.content.pm.ActivityInfo;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
@@ -14,29 +13,40 @@ import android.view.WindowManager;
 
 import com.youxing.common.utils.Log;
 
-import java.net.URLEncoder;
-
 public class Enviroment {
 
 	private static String versionName;
+	private static int versionCode;
 	private static String deviceType;
 
 	private static int screenWidth;
 
 	public static String versionName() {
 		if (versionName == null) {
-			try {
-				PackageInfo pinfo = YXApplication
-						.instance()
-						.getPackageManager()
-						.getPackageInfo(
-								YXApplication.instance().getPackageName(),
-								PackageManager.GET_CONFIGURATIONS);
-				versionName = pinfo.versionName;
-			} catch (NameNotFoundException e) {
-			}
+			readPackageInfo();
 		}
 		return versionName;
+	}
+
+	public static int versionCode() {
+		if (versionCode == 0) {
+			readPackageInfo();
+		}
+		return versionCode;
+	}
+
+	private static void readPackageInfo() {
+		try {
+			PackageInfo pinfo = YXApplication
+					.instance()
+					.getPackageManager()
+					.getPackageInfo(
+							YXApplication.instance().getPackageName(),
+							PackageManager.GET_CONFIGURATIONS);
+			versionName = pinfo.versionName;
+			versionCode = pinfo.versionCode;
+		} catch (NameNotFoundException e) {
+		}
 	}
 
 	public static String deviceType() {

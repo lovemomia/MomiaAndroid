@@ -1,6 +1,10 @@
 package com.youxing.common.services.http;
 
+import com.alibaba.fastjson.JSON;
+import com.android.volley.ParseError;
+import com.android.volley.toolbox.HttpHeaderParser;
 import com.youxing.common.services.account.AccountService;
+import com.youxing.common.services.cache.CacheService;
 import com.youxing.common.services.http.volley.PhotoMultipartRequest;
 import com.youxing.common.utils.*;
 
@@ -19,6 +23,7 @@ import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
 
 import java.io.File;
+import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -56,12 +61,29 @@ public class HttpService {
      * @param clazz 返回数据model类
      * @param handler 请求回调
      */
-    public static void get(String url, List<NameValuePair> params, CacheType cacheType, Class<? extends BaseModel> clazz, final RequestHandler handler) {
+    public static void get(String url, List<NameValuePair> params, final CacheType cacheType, Class<? extends BaseModel> clazz, final RequestHandler handler) {
         List<NameValuePair> allParams = appendBasicParams(params);
         SignTool.sign(allParams);
 
         String newUrl = appendForms(url, allParams);
-        Log.i("request", "http (GET) " + newUrl);
+        Log.i("http", "request (GET) " + newUrl);
+
+        if (cacheType == CacheType.NORMAL) {
+            byte[] cache = CacheService.instance().get(newUrl);
+            if (cache != null) {
+                try {
+                    String json = new String(cache, "UTF-8");
+                    Log.i("http", "hit cache (GET) " + newUrl);
+                    Log.d("http", json);
+                    BaseModel response = JSON.parseObject(json, clazz);
+                    handler.onRequestFinish(response);
+                    return;
+
+                } catch (UnsupportedEncodingException e) {
+                    Log.w("http", "read cache failed", e);
+                }
+            }
+        }
 
         Response.Listener<? extends BaseModel> listener = new Response.Listener<BaseModel>() {
             @Override
@@ -86,7 +108,7 @@ public class HttpService {
             }
         };
 
-        FastJsonRequest request = new FastJsonRequest(Request.Method.GET, newUrl, clazz, getHeaders(), listener, errorListener);
+        FastJsonRequest request = FastJsonRequest.get(newUrl, cacheType, clazz, getHeaders(), listener, errorListener);
         // 请求加上Tag,用于取消请求
         request.setTag(handler);
         getQueue().add(request);
@@ -106,7 +128,7 @@ public class HttpService {
         SignTool.sign(allParams);
 
         String newUrl = appendForms(url, allParams);
-        Log.i("request", "http (POST) " +newUrl);
+        Log.i("http", "request (POST) " +newUrl);
 
         Response.Listener<BaseModel> listener = new Response.Listener<BaseModel>() {
             @Override
@@ -131,7 +153,7 @@ public class HttpService {
             }
         };
 
-        FastJsonRequest request = new FastJsonRequest(Request.Method.POST, newUrl, clazz, getHeaders(), listener, errorListener);
+        FastJsonRequest request = FastJsonRequest.post(newUrl, clazz, getHeaders(), listener, errorListener);
         // 请求加上Tag,用于取消请求
         request.setTag(handler);
         getQueue().add(request);

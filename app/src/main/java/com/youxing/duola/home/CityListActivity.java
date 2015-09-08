@@ -45,7 +45,7 @@ public class CityListActivity extends DLActivity implements AdapterView.OnItemCl
     private void requestData() {
         showLoadingDialog(CityListActivity.this);
 
-        HttpService.get(Constants.domain() + "/city", null, CacheType.NORMAL, CityListModel.class, new RequestHandler() {
+        HttpService.get(Constants.domain() + "/city", null, CacheType.DISABLE, CityListModel.class, new RequestHandler() {
             @Override
             public void onRequestFinish(BaseModel response) {
                 dismissDialog();

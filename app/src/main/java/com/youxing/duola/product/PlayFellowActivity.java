@@ -52,7 +52,7 @@ public class PlayFellowActivity extends DLActivity implements AdapterView.OnItem
         List<NameValuePair> params = new ArrayList<NameValuePair>();
         params.add(new BasicNameValuePair("id", getIntent().getData().getQueryParameter("id")));
 
-        HttpService.get(Constants.domain() + "/product/playmate", params, CacheType.NORMAL, PlayFellowModel.class, new RequestHandler() {
+        HttpService.get(Constants.domain() + "/product/playmate", params, CacheType.DISABLE, PlayFellowModel.class, new RequestHandler() {
             @Override
             public void onRequestFinish(BaseModel response) {
                 dismissDialog();

@@ -118,7 +118,7 @@ public class ProductDetailActivity extends DLActivity implements View.OnClickLis
         List<NameValuePair> params = new ArrayList<NameValuePair>();
         params.add(new BasicNameValuePair("id", id));
 
-        HttpService.get(url, params, CacheType.NORMAL, ProductModel.class, this);
+        HttpService.get(url, params, CacheType.DISABLE, ProductModel.class, this);
     }
 
     @Override
