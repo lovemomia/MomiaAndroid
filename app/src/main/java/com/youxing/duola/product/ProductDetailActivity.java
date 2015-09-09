@@ -70,7 +70,7 @@ public class ProductDetailActivity extends DLActivity implements View.OnClickLis
                     params.add(new BasicNameValuePair("id", String.valueOf(product.getId())));
                     HttpService.post(Constants.domain() + "/product/unfavor", params, BaseModel.class, new RequestHandler() {
                         @Override
-                        public void onRequestFinish(BaseModel response) {
+                        public void onRequestFinish(Object response) {
                             product.setFavored(false);
                             getTitleBar().getRightBtn().setIcon(R.drawable.ic_action_collect);
                         }
@@ -85,7 +85,7 @@ public class ProductDetailActivity extends DLActivity implements View.OnClickLis
                     params.add(new BasicNameValuePair("id", String.valueOf(product.getId())));
                     HttpService.post(Constants.domain() + "/product/favor", params, BaseModel.class, new RequestHandler() {
                         @Override
-                        public void onRequestFinish(BaseModel response) {
+                        public void onRequestFinish(Object response) {
                             product.setFavored(true);
                             getTitleBar().getRightBtn().setIcon(R.drawable.ic_action_collected);
                         }
@@ -149,7 +149,7 @@ public class ProductDetailActivity extends DLActivity implements View.OnClickLis
     }
 
     @Override
-    public void onRequestFinish(BaseModel response) {
+    public void onRequestFinish(Object response) {
         dismissDialog();
 
         product = ((ProductModel)response).getData();

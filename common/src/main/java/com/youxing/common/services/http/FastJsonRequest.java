@@ -60,7 +60,13 @@ public class FastJsonRequest<T> extends Request<T> {
 
             String json = new String(response.data, "UTF-8");
             Log.d("http", json);
-            T object = JSON.parseObject(json, clazz);
+
+            T object = (T) json;
+            if (clazz == null || clazz == String.class) {
+                return Response.success(object, HttpHeaderParser.parseCacheHeaders(response));
+            }
+
+            object = JSON.parseObject(json, clazz);
             return Response.success(object, HttpHeaderParser.parseCacheHeaders(response));
 
         } catch (UnsupportedEncodingException e) {

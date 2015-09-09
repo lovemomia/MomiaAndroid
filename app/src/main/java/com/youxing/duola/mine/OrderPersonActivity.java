@@ -83,7 +83,7 @@ public class OrderPersonActivity extends DLActivity implements AdapterView.OnIte
 
         HttpService.get(Constants.domain() + "/participant/list", null, CacheType.DISABLE, OrderPersonListModel.class, new RequestHandler() {
             @Override
-            public void onRequestFinish(BaseModel response) {
+            public void onRequestFinish(Object response) {
                 dismissDialog();
                 model = (OrderPersonListModel) response;
                 adapter.notifyDataSetChanged();

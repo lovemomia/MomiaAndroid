@@ -101,7 +101,7 @@ public class LoginActivity extends DLActivity implements View.OnClickListener {
 
         HttpService.post(Constants.domain() + "/auth/login", params, AccountModel.class, new RequestHandler() {
             @Override
-            public void onRequestFinish(BaseModel response) {
+            public void onRequestFinish(Object response) {
                 dismissDialog();
 
                 AccountModel model = (AccountModel) response;

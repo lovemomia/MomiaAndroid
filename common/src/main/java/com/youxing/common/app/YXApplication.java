@@ -12,6 +12,7 @@ import android.text.TextUtils;
 
 import com.github.mmin18.layoutcast.LayoutCast;
 import com.youxing.common.services.account.AccountService;
+import com.youxing.common.services.config.ConfigService;
 import com.youxing.common.utils.Log;
 
 /**
@@ -55,6 +56,9 @@ public class YXApplication extends Application {
      */
     public void onApplicationStart() {
         Log.i("application", "onApplicationStart");
+
+        // config
+        ConfigService.instance().refresh();
     }
 
     /**

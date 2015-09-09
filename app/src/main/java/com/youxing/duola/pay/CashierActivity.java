@@ -169,7 +169,7 @@ public class CashierActivity extends DLActivity implements View.OnClickListener,
         params.add(new BasicNameValuePair("coupon", String.valueOf(couponId)));
         HttpService.get(Constants.domain() + "/coupon", params, CacheType.DISABLE, CouponPriceModel.class, new RequestHandler() {
             @Override
-            public void onRequestFinish(BaseModel response) {
+            public void onRequestFinish(Object response) {
                 dismissDialog();
                 couponPrice = (CouponPriceModel)response;
                 adapter.notifyDataSetChanged();
@@ -222,7 +222,7 @@ public class CashierActivity extends DLActivity implements View.OnClickListener,
 
         HttpService.post(Constants.domainHttps() + "/payment/prepay/wechatpay", params, WechatPayModel.class, new RequestHandler() {
             @Override
-            public void onRequestFinish(BaseModel response) {
+            public void onRequestFinish(Object response) {
                 dismissDialog();
 
                 WechatPayModel model = (WechatPayModel) response;
@@ -268,7 +268,7 @@ public class CashierActivity extends DLActivity implements View.OnClickListener,
 
         HttpService.post(Constants.domainHttps() + "/payment/prepay/alipay", params, AlipayOrderModel.class, new RequestHandler() {
             @Override
-            public void onRequestFinish(BaseModel response) {
+            public void onRequestFinish(Object response) {
                 dismissDialog();
 
                 AlipayOrderModel model = (AlipayOrderModel) response;

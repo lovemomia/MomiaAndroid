@@ -70,7 +70,7 @@ public class FeedbackActivity extends DLActivity {
         params.add(new BasicNameValuePair("email", emailTv.getText().toString()));
         HttpService.post(Constants.domain() + "/feedback", params, BaseModel.class, new RequestHandler() {
             @Override
-            public void onRequestFinish(BaseModel response) {
+            public void onRequestFinish(Object response) {
                 dismissDialog();
                 Toast.makeText(FeedbackActivity.this, "感谢您的反馈", Toast.LENGTH_SHORT).show();
                 finish();

@@ -90,7 +90,7 @@ public class FillOrderActivity extends DLActivity implements View.OnClickListene
 
         HttpService.get(Constants.domain() + "/product/order", params, CacheType.DISABLE, FillOrderModel.class, new RequestHandler() {
             @Override
-            public void onRequestFinish(BaseModel response) {
+            public void onRequestFinish(Object response) {
                 dismissDialog();
 
                 FillOrderModel model = (FillOrderModel) response;
@@ -130,7 +130,7 @@ public class FillOrderActivity extends DLActivity implements View.OnClickListene
 
         HttpService.post(Constants.domainHttps() + "/order", params, OrderDetailModel.class, new RequestHandler() {
             @Override
-            public void onRequestFinish(BaseModel response) {
+            public void onRequestFinish(Object response) {
                 dismissDialog();
 
                 OrderDetailModel model = (OrderDetailModel) response;

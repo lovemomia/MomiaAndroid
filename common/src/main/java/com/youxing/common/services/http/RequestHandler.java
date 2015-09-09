@@ -15,7 +15,7 @@ public interface RequestHandler {
      *            请求的返回值
      *
      */
-    void onRequestFinish(BaseModel response);
+    void onRequestFinish(Object response);
 
     /**
      * 请求成功并返回<br>

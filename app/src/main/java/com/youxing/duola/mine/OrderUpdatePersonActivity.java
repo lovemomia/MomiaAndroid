@@ -78,7 +78,7 @@ public class OrderUpdatePersonActivity extends DLActivity implements AdapterView
         params.add(new BasicNameValuePair("id", personId));
         HttpService.get(Constants.domain() + "/participant", params, CacheType.DISABLE, OrderPersonModel.class, new RequestHandler() {
             @Override
-            public void onRequestFinish(BaseModel response) {
+            public void onRequestFinish(Object response) {
                 dismissDialog();
                 person = ((OrderPersonModel) response).getData();
                 adapter.notifyDataSetChanged();
@@ -123,7 +123,7 @@ public class OrderUpdatePersonActivity extends DLActivity implements AdapterView
             params.add(new BasicNameValuePair("participant", JSON.toJSONString(person)));
             HttpService.post(Constants.domain() + path, params, BaseModel.class, new RequestHandler() {
                 @Override
-                public void onRequestFinish(BaseModel response) {
+                public void onRequestFinish(Object response) {
                     dismissDialog();
                     setResult(RESULT_OK);
                     finish();

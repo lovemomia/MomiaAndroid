@@ -87,7 +87,7 @@ public class OrderListFragment extends DLFragment implements AdapterView.OnItemC
         params.add(new BasicNameValuePair("count", "20"));
         HttpService.get(Constants.domain() + "/user/order", params, CacheType.DISABLE, OrderListModel.class, new RequestHandler() {
             @Override
-            public void onRequestFinish(BaseModel response) {
+            public void onRequestFinish(Object response) {
                 OrderListModel model = (OrderListModel) response;
                 orderList.addAll(model.getData().getList());
                 if (model.getData().getNextIndex() == 0 || model.getData().getTotalCount() <= orderList.size()) {

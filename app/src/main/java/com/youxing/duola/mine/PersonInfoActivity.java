@@ -84,7 +84,7 @@ public class PersonInfoActivity extends DLActivity implements StepperView.OnNumb
 
         HttpService.get(Constants.domain() + "/user", null, CacheType.DISABLE, AccountModel.class, new RequestHandler() {
             @Override
-            public void onRequestFinish(BaseModel response) {
+            public void onRequestFinish(Object response) {
                 dismissDialog();
 
                 AccountModel model = (AccountModel) response;
@@ -255,7 +255,7 @@ public class PersonInfoActivity extends DLActivity implements StepperView.OnNumb
 
         HttpService.uploadImage(file, new RequestHandler() {
             @Override
-            public void onRequestFinish(BaseModel response) {
+            public void onRequestFinish(Object response) {
                 UploadImageModel model = (UploadImageModel) response;
                 requestUpdateAvatar(model.getData().getPath());
             }
@@ -273,7 +273,7 @@ public class PersonInfoActivity extends DLActivity implements StepperView.OnNumb
         params.add(new BasicNameValuePair("avatar", url));
         HttpService.post(Constants.domain() + "/user/avatar", params, AccountModel.class, new RequestHandler() {
             @Override
-            public void onRequestFinish(BaseModel response) {
+            public void onRequestFinish(Object response) {
                 dismissDialog();
 
                 AccountModel model = (AccountModel) response;
@@ -296,7 +296,7 @@ public class PersonInfoActivity extends DLActivity implements StepperView.OnNumb
         params.add(new BasicNameValuePair("nickname", nickname));
         HttpService.post(Constants.domain() + "/user/nickname", params, AccountModel.class, new RequestHandler() {
             @Override
-            public void onRequestFinish(BaseModel response) {
+            public void onRequestFinish(Object response) {
                 dismissDialog();
 
                 AccountModel model = (AccountModel) response;
@@ -319,7 +319,7 @@ public class PersonInfoActivity extends DLActivity implements StepperView.OnNumb
         params.add(new BasicNameValuePair("sex", sex));
         HttpService.post(Constants.domain() + "/user/sex", params, AccountModel.class, new RequestHandler() {
             @Override
-            public void onRequestFinish(BaseModel response) {
+            public void onRequestFinish(Object response) {
                 dismissDialog();
 
                 AccountModel model = (AccountModel) response;
@@ -342,7 +342,7 @@ public class PersonInfoActivity extends DLActivity implements StepperView.OnNumb
         params.add(new BasicNameValuePair("address", address));
         HttpService.post(Constants.domain() + "/user/address", params, AccountModel.class, new RequestHandler() {
             @Override
-            public void onRequestFinish(BaseModel response) {
+            public void onRequestFinish(Object response) {
                 dismissDialog();
 
                 AccountModel model = (AccountModel) response;
@@ -366,7 +366,7 @@ public class PersonInfoActivity extends DLActivity implements StepperView.OnNumb
         params.add(new BasicNameValuePair("name", name));
         HttpService.post(Constants.domain() + "/user/child/name", params, AccountModel.class, new RequestHandler() {
             @Override
-            public void onRequestFinish(BaseModel response) {
+            public void onRequestFinish(Object response) {
                 dismissDialog();
 
                 AccountModel model = (AccountModel) response;
@@ -390,7 +390,7 @@ public class PersonInfoActivity extends DLActivity implements StepperView.OnNumb
         params.add(new BasicNameValuePair("sex", sex));
         HttpService.post(Constants.domain() + "/user/child/sex", params, AccountModel.class, new RequestHandler() {
             @Override
-            public void onRequestFinish(BaseModel response) {
+            public void onRequestFinish(Object response) {
                 dismissDialog();
 
                 AccountModel model = (AccountModel) response;
@@ -414,7 +414,7 @@ public class PersonInfoActivity extends DLActivity implements StepperView.OnNumb
         params.add(new BasicNameValuePair("birthday", date));
         HttpService.post(Constants.domain() + "/user/child/birthday", params, AccountModel.class, new RequestHandler() {
             @Override
-            public void onRequestFinish(BaseModel response) {
+            public void onRequestFinish(Object response) {
                 dismissDialog();
 
                 AccountModel model = (AccountModel) response;
@@ -445,7 +445,7 @@ public class PersonInfoActivity extends DLActivity implements StepperView.OnNumb
         params.add(new BasicNameValuePair("children", JSON.toJSONString(children)));
         HttpService.post(Constants.domain() + "/user/child", params, AccountModel.class, new RequestHandler() {
             @Override
-            public void onRequestFinish(BaseModel response) {
+            public void onRequestFinish(Object response) {
                 dismissDialog();
 
                 AccountModel model = (AccountModel) response;
@@ -471,7 +471,7 @@ public class PersonInfoActivity extends DLActivity implements StepperView.OnNumb
         params.add(new BasicNameValuePair("cid", String.valueOf(child.getId())));
         HttpService.post(Constants.domain() + "/user/child/delete", params, AccountModel.class, new RequestHandler() {
             @Override
-            public void onRequestFinish(BaseModel response) {
+            public void onRequestFinish(Object response) {
                 dismissDialog();
 
                 AccountModel model = (AccountModel) response;

@@ -61,7 +61,7 @@ public class HttpService {
      * @param clazz 返回数据model类
      * @param handler 请求回调
      */
-    public static void get(String url, List<NameValuePair> params, final CacheType cacheType, Class<? extends BaseModel> clazz, final RequestHandler handler) {
+    public static void get(String url, List<NameValuePair> params, final CacheType cacheType, Class clazz, final RequestHandler handler) {
         List<NameValuePair> allParams = appendBasicParams(params);
         SignTool.sign(allParams);
 
@@ -75,7 +75,7 @@ public class HttpService {
                     String json = new String(cache, "UTF-8");
                     Log.i("http", "hit cache (GET) " + newUrl);
                     Log.d("http", json);
-                    BaseModel response = JSON.parseObject(json, clazz);
+                    Object response = JSON.parseObject(json, clazz);
                     handler.onRequestFinish(response);
                     return;
 
@@ -85,16 +85,21 @@ public class HttpService {
             }
         }
 
-        Response.Listener<? extends BaseModel> listener = new Response.Listener<BaseModel>() {
+        Response.Listener<? extends Object> listener = new Response.Listener<Object>() {
             @Override
-            public void onResponse(BaseModel response) {
-                if (response.getErrno() == 0) {
-                    handler.onRequestFinish(response);
+            public void onResponse(Object response) {
+                if (response instanceof BaseModel) {
+                    BaseModel bm = (BaseModel) response;
+                    if (bm.getErrno() == 0) {
+                        handler.onRequestFinish(response);
 
-                } else {
-                    if (!new ServerErrorHandler().handlerError(response.getErrno(), response.getErrmsg())) {
-                        handler.onRequestFailed(response);
+                    } else {
+                        if (!new ServerErrorHandler().handlerError(bm.getErrno(), bm.getErrmsg())) {
+                            handler.onRequestFailed(bm);
+                        }
                     }
+                } else {
+                    handler.onRequestFinish(response);
                 }
             }
         };
@@ -123,23 +128,28 @@ public class HttpService {
      * @param clazz
      * @param handler
      */
-    public static void post(String url, List<NameValuePair> params, Class<? extends BaseModel> clazz, final RequestHandler handler) {
+    public static void post(String url, List<NameValuePair> params, Class clazz, final RequestHandler handler) {
         List<NameValuePair> allParams = appendBasicParams(params);
         SignTool.sign(allParams);
 
         String newUrl = appendForms(url, allParams);
         Log.i("http", "request (POST) " +newUrl);
 
-        Response.Listener<BaseModel> listener = new Response.Listener<BaseModel>() {
+        Response.Listener<? extends Object> listener = new Response.Listener<Object>() {
             @Override
-            public void onResponse(BaseModel response) {
-                if (response.getErrno() == 0) {
-                    handler.onRequestFinish(response);
+            public void onResponse(Object response) {
+                if (response instanceof BaseModel) {
+                    BaseModel bm = (BaseModel) response;
+                    if (bm.getErrno() == 0) {
+                        handler.onRequestFinish(response);
 
-                } else {
-                    if (!new ServerErrorHandler().handlerError(response.getErrno(), response.getErrmsg())) {
-                        handler.onRequestFailed(response);
+                    } else {
+                        if (!new ServerErrorHandler().handlerError(bm.getErrno(), bm.getErrmsg())) {
+                            handler.onRequestFailed(bm);
+                        }
                     }
+                } else {
+                    handler.onRequestFinish(response);
                 }
             }
         };

@@ -164,7 +164,7 @@ public class HomeFragment extends DLFragment implements AdapterView.OnItemClickL
     }
 
     @Override
-    public void onRequestFinish(BaseModel response) {
+    public void onRequestFinish(Object response) {
         if (isRefresh) {
             isRefresh = false;
             swipeLayout.setRefreshing(false);

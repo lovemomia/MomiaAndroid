@@ -54,7 +54,7 @@ public class MyFavActivity extends DLActivity implements AdapterView.OnItemClick
         params.add(new BasicNameValuePair("start", String.valueOf(nextIndex)));
         HttpService.get(Constants.domain() + "/user/favorite", params, CacheType.DISABLE, ProductListModel.class, new RequestHandler() {
             @Override
-            public void onRequestFinish(BaseModel response) {
+            public void onRequestFinish(Object response) {
                 ProductListModel model = (ProductListModel) response;
                 productList.addAll(model.getData().getList());
                 nextIndex = model.getData().getNextIndex();

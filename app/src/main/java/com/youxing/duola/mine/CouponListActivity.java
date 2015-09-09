@@ -72,7 +72,7 @@ public class CouponListActivity extends DLActivity implements AdapterView.OnItem
         params.add(new BasicNameValuePair("oid", oid));
         HttpService.get(Constants.domain() + "/user/coupon", params, CacheType.DISABLE, CouponListModel.class, new RequestHandler() {
             @Override
-            public void onRequestFinish(BaseModel response) {
+            public void onRequestFinish(Object response) {
                 CouponListModel model = (CouponListModel) response;
                 couponList.addAll(model.getData().getList());
                 if (model.getData().getTotalCount() <= couponList.size()) {

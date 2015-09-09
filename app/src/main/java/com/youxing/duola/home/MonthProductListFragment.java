@@ -74,7 +74,7 @@ public class MonthProductListFragment extends DLFragment implements AdapterView.
         params.add(new BasicNameValuePair("month", String.valueOf(getArguments().getInt("month"))));
         HttpService.get(Constants.domain() + "/product/month", params, CacheType.DISABLE, ProductCalendarMonthModel.class, new RequestHandler() {
             @Override
-            public void onRequestFinish(BaseModel response) {
+            public void onRequestFinish(Object response) {
                 getDLActivity().dismissDialog();
                 ProductCalendarMonthModel model = (ProductCalendarMonthModel) response;
                 groups.addAll(model.getData());

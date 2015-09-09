@@ -111,7 +111,7 @@ public class RegisterActivity extends DLActivity implements View.OnClickListener
 
         HttpService.post(Constants.domain() + "/auth/send", params, BaseModel.class, new RequestHandler() {
             @Override
-            public void onRequestFinish(BaseModel response) {
+            public void onRequestFinish(Object response) {
                 dismissDialog();
                 codeBtn.setEnabled(false);
                 codeBtn.setText("60s");
@@ -145,7 +145,7 @@ public class RegisterActivity extends DLActivity implements View.OnClickListener
 
         HttpService.post(Constants.domain() + "/auth/register", params, AccountModel.class, new RequestHandler() {
             @Override
-            public void onRequestFinish(BaseModel response) {
+            public void onRequestFinish(Object response) {
                 dismissDialog();
 
                 AccountModel model = (AccountModel) response;
