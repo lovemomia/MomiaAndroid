@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.Window;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.igexin.sdk.PushManager;
 import com.umeng.analytics.MobclickAgent;
@@ -60,4 +61,16 @@ public class RootTabActivity extends DLActivity {
         return root;
     }
 
+    private long mPrevbackPress = -1;
+
+    @Override
+    public void onBackPressed() {
+        long t = System.currentTimeMillis();
+        if (t - mPrevbackPress <= 1000) {
+            super.onBackPressed();
+        } else {
+            Toast.makeText(this, "再按一次返回退出松果亲子", Toast.LENGTH_SHORT).show();
+        }
+        mPrevbackPress = t;
+    }
 }

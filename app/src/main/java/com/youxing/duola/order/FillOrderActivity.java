@@ -417,7 +417,7 @@ public class FillOrderActivity extends DLActivity implements View.OnClickListene
                 numberItem.getStepperView().setListener(new StepperView.OnNumberChangedListener() {
                     @Override
                     public void onNumberChanged(StepperView stepper) {
-                        int index = (int)stepper.getTag();
+                        Integer index = (Integer)stepper.getTag();
                         stepperGroup.getCountMap().put(index, stepper.getNumber());
                         stepperGroup.compute(showSkus.get(selectSkuIndex).getPrices());
                         priceTv.setText(PriceUtils.formatPriceString(stepperGroup.getTotalPrice()));
