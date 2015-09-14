@@ -183,8 +183,8 @@ public class OrderDetailActivity extends DLActivity implements AdapterView.OnIte
                         List<NameValuePair> infoList = new ArrayList<NameValuePair>();
                         infoList.add(new BasicNameValuePair("订单编号：", String.valueOf(model.getData().getId())));
                         infoList.add(new BasicNameValuePair("下单时间：", model.getData().getAddTime()));
-                        infoList.add(new BasicNameValuePair("数         量：", String.valueOf(model.getData().getCount())));
-                        infoList.add(new BasicNameValuePair("总         价：", PriceUtils.formatPriceString(model.getData().getPrice())));
+                        infoList.add(new BasicNameValuePair("数         量：", String.valueOf(model.getData().getParticipants())));
+                        infoList.add(new BasicNameValuePair("总         价：", PriceUtils.formatPriceString(model.getData().getTotalFee())));
                         infoView.setInfo(infoList);
                     } else {
                         List<NameValuePair> infoList = new ArrayList<NameValuePair>();
