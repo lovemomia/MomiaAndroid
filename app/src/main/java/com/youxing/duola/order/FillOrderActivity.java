@@ -26,6 +26,7 @@ import com.youxing.duola.model.FillOrderModel;
 import com.youxing.duola.model.OrderDetailModel;
 import com.youxing.duola.model.Sku;
 import com.youxing.duola.order.views.OrderNumberItem;
+import com.youxing.duola.order.views.OrderPlaceItem;
 import com.youxing.duola.order.views.OrderSkuItem;
 import com.youxing.duola.utils.PriceUtils;
 import com.youxing.duola.views.SectionView;
@@ -56,15 +57,17 @@ public class FillOrderActivity extends DLActivity implements View.OnClickListene
     private Button okBtn;
 
     private FillOrderModel model;
+    private List<Sku> showSkus;
     private boolean isShowAllSku;
-    private boolean needRealName;
     private int selectSkuIndex = -1;
-    private int selectAdultNum;
-    private int selectChildNum;
     private boolean isSelectPerson;
     private SubmitOrder submitOrder;
 
     private StepperGroup stepperGroup;
+
+    private List<Sku> selectPlaceSkus;
+    private boolean isShowPlaces;
+    private FillOrderModel.Place selectedPlace;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -95,8 +98,17 @@ public class FillOrderActivity extends DLActivity implements View.OnClickListene
 
                 FillOrderModel model = (FillOrderModel) response;
                 FillOrderActivity.this.model = model;
-                adapter.notifyDataSetChanged();
+                if (model.getData().getPlaces() != null && model.getData().getPlaces().size() > 0) {
+                    isShowPlaces = true;
+                    selectedPlace = model.getData().getPlaces().get(0);
+                    selectPlaceSkus = new ArrayList<Sku>();
+                    resetSelectPlaceSkus();
+                    showSkus = selectPlaceSkus;
+                } else {
+                    showSkus = model.getData().getSkus();
+                }
 
+                adapter.notifyDataSetChanged();
                 submitOrder = new SubmitOrder();
             }
 
@@ -111,6 +123,19 @@ public class FillOrderActivity extends DLActivity implements View.OnClickListene
                 });
             }
         });
+    }
+
+    private void resetSelectPlaceSkus() {
+        if (selectedPlace == null || model == null) {
+            return;
+        }
+
+        selectPlaceSkus.clear();
+        for (Sku sku : model.getData().getSkus()) {
+            if (sku.getPlaceId() == selectedPlace.getId()) {
+                selectPlaceSkus.add(sku);
+            }
+        }
     }
 
     private void requestSubmitOrder() {
@@ -152,7 +177,7 @@ public class FillOrderActivity extends DLActivity implements View.OnClickListene
         if (selectSkuIndex == -1) {
             return false;
         }
-        Sku sku = model.getData().getSkus().get(selectSkuIndex);
+        Sku sku = showSkus.get(selectSkuIndex);
         submitOrder.productId = sku.getProductId();
         submitOrder.skuId = sku.getSkuId();
         submitOrder.mobile = model.getData().getContacts().getMobile();
@@ -164,19 +189,17 @@ public class FillOrderActivity extends DLActivity implements View.OnClickListene
     private void updatePrices() {
         submitOrder.prices.clear();
 
-        int i = 0;
-        for (StepperView sv : stepperGroup.getStepperList()) {
-            int number = sv.getNumber();
-            if (number > 0) {
-                Sku.Price sp = model.getData().getSkus().get(selectSkuIndex).getPrices().get(i);
+        for (int i = 0; i < showSkus.get(selectSkuIndex).getPrices().size(); i++) {
+            Sku.Price sp = showSkus.get(selectSkuIndex).getPrices().get(i);
+            Integer count = stepperGroup.getCountMap().get(i);
+            if (count != null) {
                 SubmitPrice subPrice = new SubmitPrice();
                 subPrice.adult = sp.getAdult();
                 subPrice.child = sp.getChild();
                 subPrice.price = sp.getPrice();
-                subPrice.count = number;
+                subPrice.count = count;
                 submitOrder.prices.add(subPrice);
             }
-            i ++;
         }
     }
 
@@ -190,20 +213,37 @@ public class FillOrderActivity extends DLActivity implements View.OnClickListene
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         GroupStyleAdapter.IndexPath ip = adapter.getIndexForPosition(position);
-        if (ip.section == 0) {
-            if (ip.row < model.getData().getSkus().size()) {
+        int sec = ip.section;
+        if (isShowPlaces) {
+            sec--;
+        }
+        if (sec == -1) {
+            FillOrderModel.Place place = model.getData().getPlaces().get(ip.row);
+            if (place.equals(selectedPlace)) {
+                return;
+            }
+            selectedPlace = place;
+            // reset
+            resetSelectPlaceSkus();
+            selectSkuIndex = -1;
+            stepperGroup = null;
+            isSelectPerson = false;
+            isShowAllSku = false;
+            priceTv.setText(PriceUtils.formatPriceString(0));
+            adapter.notifyDataSetChanged();
+
+        } else if (sec == 0) {
+            if (ip.row < showSkus.size()) {
                 if (selectSkuIndex == ip.row) {
                     return;
                 }
-                if (isSkuSelectAble(model.getData().getSkus().get(ip.row))) {
+                if (isSkuSelectAble(showSkus.get(ip.row))) {
                     selectSkuIndex = ip.row;
 
                     //reset
                     stepperGroup = null;
-                    selectAdultNum = 0;
-                    selectChildNum = 0;
                     isSelectPerson = false;
-
+                    priceTv.setText(PriceUtils.formatPriceString(0));
                     adapter.notifyDataSetChanged();
                 }
 
@@ -211,14 +251,14 @@ public class FillOrderActivity extends DLActivity implements View.OnClickListene
                 isShowAllSku = true;
                 adapter.notifyDataSetChanged();
             }
-        } else if (ip.section == 2) {
-            Sku sku = model.getData().getSkus().get(selectSkuIndex);
+        } else if (sec == 2) {
+            Sku sku = showSkus.get(selectSkuIndex);
             if (sku.isNeedRealName() && ip.row == 0) {
-                if (selectAdultNum > 0 || selectChildNum > 0) {
+                if (stepperGroup.getSelectAdultNum() > 0 || stepperGroup.getSelectChildNum() > 0) {
                     Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("duola://orderperson"));
                     intent.putExtra("select", true);
-                    intent.putExtra("adult", selectAdultNum);
-                    intent.putExtra("child", selectChildNum);
+                    intent.putExtra("adult", stepperGroup.getSelectAdultNum());
+                    intent.putExtra("child", stepperGroup.getSelectChildNum());
                     startActivityForResult(intent, REQUEST_CODE_SELECT_PERSON);
                 }
 
@@ -274,18 +314,25 @@ public class FillOrderActivity extends DLActivity implements View.OnClickListene
 
         @Override
         public int getCountInSection(int section) {
-            if (section == 0) {
-                if (model.getData().getSkus().size() > 3 && !isShowAllSku) {
+            int sec = section;
+            if (isShowPlaces) {
+                sec--;
+            }
+            if (sec == -1) {
+                return model.getData().getPlaces().size();
+
+            } else if (sec == 0) {
+                if (showSkus.size() > 3 && !isShowAllSku) {
                     return 4;
                 } else {
-                    return model.getData().getSkus().size();
+                    return showSkus.size();
                 }
 
-            } else if (section == 1) {
+            } else if (sec == 1) {
                 if (selectSkuIndex == -1) {
                     return 0;
                 }
-                Sku sku = model.getData().getSkus().get(selectSkuIndex);
+                Sku sku = showSkus.get(selectSkuIndex);
                 if (sku.getStock() > 0) {
                     return sku.getPrices().size();
                 } else {
@@ -296,7 +343,7 @@ public class FillOrderActivity extends DLActivity implements View.OnClickListene
                 if (selectSkuIndex == -1) {
                     return 0;
                 }
-                Sku sku = model.getData().getSkus().get(selectSkuIndex);
+                Sku sku = showSkus.get(selectSkuIndex);
                 if (sku.isNeedRealName()) {
                     return 2;
                 } else {
@@ -308,8 +355,8 @@ public class FillOrderActivity extends DLActivity implements View.OnClickListene
         @Override
         public void notifyDataSetChanged() {
             if (model != null && selectSkuIndex == -1) {
-                for (int i = 0; i < model.getData().getSkus().size(); i++) {
-                    Sku sku = model.getData().getSkus().get(i);
+                for (int i = 0; i < showSkus.size(); i++) {
+                    Sku sku = showSkus.get(i);
                     if (isSkuSelectAble(sku)) {
                         selectSkuIndex = i;
                         break;
@@ -324,16 +371,31 @@ public class FillOrderActivity extends DLActivity implements View.OnClickListene
             if (model == null) {
                 return 0;
             }
+            if (isShowPlaces) {
+                return 4;
+            }
             return 3;
         }
 
         @Override
         public View getViewForRow(View convertView, ViewGroup parent, int section, final int row) {
             View view = null;
-            if (section == 0) {
-                if (row < model.getData().getSkus().size()) {
+            int sec = section;
+            if (isShowPlaces) {
+                sec--;
+            }
+
+            if (sec == -1) {
+                FillOrderModel.Place place = model.getData().getPlaces().get(row);
+                OrderPlaceItem placeItem = OrderPlaceItem.create(FillOrderActivity.this);
+                placeItem.setData(place);
+                placeItem.setSelect(place.equals(selectedPlace));
+                view = placeItem;
+
+            } else if (sec == 0) {
+                if (row < showSkus.size()) {
                     OrderSkuItem skuItem = OrderSkuItem.create(FillOrderActivity.this);
-                    skuItem.setData(model.getData().getSkus().get(row));
+                    skuItem.setData(showSkus.get(row));
                     view = skuItem;
 
                     if (row == selectSkuIndex) {
@@ -346,60 +408,51 @@ public class FillOrderActivity extends DLActivity implements View.OnClickListene
                     view = LayoutInflater.from(FillOrderActivity.this).inflate(R.layout.layout_order_other_sku, null);
                 }
 
-            } else if (section == 1) {
+            } else if (sec == 1) {
                 OrderNumberItem numberItem = OrderNumberItem.create(FillOrderActivity.this);
-                Sku.Price price = model.getData().getSkus().get(selectSkuIndex).getPrices().get(row);
+                Sku.Price price = showSkus.get(selectSkuIndex).getPrices().get(row);
                 numberItem.setData(price);
+                numberItem.getStepperView().setTag(row);
+
+                numberItem.getStepperView().setListener(new StepperView.OnNumberChangedListener() {
+                    @Override
+                    public void onNumberChanged(StepperView stepper) {
+                        int index = (int)stepper.getTag();
+                        stepperGroup.getCountMap().put(index, stepper.getNumber());
+                        stepperGroup.compute(showSkus.get(selectSkuIndex).getPrices());
+                        priceTv.setText(PriceUtils.formatPriceString(stepperGroup.getTotalPrice()));
+                    }
+                });
 
                 if (stepperGroup == null) {
                     stepperGroup = new StepperGroup();
-                    int stock = model.getData().getSkus().get(selectSkuIndex).getStock();
+                    int stock = showSkus.get(selectSkuIndex).getStock();
                     stepperGroup.setMax(stock == 0 ? Integer.MAX_VALUE : stock);
                     stepperGroup.setMin(0);
-                    stepperGroup.addStepper(numberItem.getStepperView());
-                    stepperGroup.setListener(new StepperView.OnNumberChangedListener() {
-                        @Override
-                        public void onNumberChanged(StepperView stepper) {
-                            double totalPrice = 0;
-                            int adultNum = 0;
-                            int childNum = 0;
-                            int i = 0;
-                            for (StepperView sv : stepperGroup.getStepperList()) {
-                                int number = sv.getNumber();
-                                Sku.Price skuPrice = model.getData().getSkus().get(selectSkuIndex).getPrices().get(row);
-                                double price = skuPrice.getPrice();
-                                totalPrice += price * number;
-                                adultNum += skuPrice.getAdult() * number;
-                                childNum += skuPrice.getChild() * number;
-
-                                i ++;
-                            }
-                            priceTv.setText(PriceUtils.formatPriceString(totalPrice));
-                            FillOrderActivity.this.selectAdultNum = adultNum;
-                            FillOrderActivity.this.selectChildNum = childNum;
-                        }
-                    });
                 } else {
-                    if (row < stepperGroup.getStepperList().size()) {
-                        numberItem.getStepperView().setNumber(stepperGroup.getStepperList().get(row).getNumber());
+                    Integer count = stepperGroup.getCountMap().get(row);
+                    if (count == null) {
+                        count = 0;
                     }
+                    numberItem.getStepperView().setNumber(count);
                 }
+                stepperGroup.adjustStepper(numberItem.getStepperView());
 
                 view = numberItem;
 
-            } else if (section == 2) {
+            } else if (sec == 2) {
                 SimpleListItem simpleListItem = SimpleListItem.create(FillOrderActivity.this);
                 simpleListItem.setShowArrow(true);
-                Sku sku = model.getData().getSkus().get(selectSkuIndex);
+                Sku sku = showSkus.get(selectSkuIndex);
                 if (sku.isNeedRealName() && row == 0) {
                     simpleListItem.setTitle("出行人");
                     if (isSelectPerson) {
                         StringBuilder sb = new StringBuilder();
-                        if (selectAdultNum > 0) {
-                            sb.append(selectAdultNum + "成人");
+                        if (stepperGroup.getSelectAdultNum() > 0) {
+                            sb.append(stepperGroup.getSelectAdultNum() + "成人");
                         }
-                        if (selectChildNum > 0) {
-                            sb.append(selectChildNum + "小孩");
+                        if (stepperGroup.getSelectChildNum() > 0) {
+                            sb.append(stepperGroup.getSelectChildNum() + "小孩");
                         }
                         simpleListItem.setSubTitle(sb.toString());
                     }
@@ -416,13 +469,20 @@ public class FillOrderActivity extends DLActivity implements View.OnClickListene
         @Override
         public View getViewForSection(View convertView, ViewGroup parent, int section) {
             SectionView view = SectionView.create(FillOrderActivity.this);
-            if (section == 0) {
+            int sec = section;
+            if (isShowPlaces) {
+                sec--;
+            }
+            if (sec == -1) {
+                view.setTitle("选择区域");
+
+            } else if (sec == 0) {
                 view.setTitle("选择场次");
 
-            } else if (section == 1) {
+            } else if (sec == 1) {
                 view.setTitle("选择出行人数");
 
-            } else if (section == 2) {
+            } else if (sec == 2) {
                 return super.getViewForSection(convertView, parent, section);
             }
             return view;

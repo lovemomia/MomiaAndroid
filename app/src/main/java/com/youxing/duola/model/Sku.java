@@ -17,6 +17,7 @@ public class Sku {
     private String time;
     private int type;
     private List<Price> prices;
+    private long placeId;
 
     public String getDesc() {
         return desc;
@@ -96,6 +97,14 @@ public class Sku {
 
     public void setPrices(List<Price> prices) {
         this.prices = prices;
+    }
+
+    public long getPlaceId() {
+        return placeId;
+    }
+
+    public void setPlaceId(long placeId) {
+        this.placeId = placeId;
     }
 
     public static class Price {

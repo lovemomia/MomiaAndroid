@@ -22,6 +22,7 @@ public class FillOrderModel extends BaseModel {
     public static class FillOrderData {
         private Contact contacts;
         private List<Sku> skus;
+        private List<Place> places;
 
         public Contact getContacts() {
             return contacts;
@@ -37,6 +38,53 @@ public class FillOrderModel extends BaseModel {
 
         public void setSkus(List<Sku> skus) {
             this.skus = skus;
+        }
+
+        public List<Place> getPlaces() {
+            return places;
+        }
+
+        public void setPlaces(List<Place> places) {
+            this.places = places;
+        }
+    }
+
+    public static class Place {
+        private long id;
+        private String name;
+        private String region;
+        private String address;
+
+        public long getId() {
+            return id;
+        }
+
+        public void setId(long id) {
+            this.id = id;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public void setName(String name) {
+            this.name = name;
+        }
+
+        public String getRegion() {
+            return region;
+        }
+
+        public void setRegion(String region) {
+            this.region = region;
+        }
+
+        public String getAddress() {
+            return address;
+        }
+
+        public void setAddress(String address) {
+            this.address = address;
         }
     }
 

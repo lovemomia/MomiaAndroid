@@ -1,28 +1,32 @@
 package com.youxing.duola.views;
 
-import java.util.ArrayList;
+import com.youxing.duola.model.Sku;
+
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Jun Deng on 15/8/13.
  */
-public class StepperGroup implements StepperView.OnNumberChangedListener {
+public class StepperGroup {
 
-    private List<StepperView> stepperList = new ArrayList<StepperView>();
+    private Map<Integer, Integer> countMap = new HashMap<Integer, Integer>();
 
     private int min;
     private int max;
     private int total;
 
-    private StepperView.OnNumberChangedListener listener;
+    private int selectAdultNum;
+    private int selectChildNum;
+    private double totalPrice;
 
-    public void addStepper(StepperView stepper) {
-        stepper.setListener(this);
-        stepperList.add(stepper);
+    public Map<Integer, Integer> getCountMap() {
+        return countMap;
     }
 
-    public void clearStepper() {
-        stepperList.clear();
+    public void clear() {
+        countMap.clear();
     }
 
     public void setMax(int max) {
@@ -33,36 +37,45 @@ public class StepperGroup implements StepperView.OnNumberChangedListener {
         this.min = min;
     }
 
-    public List<StepperView> getStepperList() {
-        return stepperList;
+    public int getSelectAdultNum() {
+        return selectAdultNum;
     }
 
-    public int getNumberAtIndex(int index) {
-        if (index >= stepperList.size()) {
-            return 0;
+    public int getSelectChildNum() {
+        return selectChildNum;
+    }
+
+    public double getTotalPrice() {
+        return totalPrice;
+    }
+
+    public void compute(List<Sku.Price> skuPrices) {
+        double totalPrice = 0;
+        int adultNum = 0;
+        int childNum = 0;
+        for (int i = 0; i < skuPrices.size(); i++) {
+            Sku.Price price = skuPrices.get(i);
+            Integer count = countMap.get(i);
+            if (count != null) {
+                totalPrice += price.getPrice() * count;
+                adultNum += price.getAdult() * count;
+                childNum += price.getChild() * count;
+            }
         }
-        return stepperList.get(index).getNumber();
+        this.selectAdultNum = adultNum;
+        this.selectChildNum = childNum;
+        this.totalPrice = totalPrice;
     }
 
-    public void setListener(StepperView.OnNumberChangedListener listener) {
-        this.listener = listener;
-    }
-
-    @Override
-    public void onNumberChanged(StepperView stepper) {
+    public void adjustStepper(StepperView stepper) {
         updateTotal();
-        for (StepperView sv : stepperList) {
-            sv.setMax(max - total + sv.getNumber());
-        }
-        if (listener != null) {
-            listener.onNumberChanged(stepper);
-        }
+        stepper.setMax(max - total + stepper.getNumber());
     }
 
     private void updateTotal() {
         total = 0;
-        for (StepperView sv : stepperList) {
-            total += sv.getNumber();
+        for (Integer count : countMap.values()) {
+            total += count;
         }
     }
 }
