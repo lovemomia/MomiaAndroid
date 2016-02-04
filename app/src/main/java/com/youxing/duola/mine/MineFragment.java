@@ -85,31 +85,31 @@ public class MineFragment extends SGFragment implements AdapterView.OnItemClickL
             startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("duola://personinfo")));
         } else if (section == 1) {
             if (row == 0) {
-                // 我的订单
-                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("duola://myorderlist")));
+                // 预约课程
+                startActivity("duola://bookingsubjectlist");
             } else {
-                // 我的红包
-                startActivity("duola://couponlist");
+                // 已选课程
+                startActivity("duola://bookedcourselist");
             }
         } else if (section == 2) {
-            // 我要爆料
-            startActivity("duola://web?url=http://m.duolaqinzi.com/recommend");
+            if (row == 0) {
+                // 我的订单
+                startActivity("duola://myorderlist");
+            } else if (row == 1) {
+                // 我的评价
+                startActivity("duola://userinfo?uid=" + "&me=1");
+            } else {
+                startActivity("duola://couponlist?status=0");
+            }
 
         } else if (section == 3) {
-            if (row == 0) {
-                // 我的收藏
-                startActivity("duola://myfav");
-            } else {
-                // 出行人
-                startActivity("duola://orderperson");
-            }
-        } else if (section == 4) {
             if (row == 0) {
                 // 意见反馈
                 startActivity("duola://feedback");
             } else {
                 startActivity("duola://about");
             }
+
         }
     }
 
@@ -121,15 +121,17 @@ public class MineFragment extends SGFragment implements AdapterView.OnItemClickL
 
         @Override
         public int getCountInSection(int section) {
-            if (section == 0 || section == 2) {
+            if (section == 0) {
                 return 1;
+            } else if (section == 2) {
+                return 3;
             }
             return 2;
         }
 
         @Override
         public int getSectionCount() {
-            return 5;
+            return 4;
         }
 
         @Override
@@ -161,32 +163,28 @@ public class MineFragment extends SGFragment implements AdapterView.OnItemClickL
                 simpleListItem.setShowArrow(true);
                 if (section == 1) {
                     if (row == 0) {
+                        simpleListItem.setTitle("预约课程");
+                        simpleListItem.setIcon(R.drawable.ic_mine_booking);
+
+                    } else {
+                        simpleListItem.setTitle("已选课程");
+                        simpleListItem.setIcon(R.drawable.ic_mine_booked);
+                    }
+                } else if (section == 2) {
+                    if (row == 0) {
                         simpleListItem.setTitle("我的订单");
                         simpleListItem.setIcon(R.drawable.ic_mine_order);
+
+                    } else if (row == 1) {
+                        simpleListItem.setTitle("我的评价");
+                        simpleListItem.setIcon(R.drawable.ic_mine_comment);
 
                     } else {
                         simpleListItem.setTitle("我的红包");
                         simpleListItem.setIcon(R.drawable.ic_mine_coupon);
                     }
-                } else if (section == 2) {
-//                    if (row == 0) {
-//                        simpleListItem.setTitle("成为领队");
-//                        simpleListItem.setIcon(R.drawable.ic_mine_leader);
-//
-//                    } else {
-                        simpleListItem.setTitle("我要爆料");
-                        simpleListItem.setIcon(R.drawable.ic_mine_recommend);
-//                    }
-                } else if (section == 3) {
-                    if (row == 0) {
-                        simpleListItem.setTitle("我的收藏");
-                        simpleListItem.setIcon(R.drawable.ic_mine_collect);
 
-                    } else {
-                        simpleListItem.setTitle("常用出行人");
-                        simpleListItem.setIcon(R.drawable.ic_mine_people);
-                    }
-                } else if (section == 4) {
+                } else if (section == 3) {
                     if (row == 0) {
                         simpleListItem.setTitle("意见反馈");
                         simpleListItem.setIcon(R.drawable.ic_mine_feedback);
