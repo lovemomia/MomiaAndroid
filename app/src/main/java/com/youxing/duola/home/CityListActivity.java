@@ -15,7 +15,7 @@ import com.youxing.common.services.http.HttpService;
 import com.youxing.common.services.http.RequestHandler;
 import com.youxing.common.utils.CityManager;
 import com.youxing.duola.R;
-import com.youxing.duola.app.DLActivity;
+import com.youxing.duola.app.SGActivity;
 import com.youxing.duola.model.CityListModel;
 import com.youxing.duola.views.SectionView;
 import com.youxing.duola.views.SimpleListItem;
@@ -23,7 +23,7 @@ import com.youxing.duola.views.SimpleListItem;
 /**
  * Created by Jun Deng on 15/8/27.
  */
-public class CityListActivity extends DLActivity implements AdapterView.OnItemClickListener {
+public class CityListActivity extends SGActivity implements AdapterView.OnItemClickListener {
 
     private Adapter adapter;
 

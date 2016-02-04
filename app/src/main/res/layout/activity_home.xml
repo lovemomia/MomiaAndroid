@@ -1,10 +1,62 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <include android:id="@+id/titleBar"
-        layout="@layout/layout_custom_titlebar_dark"/>
+    <!--<include android:id="@+id/titleBar"-->
+        <!--layout="@layout/layout_custom_titlebar_dark"/>-->
+
+    <com.youxing.duola.home.views.HomeTitleBar
+        android:layout_width="match_parent"
+        android:layout_height="?actionBarSize"
+        android:id="@+id/titleBar"
+        app:theme="@style/MyActionBar.Dark">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent">
+
+            <com.youxing.common.views.CircularImage
+                android:id="@+id/avatar"
+                android:layout_width="40dp"
+                android:layout_height="40dp"/>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingRight="10dp"
+                android:paddingLeft="10dp"
+                android:layout_weight="1">
+                <TextView
+                    android:id="@+id/name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/text_medium"/>
+                <TextView
+                    android:id="@+id/age"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/text_small"/>
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/city"
+            android:gravity="right"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/white"
+            android:drawableRight="@drawable/ic_arrow_down"
+            android:drawablePadding="5dp"
+            android:text="上海"
+            android:textSize="@dimen/text_large"/>
+
+    </com.youxing.duola.home.views.HomeTitleBar>
 
     <android.support.v4.widget.SwipeRefreshLayout
         android:id="@+id/refresh"

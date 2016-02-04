@@ -5,6 +5,8 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -13,13 +15,15 @@ import android.widget.ListView;
 
 import com.youxing.common.adapter.GroupStyleAdapter;
 import com.youxing.duola.R;
-import com.youxing.duola.app.DLActivity;
+import com.youxing.duola.app.SGActivity;
 import com.youxing.duola.views.SimpleListItem;
 
 /**
  * Created by Jun Deng on 15/8/28.
  */
-public class ContactActivity extends DLActivity implements AdapterView.OnItemClickListener {
+public class ContactActivity extends SGActivity implements AdapterView.OnItemClickListener {
+
+    private static final int MENU_SUBMIT = 1;
 
     private Adapter adapter;
 
@@ -38,26 +42,33 @@ public class ContactActivity extends DLActivity implements AdapterView.OnItemCli
 
         name = getIntent().getData().getQueryParameter("name");
         phone = getIntent().getData().getQueryParameter("phone");
+    }
 
-        getTitleBar().getRightBtn().setText("完成");
-        getTitleBar().getRightBtn().setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (TextUtils.isEmpty(name)) {
-                    showDialog(ContactActivity.this, "姓名不能为空");
-                    return;
-                }
-                if (TextUtils.isEmpty(phone)) {
-                    showDialog(ContactActivity.this, "电话号不能为空");
-                    return;
-                }
-                Intent data = new Intent();
-                data.putExtra("name", name);
-                data.putExtra("phone", phone);
-                setResult(RESULT_OK, data);
-                finish();
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        menu.add(Menu.NONE, MENU_SUBMIT, 0, "完成").setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == MENU_SUBMIT) {
+            if (TextUtils.isEmpty(name)) {
+                showDialog(ContactActivity.this, "姓名不能为空");
+                return true;
             }
-        });
+            if (TextUtils.isEmpty(phone)) {
+                showDialog(ContactActivity.this, "电话号不能为空");
+                return true;
+            }
+            Intent data = new Intent();
+            data.putExtra("name", name);
+            data.putExtra("phone", phone);
+            setResult(RESULT_OK, data);
+            finish();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     @Override

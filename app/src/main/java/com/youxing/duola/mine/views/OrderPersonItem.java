@@ -1,8 +1,6 @@
 package com.youxing.duola.mine.views;
 
 import android.content.Context;
-import android.content.Intent;
-import android.net.Uri;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,7 +8,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.youxing.duola.R;
-import com.youxing.duola.app.DLActivity;
+import com.youxing.duola.app.SGActivity;
 import com.youxing.duola.model.OrderPerson;
 
 /**
@@ -52,7 +50,7 @@ public class OrderPersonItem extends LinearLayout implements View.OnClickListene
     @Override
     public void onClick(View v) {
         if (person != null) {
-            ((DLActivity)getContext()).startActivityForResult("duola://orderupdateperson?personId=" + person.getId(), 1);
+            ((SGActivity)getContext()).startActivityForResult("duola://orderupdateperson?personId=" + person.getId(), 1);
         }
     }
 

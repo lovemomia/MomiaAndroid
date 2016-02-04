@@ -100,9 +100,8 @@
             <Button
                 android:id="@+id/forgetpwd_get_code_btn"
                 android:layout_width="50dp"
-                android:layout_height="wrap_content"
+                android:layout_height="30dp"
                 android:background="@drawable/btn_shape_green"
-                android:padding="5dp"
                 android:textColor="@color/btn_text"
                 android:textSize="@dimen/text_medium"
                 android:text="获取"/>

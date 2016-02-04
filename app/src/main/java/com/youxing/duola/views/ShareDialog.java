@@ -14,7 +14,7 @@ import com.tencent.mm.sdk.openapi.IWXAPI;
 import com.tencent.mm.sdk.openapi.WXAPIFactory;
 import com.youxing.common.app.Constants;
 import com.youxing.duola.R;
-import com.youxing.duola.app.DLActivity;
+import com.youxing.duola.app.SGActivity;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
@@ -71,7 +71,7 @@ public class ShareDialog extends AlertDialog implements View.OnClickListener {
         // 微信分享
         final IWXAPI api = WXAPIFactory.createWXAPI(getContext(), Constants.WECHAT_APP_ID);
         if (!api.isWXAppInstalled() || !api.isWXAppSupportAPI()) {
-            ((DLActivity)getContext()).showDialog(getContext(), "使用微信分享功能需要您安装最新的微信客户端");
+            ((SGActivity)getContext()).showDialog(getContext(), "使用微信分享功能需要您安装最新的微信客户端");
             return;
         }
 

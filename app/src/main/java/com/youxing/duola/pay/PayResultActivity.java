@@ -12,7 +12,7 @@ import com.youxing.common.services.http.HttpService;
 import com.youxing.common.services.http.RequestHandler;
 import com.youxing.duola.R;
 import com.youxing.duola.RootTabActivity;
-import com.youxing.duola.app.DLActivity;
+import com.youxing.duola.app.SGActivity;
 import com.youxing.duola.model.PayCheckModel;
 import com.youxing.duola.views.ShareDialog;
 
@@ -25,7 +25,7 @@ import java.util.List;
 /**
  * Created by Jun Deng on 15/8/21.
  */
-public class PayResultActivity extends DLActivity implements View.OnClickListener {
+public class PayResultActivity extends SGActivity implements View.OnClickListener {
 
     private String oid;
     private String pid;

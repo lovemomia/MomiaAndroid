@@ -11,13 +11,13 @@ import android.widget.TextView;
 import com.youxing.common.adapter.GroupStyleAdapter;
 import com.youxing.common.app.Enviroment;
 import com.youxing.duola.R;
-import com.youxing.duola.app.DLActivity;
+import com.youxing.duola.app.SGActivity;
 import com.youxing.duola.views.SimpleListItem;
 
 /**
  * Created by Jun Deng on 15/8/31.
  */
-public class AboutActivity extends DLActivity implements AdapterView.OnItemClickListener {
+public class AboutActivity extends SGActivity implements AdapterView.OnItemClickListener {
 
     private Adapter adapter;
 

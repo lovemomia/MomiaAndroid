@@ -13,7 +13,7 @@ import com.youxing.common.services.http.CacheType;
 import com.youxing.common.services.http.HttpService;
 import com.youxing.common.services.http.RequestHandler;
 import com.youxing.duola.R;
-import com.youxing.duola.app.DLActivity;
+import com.youxing.duola.app.SGActivity;
 import com.youxing.duola.model.PlayFellowModel;
 import com.youxing.duola.product.views.PlayFellowItemView;
 import com.youxing.duola.product.views.PlayFellowSectionView;
@@ -27,7 +27,7 @@ import java.util.List;
 /**
  * Created by Jun Deng on 15/8/28.
  */
-public class PlayFellowActivity extends DLActivity implements AdapterView.OnItemClickListener {
+public class PlayFellowActivity extends SGActivity implements AdapterView.OnItemClickListener {
 
     private Adapter adapter;
 

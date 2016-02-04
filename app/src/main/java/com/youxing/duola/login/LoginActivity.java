@@ -4,8 +4,9 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 
 import com.youxing.common.app.Constants;
@@ -14,7 +15,7 @@ import com.youxing.common.services.account.AccountService;
 import com.youxing.common.services.http.HttpService;
 import com.youxing.common.services.http.RequestHandler;
 import com.youxing.duola.R;
-import com.youxing.duola.app.DLActivity;
+import com.youxing.duola.app.SGActivity;
 import com.youxing.duola.model.AccountModel;
 
 import org.apache.http.NameValuePair;
@@ -26,10 +27,11 @@ import java.util.List;
 /**
  * Created by Jun Deng on 15/8/10.
  */
-public class LoginActivity extends DLActivity implements View.OnClickListener {
+public class LoginActivity extends SGActivity implements View.OnClickListener {
 
     public static final int REQUEST_CODE_REGISTER = 1;
     public static final int REQUEST_CODE_FORGETPWD = 2;
+    private static final int MENU_REGISTER = 1;
 
     private EditText phoneEdit;
     private EditText pwdEdit;
@@ -39,20 +41,27 @@ public class LoginActivity extends DLActivity implements View.OnClickListener {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_login);
-        getTitleBar().getRightBtn().setText("注册");
-        getTitleBar().getRightBtn().setOnClickListener(new View.OnClickListener() {
 
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("duola://register"));
-                startActivityForResult(intent, REQUEST_CODE_REGISTER);
-            }
-
-        });
         phoneEdit = (EditText) findViewById(R.id.login_phone_edit);
         pwdEdit = (EditText) findViewById(R.id.login_pwd_edit);
         findViewById(R.id.login_forget_pwd).setOnClickListener(this);
         findViewById(R.id.login_btn).setOnClickListener(this);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        menu.add(Menu.NONE, MENU_REGISTER, 0, "注册").setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == MENU_REGISTER) {
+            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("duola://register"));
+            startActivityForResult(intent, REQUEST_CODE_REGISTER);
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     @Override

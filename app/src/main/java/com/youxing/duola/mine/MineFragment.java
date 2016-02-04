@@ -14,7 +14,7 @@ import com.youxing.common.model.Account;
 import com.youxing.common.services.account.AccountChangeListener;
 import com.youxing.common.services.account.AccountService;
 import com.youxing.duola.R;
-import com.youxing.duola.app.DLFragment;
+import com.youxing.duola.app.SGFragment;
 import com.youxing.duola.mine.views.MineHeaderView;
 import com.youxing.duola.views.SimpleListItem;
 import com.youxing.duola.views.TitleBar;
@@ -22,7 +22,7 @@ import com.youxing.duola.views.TitleBar;
 /**
  * Created by Jun Deng on 15/8/3.
  */
-public class MineFragment extends DLFragment implements AdapterView.OnItemClickListener, AccountChangeListener {
+public class MineFragment extends SGFragment implements AdapterView.OnItemClickListener, AccountChangeListener {
 
     private View rootView;
     private boolean rebuild;
@@ -58,7 +58,7 @@ public class MineFragment extends DLFragment implements AdapterView.OnItemClickL
         super.onViewCreated(view, savedInstanceState);
 
         if (rebuild) {
-            titleBar.getTitleTv().setText("我的");
+            titleBar.setTitle("我的");
 
             AccountService.instance().addListener(this);
         }

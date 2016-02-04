@@ -12,7 +12,7 @@ import com.youxing.common.services.account.AccountService;
 import com.youxing.common.services.http.HttpService;
 import com.youxing.common.services.http.RequestHandler;
 import com.youxing.duola.R;
-import com.youxing.duola.app.DLActivity;
+import com.youxing.duola.app.SGActivity;
 import com.youxing.duola.model.AccountModel;
 
 import org.apache.http.NameValuePair;
@@ -24,7 +24,7 @@ import java.util.List;
 /**
  * Created by Jun Deng on 15/8/11.
  */
-public class ForgetPwdActivity extends DLActivity implements View.OnClickListener {
+public class ForgetPwdActivity extends SGActivity implements View.OnClickListener {
 
     private EditText phoneEdit;
     private EditText pwdEdit;

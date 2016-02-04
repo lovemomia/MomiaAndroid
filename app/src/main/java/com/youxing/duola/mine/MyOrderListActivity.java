@@ -4,7 +4,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 
 import com.youxing.duola.R;
-import com.youxing.duola.app.DLActivity;
+import com.youxing.duola.app.SGActivity;
 import com.youxing.duola.views.ViewPagerIndicatorView;
 
 import java.util.ArrayList;
@@ -12,7 +12,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class MyOrderListActivity extends DLActivity {
+public class MyOrderListActivity extends SGActivity {
 
     private ViewPagerIndicatorView viewPagerIndicatorView;
 

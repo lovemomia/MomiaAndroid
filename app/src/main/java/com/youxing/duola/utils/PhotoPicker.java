@@ -24,7 +24,7 @@ import android.support.v4.app.Fragment;
 import android.widget.Toast;
 
 import com.youxing.common.utils.Log;
-import com.youxing.duola.app.DLApplication;
+import com.youxing.duola.app.SGApplication;
 
 public class PhotoPicker {
 	private static final String LOG_TAG = PhotoPicker.class.getSimpleName();
@@ -267,7 +267,7 @@ public class PhotoPicker {
 				ins.close();
 			} catch (OutOfMemoryError oom) {
 				System.gc();
-				Toast.makeText(DLApplication.instance(), "内存溢出",
+				Toast.makeText(SGApplication.instance(), "内存溢出",
 						Toast.LENGTH_LONG).show();
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -311,7 +311,7 @@ public class PhotoPicker {
 				ins.close();
 			} catch (OutOfMemoryError oom) {
 				System.gc();
-				Toast.makeText(DLApplication.instance(), "内存溢出",
+				Toast.makeText(SGApplication.instance(), "内存溢出",
 						Toast.LENGTH_LONG).show();
 			} catch (Exception e) {
 				e.printStackTrace();

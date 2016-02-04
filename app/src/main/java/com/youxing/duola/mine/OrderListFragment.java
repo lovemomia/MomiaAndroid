@@ -16,7 +16,7 @@ import com.youxing.common.services.http.CacheType;
 import com.youxing.common.services.http.HttpService;
 import com.youxing.common.services.http.RequestHandler;
 import com.youxing.duola.R;
-import com.youxing.duola.app.DLFragment;
+import com.youxing.duola.app.SGFragment;
 import com.youxing.duola.mine.views.OrderListItem;
 import com.youxing.duola.model.Order;
 import com.youxing.duola.model.OrderListModel;
@@ -31,7 +31,7 @@ import java.util.List;
 /**
  * Created by Jun Deng on 15/8/25.
  */
-public class OrderListFragment extends DLFragment implements AdapterView.OnItemClickListener {
+public class OrderListFragment extends SGFragment implements AdapterView.OnItemClickListener {
 
     private View rootView;
     private boolean rebuild;

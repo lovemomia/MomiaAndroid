@@ -13,7 +13,7 @@ import com.youxing.common.services.account.AccountService;
 import com.youxing.common.services.http.HttpService;
 import com.youxing.common.services.http.RequestHandler;
 import com.youxing.duola.R;
-import com.youxing.duola.app.DLActivity;
+import com.youxing.duola.app.SGActivity;
 import com.youxing.duola.model.AccountModel;
 
 import org.apache.http.NameValuePair;
@@ -25,7 +25,7 @@ import java.util.List;
 /**
  * Created by Jun Deng on 15/8/10.
  */
-public class RegisterActivity extends DLActivity implements View.OnClickListener {
+public class RegisterActivity extends SGActivity implements View.OnClickListener {
 
     private EditText nicknameEdit;
     private EditText phoneEdit;
@@ -39,7 +39,6 @@ public class RegisterActivity extends DLActivity implements View.OnClickListener
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_register);
-        getTitleBar().getTitleTv().setText("注册");
         nicknameEdit = (EditText) findViewById(R.id.register_nickname_edit);
         phoneEdit = (EditText) findViewById(R.id.register_phone_edit);
         pwdEdit = (EditText) findViewById(R.id.register_pwd_edit);

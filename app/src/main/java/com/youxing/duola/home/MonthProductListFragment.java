@@ -14,7 +14,7 @@ import com.youxing.common.services.http.CacheType;
 import com.youxing.common.services.http.HttpService;
 import com.youxing.common.services.http.RequestHandler;
 import com.youxing.duola.R;
-import com.youxing.duola.app.DLFragment;
+import com.youxing.duola.app.SGFragment;
 import com.youxing.duola.home.views.ProductCalendarHeader;
 import com.youxing.duola.model.Product;
 import com.youxing.duola.model.ProductCalendarMonthModel;
@@ -30,7 +30,7 @@ import java.util.List;
 /**
  * Created by Jun Deng on 15/8/28.
  */
-public class MonthProductListFragment extends DLFragment implements AdapterView.OnItemClickListener {
+public class MonthProductListFragment extends SGFragment implements AdapterView.OnItemClickListener {
 
     private View rootView;
     private boolean rebuild;

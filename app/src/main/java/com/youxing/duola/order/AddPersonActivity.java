@@ -12,7 +12,7 @@ import android.widget.ListView;
 
 import com.youxing.common.adapter.BasicAdapter;
 import com.youxing.duola.R;
-import com.youxing.duola.app.DLActivity;
+import com.youxing.duola.app.SGActivity;
 import com.youxing.duola.views.InputListItem;
 import com.youxing.duola.views.SelectListItem;
 
@@ -25,7 +25,7 @@ import java.util.Locale;
  *
  * Created by Jun Deng on 15/6/9.
  */
-public class AddPersonActivity extends DLActivity implements View.OnClickListener, AdapterView.OnItemClickListener {
+public class AddPersonActivity extends SGActivity implements View.OnClickListener, AdapterView.OnItemClickListener {
 
     private Adapter adapter;
 

@@ -31,7 +31,7 @@ import com.youxing.common.services.http.HttpService;
 import com.youxing.common.services.http.RequestHandler;
 import com.youxing.common.utils.UnitTools;
 import com.youxing.duola.R;
-import com.youxing.duola.app.DLActivity;
+import com.youxing.duola.app.SGActivity;
 import com.youxing.duola.model.AlipayOrderModel;
 import com.youxing.duola.model.CouponPriceModel;
 import com.youxing.duola.model.OrderDetailModel;
@@ -52,7 +52,7 @@ import java.util.List;
  *
  * Created by Jun Deng on 15/6/9.
  */
-public class CashierActivity extends DLActivity implements View.OnClickListener,
+public class CashierActivity extends SGActivity implements View.OnClickListener,
         AdapterView.OnItemClickListener {
 
     private static final int REQUEST_CODE_COUPON = 1;

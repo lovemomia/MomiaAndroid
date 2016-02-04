@@ -14,7 +14,7 @@ import android.widget.ListView;
 
 import com.youxing.common.adapter.GroupStyleAdapter;
 import com.youxing.duola.R;
-import com.youxing.duola.app.DLActivity;
+import com.youxing.duola.app.SGActivity;
 import com.youxing.duola.model.Person;
 import com.youxing.duola.order.views.TripPersonItem;
 import com.youxing.duola.views.SectionView;
@@ -27,7 +27,7 @@ import java.util.List;
  *
  * Created by Jun Deng on 15/6/9.
  */
-public class TripPersonActivity extends DLActivity implements AdapterView.OnItemClickListener {
+public class TripPersonActivity extends SGActivity implements AdapterView.OnItemClickListener {
 
     private Adapter adapter;
 

@@ -4,7 +4,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 
 import com.youxing.duola.R;
-import com.youxing.duola.app.DLActivity;
+import com.youxing.duola.app.SGActivity;
 import com.youxing.duola.views.ViewPagerIndicatorView;
 
 import java.util.ArrayList;
@@ -16,7 +16,7 @@ import java.util.Map;
 /**
  * Created by Jun Deng on 15/8/28.
  */
-public class ProductCalendarActivity extends DLActivity {
+public class ProductCalendarActivity extends SGActivity {
 
     private ViewPagerIndicatorView viewPagerIndicatorView;
 

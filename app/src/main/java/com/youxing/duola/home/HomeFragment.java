@@ -1,11 +1,14 @@
 package com.youxing.duola.home;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,17 +18,19 @@ import android.widget.ListView;
 
 import com.youxing.common.adapter.BasicAdapter;
 import com.youxing.common.app.Constants;
+import com.youxing.common.model.Account;
 import com.youxing.common.model.BaseModel;
 import com.youxing.common.model.City;
+import com.youxing.common.services.account.AccountService;
 import com.youxing.common.services.http.CacheType;
 import com.youxing.common.services.http.HttpService;
 import com.youxing.common.services.http.RequestHandler;
 import com.youxing.common.utils.CityManager;
-import com.youxing.common.utils.UnitTools;
 import com.youxing.duola.R;
-import com.youxing.duola.app.DLFragment;
+import com.youxing.duola.app.SGFragment;
 import com.youxing.duola.home.views.HomeHeaderView;
 import com.youxing.duola.home.views.HomeListItem;
+import com.youxing.duola.home.views.HomeTitleBar;
 import com.youxing.duola.model.HomeModel;
 import com.youxing.duola.model.Product;
 import com.youxing.duola.views.TitleBar;
@@ -41,14 +46,14 @@ import java.util.List;
  *
  * Created by Jun Deng on 15/8/3.
  */
-public class HomeFragment extends DLFragment implements AdapterView.OnItemClickListener,
+public class HomeFragment extends SGFragment implements AdapterView.OnItemClickListener,
         SwipeRefreshLayout.OnRefreshListener, RequestHandler, CityManager.CityChangeListener {
 
     private View rootView;
     private boolean rebuild;
 
     private SwipeRefreshLayout swipeLayout;
-    private TitleBar titleBar;
+    private HomeTitleBar titleBar;
     private ListView listView;
     private Adapter adapter;
 
@@ -65,7 +70,23 @@ public class HomeFragment extends DLFragment implements AdapterView.OnItemClickL
         if (rootView == null) {
             rootView = inflater.inflate(R.layout.activity_home, null);
 
-            titleBar = (TitleBar) rootView.findViewById(R.id.titleBar);
+            titleBar = (HomeTitleBar) rootView.findViewById(R.id.titleBar);
+            titleBar.getCityTv().setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    startActivity("duola://citylist");
+                }
+            });
+            if (AccountService.instance().isLogin()) {
+                Account account = AccountService.instance().account();
+                titleBar.getAvatarIv().setImageUrl(account.getAvatar());
+                titleBar.getNameTv().setText(account.getNickName());
+                titleBar.getAgeTv().setText(account.getAgeOfChild());
+            }
+//            titleBar.setNavigationIcon(R.mipmap.ic_launcher);
+//            titleBar.setTitle("");//设置标题
+//            ((AppCompatActivity)getActivity()).setSupportActionBar(titleBar);
+
             listView = (ListView)rootView.findViewById(R.id.listView);
             listView.setOnItemClickListener(this);
             adapter = new Adapter();
@@ -73,8 +94,7 @@ public class HomeFragment extends DLFragment implements AdapterView.OnItemClickL
 
             swipeLayout = (SwipeRefreshLayout)rootView.findViewById(R.id.refresh);
             swipeLayout.setOnRefreshListener(this);
-            swipeLayout.setColorSchemeResources(android.R.color.holo_blue_bright, android.R.color.holo_green_light,
-                    android.R.color.holo_orange_light, android.R.color.holo_red_light);
+            swipeLayout.setColorSchemeResources(R.color.app_theme);
 
             rebuild = true;
         } else {
@@ -93,35 +113,12 @@ public class HomeFragment extends DLFragment implements AdapterView.OnItemClickL
         super.onViewCreated(view, savedInstanceState);
 
         if (rebuild) {
-            initTitle();
+//            initTitle();
 
             requestData();
         }
 
         CityManager.instance().addListener(this);
-    }
-
-    private void initTitle() {
-        titleBar.getTitleTv().setText("松果亲子");
-
-        titleBar.getLeftBtn().setText(CityManager.instance().getChoosedCity().getName());
-        Drawable img = getResources().getDrawable(R.drawable.ic_arrow_down);
-        img.setBounds(0, 0, img.getMinimumWidth(), img.getMinimumHeight());
-        titleBar.getLeftBtn().getTextView().setCompoundDrawables(null, null, img, null);
-        titleBar.getLeftBtn().getTextView().setCompoundDrawablePadding(10);
-        titleBar.getLeftBtn().getTextView().setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity("duola://citylist");
-            }
-        });
-        titleBar.getRightBtn().setIcon(R.drawable.ic_action_date);
-        titleBar.getRightBtn().setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity("duola://productcalendar");
-            }
-        });
     }
 
     private void requestData() {
@@ -151,7 +148,7 @@ public class HomeFragment extends DLFragment implements AdapterView.OnItemClickL
     @Override
     public void onCityChanged(City newCity) {
         onRefresh();
-        titleBar.getLeftBtn().setText(newCity.getName());
+        titleBar.getCityTv().setText(newCity.getName());
     }
 
     @Override

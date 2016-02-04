@@ -21,7 +21,7 @@ import com.youxing.common.services.http.HttpService;
 import com.youxing.common.services.http.RequestHandler;
 import com.youxing.common.utils.UnitTools;
 import com.youxing.duola.R;
-import com.youxing.duola.app.DLActivity;
+import com.youxing.duola.app.SGActivity;
 import com.youxing.duola.mine.views.OrderDetailInfoView;
 import com.youxing.duola.model.OrderDetailModel;
 import com.youxing.duola.utils.PriceUtils;
@@ -36,7 +36,7 @@ import java.util.List;
 /**
  * Created by Jun Deng on 15/8/25.
  */
-public class OrderDetailActivity extends DLActivity implements AdapterView.OnItemClickListener,
+public class OrderDetailActivity extends SGActivity implements AdapterView.OnItemClickListener,
         View.OnClickListener {
 
     private String oid;

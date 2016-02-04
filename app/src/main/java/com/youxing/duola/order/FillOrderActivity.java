@@ -21,7 +21,7 @@ import com.youxing.common.services.http.CacheType;
 import com.youxing.common.services.http.HttpService;
 import com.youxing.common.services.http.RequestHandler;
 import com.youxing.duola.R;
-import com.youxing.duola.app.DLActivity;
+import com.youxing.duola.app.SGActivity;
 import com.youxing.duola.model.FillOrderModel;
 import com.youxing.duola.model.OrderDetailModel;
 import com.youxing.duola.model.Sku;
@@ -45,7 +45,7 @@ import java.util.List;
  *
  * Created by Jun Deng on 15/6/8.
  */
-public class FillOrderActivity extends DLActivity implements View.OnClickListener,
+public class FillOrderActivity extends SGActivity implements View.OnClickListener,
         AdapterView.OnItemClickListener {
 
     private static final int REQUEST_CODE_SELECT_PERSON = 1;

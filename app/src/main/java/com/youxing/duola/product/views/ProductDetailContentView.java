@@ -15,9 +15,7 @@ import com.youxing.common.app.Enviroment;
 import com.youxing.common.utils.UnitTools;
 import com.youxing.common.views.YXNetworkImageView;
 import com.youxing.duola.R;
-import com.youxing.duola.app.DLApplication;
 import com.youxing.duola.model.Product;
-import com.youxing.duola.views.SimpleListItem;
 
 import java.util.List;
 

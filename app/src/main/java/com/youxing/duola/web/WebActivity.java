@@ -5,11 +5,11 @@ import android.view.KeyEvent;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
-import com.youxing.duola.app.DLWebActivity;
+import com.youxing.duola.app.SGWebActivity;
 
 import java.net.URLDecoder;
 
-public class WebActivity extends DLWebActivity {
+public class WebActivity extends SGWebActivity {
 	private String url;
 	private String title;
 	private boolean openexternal;

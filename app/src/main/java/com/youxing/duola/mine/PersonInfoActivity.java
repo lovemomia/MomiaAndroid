@@ -35,7 +35,7 @@ import com.youxing.common.utils.Log;
 import com.youxing.common.utils.UnitTools;
 import com.youxing.common.views.CircularImage;
 import com.youxing.duola.R;
-import com.youxing.duola.app.DLActivity;
+import com.youxing.duola.app.SGActivity;
 import com.youxing.duola.model.AccountModel;
 import com.youxing.duola.utils.PhotoPicker;
 import com.youxing.duola.views.SectionView;
@@ -46,7 +46,6 @@ import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
 
 import java.io.File;
-import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -56,7 +55,7 @@ import java.util.List;
 /**
  * Created by Jun Deng on 15/8/24.
  */
-public class PersonInfoActivity extends DLActivity implements StepperView.OnNumberChangedListener, AdapterView.OnItemClickListener {
+public class PersonInfoActivity extends SGActivity implements StepperView.OnNumberChangedListener, AdapterView.OnItemClickListener {
 
     private ListView listView;
     private Adapter adapter;
