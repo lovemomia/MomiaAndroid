@@ -1,5 +1,7 @@
 package com.youxing.duola.course;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
@@ -84,7 +86,11 @@ public class BookableCourseListActivity extends SGActivity implements AdapterVie
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
+        if (position < dataList.size()) {
+            Course course = dataList.get(position);
+            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("duola://book?id=" +
+                    course.getId() + "&pid=" + pid)));
+        }
     }
 
     class Adapter extends BasicAdapter {

@@ -464,6 +464,22 @@
             </intent-filter>
         </activity>
 
+        <activity
+            android:name=".course.BookActivity"
+            android:label="预约课程"
+            android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:host="book"
+                    android:scheme="duola" />
+            </intent-filter>
+        </activity>
+
 
 
         <!-- debug tools -->
