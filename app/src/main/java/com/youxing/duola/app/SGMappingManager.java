@@ -24,6 +24,9 @@ public class SGMappingManager extends MappingManager {
         putPage("orderupdateperson", new MappingPage("orderupdateperson", true));
         // 我的收藏
         putPage("myfav", new MappingPage("myfav", true));
+
+        // 预约课程
+        putPage("bookingsubjectlist", new MappingPage("bookingsubjectlist", true));
     }
 
 }

@@ -77,15 +77,6 @@ public class HomeFragment extends SGFragment implements AdapterView.OnItemClickL
                     startActivity("duola://citylist");
                 }
             });
-            if (AccountService.instance().isLogin()) {
-                Account account = AccountService.instance().account();
-                titleBar.getAvatarIv().setImageUrl(account.getAvatar());
-                titleBar.getNameTv().setText(account.getNickName());
-                titleBar.getAgeTv().setText(account.getAgeOfChild());
-            }
-//            titleBar.setNavigationIcon(R.mipmap.ic_launcher);
-//            titleBar.setTitle("");//设置标题
-//            ((AppCompatActivity)getActivity()).setSupportActionBar(titleBar);
 
             listView = (ListView)rootView.findViewById(R.id.listView);
             listView.setOnItemClickListener(this);
@@ -119,6 +110,17 @@ public class HomeFragment extends SGFragment implements AdapterView.OnItemClickL
         }
 
         CityManager.instance().addListener(this);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (AccountService.instance().isLogin()) {
+            Account account = AccountService.instance().account();
+            titleBar.getAvatarIv().setImageUrl(account.getAvatar());
+            titleBar.getNameTv().setText(account.getNickName());
+            titleBar.getAgeTv().setText(account.getAgeOfChild());
+        }
     }
 
     private void requestData() {

@@ -3,7 +3,10 @@ package com.youxing.duola.mine;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -36,6 +39,7 @@ public class MineFragment extends SGFragment implements AdapterView.OnItemClickL
         if (rootView == null) {
             rootView = inflater.inflate(R.layout.activity_mine, null);
             titleBar = (TitleBar) rootView.findViewById(R.id.titleBar);
+            ((AppCompatActivity)getActivity()).setSupportActionBar(titleBar);
             listView = (ListView)rootView.findViewById(R.id.listView);
             adapter = new Adapter();
             listView.setAdapter(adapter);
@@ -51,6 +55,12 @@ public class MineFragment extends SGFragment implements AdapterView.OnItemClickL
         }
 
         return rootView;
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+
     }
 
     @Override

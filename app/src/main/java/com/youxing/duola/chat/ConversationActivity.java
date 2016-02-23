@@ -47,7 +47,7 @@ public class ConversationActivity extends SGActivity {
 //            getTitleBar().getRightBtn().setOnClickListener(new View.OnClickListener() {
 //                @Override
 //                public void onClick(View v) {
-//                    startActivity("sgteacher://groupmember?id=" + mTargetId);
+//                    startActivity("duola://groupmember?id=" + mTargetId);
 //                }
 //            });
 //            getTitleBar().getRightBtn2().setIcon(R.drawable.ic_action_notice);

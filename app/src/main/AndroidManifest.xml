@@ -60,6 +60,16 @@
                 <category android:name="android.intent.category.BROWSABLE" />
 
                 <data
+                    android:host="chatlist"
+                    android:scheme="duola" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
                     android:host="mine"
                     android:scheme="duola" />
             </intent-filter>
@@ -209,11 +219,9 @@
         <activity android:name="com.youxing.duola.chat.ConversationActivity">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
-
                 <category android:name="android.intent.category.DEFAULT" />
-
                 <data
-                    android:host="com.youxing.sogoteacher"
+                    android:host="com.youxing.duola"
                     android:pathPrefix="/conversation/"
                     android:scheme="rong" />
             </intent-filter>
@@ -244,27 +252,9 @@
 
                 <data
                     android:host="groupmember"
-                    android:scheme="sgteacher" />
+                    android:scheme="duola" />
             </intent-filter>
         </activity>
-
-        <!-- debug tools -->
-        <activity android:name="com.github.mmin18.layoutcast.ResetActivity" />
-
-        <!-- alipay -->
-        <activity
-            android:name="com.alipay.sdk.app.H5PayActivity"
-            android:configChanges="orientation|keyboardHidden|navigation"
-            android:exported="false"
-            android:screenOrientation="behind" >
-        </activity>
-        <activity
-            android:name="com.alipay.sdk.auth.AuthActivity"
-            android:configChanges="orientation|keyboardHidden|navigation"
-            android:exported="false"
-            android:screenOrientation="behind" >
-        </activity>
-        <!-- alipay end -->
 
         <activity
             android:name=".mine.PersonInfoActivity"
@@ -442,6 +432,57 @@
             </intent-filter>
         </activity>
 
+        <activity
+            android:name=".course.BookingSubjectListActivity"
+            android:label="预约课程"
+            android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:host="bookingsubjectlist"
+                    android:scheme="duola" />
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name=".course.BookableCourseListActivity"
+            android:label="可选课程"
+            android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:host="bookablecourselist"
+                    android:scheme="duola" />
+            </intent-filter>
+        </activity>
+
+
+
+        <!-- debug tools -->
+        <activity android:name="com.github.mmin18.layoutcast.ResetActivity" />
+
+        <!-- alipay -->
+        <activity
+            android:name="com.alipay.sdk.app.H5PayActivity"
+            android:configChanges="orientation|keyboardHidden|navigation"
+            android:exported="false"
+            android:screenOrientation="behind" >
+        </activity>
+        <activity
+            android:name="com.alipay.sdk.auth.AuthActivity"
+            android:configChanges="orientation|keyboardHidden|navigation"
+            android:exported="false"
+            android:screenOrientation="behind" >
+        </activity>
+        <!-- alipay end -->
 
         <!-- UMeng-->
         <meta-data android:value="56b02e8b67e58e1d28001f1c" android:name="UMENG_APPKEY"></meta-data>

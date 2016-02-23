@@ -12,8 +12,6 @@ import com.youxing.duola.R;
 public class TitleBar extends android.support.v7.widget.Toolbar {
 
     private TextView titleTv;
-    private TitleBarButton leftBtn;
-    private TitleBarButton rightBtn;
 
     public TitleBar(Context context) {
         this(context, null);
@@ -27,23 +25,15 @@ public class TitleBar extends android.support.v7.widget.Toolbar {
     protected void onFinishInflate() {
         super.onFinishInflate();
         titleTv = (TextView) findViewById(R.id.toolbar_title);
-//        leftBtn = (TitleBarButton) findViewById(R.id.title_left_btn);
-//        rightBtn = (TitleBarButton) findViewById(R.id.title_right_btn);
     }
 
     public void setTitle(String title) {
         titleTv.setText(title);
+        super.setTitle("");
     }
 
     public TextView getTitleTv() {
         return titleTv;
     }
 
-    public TitleBarButton getLeftBtn() {
-        return leftBtn;
-    }
-
-    public TitleBarButton getRightBtn() {
-        return rightBtn;
-    }
 }
