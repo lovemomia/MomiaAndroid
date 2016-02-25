@@ -157,7 +157,7 @@ public class OrderListFragment extends SGFragment implements AdapterView.OnItemC
                 if (status == 2) {
                     msg = "您还没有待付款订单哦，快去逛一下吧~";
                 } else if (status == 3) {
-                    msg = "您还没有未消费订单哦，快去逛一下吧~";
+                    msg = "您还没有已付款订单哦，快去逛一下吧~";
                 } else {
                     msg = "订单列表为空";
                 }

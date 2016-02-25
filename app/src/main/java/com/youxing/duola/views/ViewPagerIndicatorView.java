@@ -26,6 +26,8 @@ public class ViewPagerIndicatorView extends LinearLayout implements TabIndicator
     private TabIndicatorView tabIndicatorView;
     private ViewPager viewPager;
 
+    private OnTabChangedListener onTabChangedListener;
+
     public ViewPagerIndicatorView(Context context, AttributeSet attrs) {
         super(context, attrs);
         this.initView();
@@ -51,6 +53,10 @@ public class ViewPagerIndicatorView extends LinearLayout implements TabIndicator
         this.tabIndicatorView.setOnIndicateChangeListener(this);
         this.viewPager.setOnPageChangeListener(this);
 
+    }
+
+    public void setOnTabChangeListener(OnTabChangedListener onTabChangedListener) {
+        this.onTabChangedListener = onTabChangedListener;
     }
 
     /**
@@ -102,11 +108,17 @@ public class ViewPagerIndicatorView extends LinearLayout implements TabIndicator
     @Override
     public void onTabChanged(int position) {
         viewPager.setCurrentItem(position, true);
+        if (onTabChangedListener != null) {
+            onTabChangedListener.onTabChanged(position);
+        }
     }
 
     @Override
     public void onPageSelected(int position) {
         this.tabIndicatorView.setCurrentTab(position, false);//设置不通知接口返回位置
+        if (onTabChangedListener != null) {
+            onTabChangedListener.onTabChanged(position);
+        }
     }
 
     private class MyPagerAdapter extends PagerAdapter {
@@ -166,6 +178,10 @@ public class ViewPagerIndicatorView extends LinearLayout implements TabIndicator
     @Override
     public void onPageScrolled(int arg0, float arg1, int arg2) {
 
+    }
+
+    public interface OnTabChangedListener {
+        void onTabChanged(int tab);
     }
 
 }

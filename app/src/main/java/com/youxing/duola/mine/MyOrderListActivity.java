@@ -23,11 +23,11 @@ public class MyOrderListActivity extends SGActivity {
 
         this.viewPagerIndicatorView = (ViewPagerIndicatorView) findViewById(R.id.viewpager_indicator_view);
         List<String> titleList = new ArrayList<String>();
-        titleList.add("未消费");
         titleList.add("待付款");
+        titleList.add("已付款");
         titleList.add("全部");
         final Map<String, Fragment> map = new HashMap();
-        map.put("未消费", createFragment(3));
+        map.put("已付款", createFragment(3));
         map.put("待付款", createFragment(2));
         map.put("全部", createFragment(1));
         this.viewPagerIndicatorView.setupFragment(titleList, map);

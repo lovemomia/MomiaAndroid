@@ -3,7 +3,6 @@ package com.youxing.duola.course;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -69,6 +68,10 @@ public class BookSkuListFragment extends SGFragment implements AdapterView.OnIte
         requestData();
     }
 
+    public void refresh() {
+        adapter.notifyDataSetChanged();
+    }
+
     private void requestData() {
         getDLActivity().showLoadingDialog(getActivity());
 
@@ -99,7 +102,18 @@ public class BookSkuListFragment extends SGFragment implements AdapterView.OnIte
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        if (isEmpty) {
+            return;
+        }
 
+        GroupStyleAdapter.IndexPath indexPath = adapter.getIndexForPosition(position);
+        if (indexPath.row == 0) {
+            return;
+        }
+
+        CourseSkuListModel.DateSkuList skuList = model.getData().get(indexPath.section);
+        ((BookActivity)getActivity()).setSelectSku(skuList.getSkus().get(indexPath.row - 1));
+        adapter.notifyDataSetChanged();
     }
 
     class Adapter extends GroupStyleAdapter {
@@ -138,7 +152,16 @@ public class BookSkuListFragment extends SGFragment implements AdapterView.OnIte
 
             } else {
                 BookSkuListItem listItem = BookSkuListItem.create(getActivity());
-                listItem.setData(skuList.getSkus().get(row - 1));
+                CourseSkuListModel.CourseSku sku = skuList.getSkus().get(row - 1);
+                listItem.setData(sku);
+
+                CourseSkuListModel.CourseSku selectSku = ((BookActivity)getActivity()).getSelectSku();
+                if (selectSku != null && sku.getId() == selectSku.getId()) {
+                    listItem.setSelect(true);
+                } else {
+                    listItem.setSelect(false);
+                }
+
                 return listItem;
             }
         }

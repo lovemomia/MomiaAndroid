@@ -1,70 +1,83 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.youxing.duola.course.views.BookSkuListItem xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:background="@color/white"
-    android:padding="10dp">
-
-    <TextView
-        android:id="@+id/title"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textColor="@color/text_deep_gray"
-        android:singleLine="true"
-        android:text="xxxx"
-        android:textSize="@dimen/text_medium"/>
+    android:orientation="horizontal" android:layout_width="match_parent"
+    android:layout_height="wrap_content">
 
     <LinearLayout
-        android:layout_width="match_parent"
+        android:orientation="vertical" android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:gravity="center_vertical"
-        android:orientation="horizontal"
-        android:paddingTop="5dp">
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:paddingRight="5dp"
-            android:src="@drawable/ic_address"/>
+        android:layout_weight="1"
+        android:padding="10dp">
 
         <TextView
-            android:id="@+id/address"
-            android:layout_width="match_parent"
+            android:id="@+id/title"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/text_gray"
-            android:text="yyyy"
-            android:textSize="@dimen/text_small"/>
+            android:textColor="@color/text_deep_gray"
+            android:singleLine="true"
+            android:text="xxxx"
+            android:textSize="@dimen/text_medium"/>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingTop="5dp">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingRight="5dp"
+                android:src="@drawable/ic_address"/>
+
+            <TextView
+                android:id="@+id/address"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/text_gray"
+                android:text="yyyy"
+                android:textSize="@dimen/text_small"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingTop="5dp">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingRight="5dp"
+                android:src="@drawable/ic_alarm"/>
+
+            <TextView
+                android:id="@+id/times"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/text_gray"
+                android:text="zzzz"
+                android:textSize="@dimen/text_small"/>
+
+            <TextView
+                android:id="@+id/stock"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/text_red"
+                android:paddingLeft="10dp"
+                android:text="zzzz"
+                android:textSize="@dimen/text_small"/>
+        </LinearLayout>
+
     </LinearLayout>
 
-    <LinearLayout
-        android:layout_width="match_parent"
+    <ImageView android:id="@+id/gou"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:gravity="center_vertical"
-        android:orientation="horizontal"
-        android:paddingTop="5dp">
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:paddingRight="5dp"
-            android:src="@drawable/ic_alarm"/>
-
-        <TextView
-            android:id="@+id/times"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@color/text_gray"
-            android:text="zzzz"
-            android:textSize="@dimen/text_small"/>
-
-        <TextView
-            android:id="@+id/stock"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@color/text_red"
-            android:paddingLeft="10dp"
-            android:text="zzzz"
-            android:textSize="@dimen/text_small"/>
-    </LinearLayout>
-
+        android:layout_gravity="center_vertical"
+        android:src="@drawable/ic_select_gou"
+        android:visibility="gone"
+        android:padding="20dp"/>
 </com.youxing.duola.course.views.BookSkuListItem>

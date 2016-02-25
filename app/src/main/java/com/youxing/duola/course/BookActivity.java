@@ -1,14 +1,27 @@
 package com.youxing.duola.course;
 
+import android.annotation.SuppressLint;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.youxing.common.app.Constants;
+import com.youxing.common.model.BaseModel;
+import com.youxing.common.services.http.CacheType;
+import com.youxing.common.services.http.HttpService;
+import com.youxing.common.services.http.RequestHandler;
 import com.youxing.duola.R;
 import com.youxing.duola.app.SGActivity;
+import com.youxing.duola.model.CourseSkuListModel;
 import com.youxing.duola.views.ViewPagerIndicatorView;
+
+import org.apache.http.NameValuePair;
+import org.apache.http.message.BasicNameValuePair;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -19,12 +32,19 @@ import java.util.Map;
 /**
  * Created by Jun Deng on 16/2/22.
  */
-public class BookActivity extends SGActivity {
+public class BookActivity extends SGActivity implements ViewPagerIndicatorView.OnTabChangedListener {
+
+    private static final int MENU_ID_SUBMIT = 1;
 
     private String id;
+    private String pid;
     private boolean onlyshow;
 
     private ViewPagerIndicatorView viewPagerIndicatorView;
+    private BookSkuListFragment currentMonthFragment;
+    private BookSkuListFragment nextMonthFragment;
+
+    private CourseSkuListModel.CourseSku selectSku;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,6 +52,7 @@ public class BookActivity extends SGActivity {
         setContentView(R.layout.activity_top_tab);
 
         id = getIntent().getData().getQueryParameter("id");
+        pid = getIntent().getData().getQueryParameter("pid");
         String onlyshowStr = getIntent().getData().getQueryParameter("onlyshow");
         if (!TextUtils.isEmpty(onlyshowStr)) {
             onlyshow = Boolean.valueOf(onlyshowStr);
@@ -45,13 +66,27 @@ public class BookActivity extends SGActivity {
         titleList.add(tab1);
         String tab2 = getMonthChinese(month + 1) + "月";
         titleList.add(tab2);
+
         final Map<String, Fragment> map = new HashMap();
-        map.put(tab1, createFragment(month + 1));
-        map.put(tab2, createFragment(month + 2));
+        currentMonthFragment = createFragment(month + 1);
+        nextMonthFragment = createFragment(month + 2);
+        map.put(tab1, currentMonthFragment);
+        map.put(tab2, nextMonthFragment);
+
         this.viewPagerIndicatorView.setupFragment(titleList, map);
+        viewPagerIndicatorView.setOnTabChangeListener(this);
     }
 
-    private Fragment createFragment(int month) {
+    @Override
+    public void onTabChanged(int tab) {
+        if (tab == 0) {
+            currentMonthFragment.refresh();
+        } else {
+            nextMonthFragment.refresh();
+        }
+    }
+
+    private BookSkuListFragment createFragment(int month) {
         BookSkuListFragment fragment = new BookSkuListFragment();
         Bundle bundle = new Bundle();
         bundle.putString("id", id);
@@ -92,9 +127,60 @@ public class BookActivity extends SGActivity {
         }
     }
 
+    public void setSelectSku(CourseSkuListModel.CourseSku selectSku) {
+        this.selectSku = selectSku;
+    }
+
+    public CourseSkuListModel.CourseSku getSelectSku() {
+        return selectSku;
+    }
+
+    @SuppressLint("NewApi")
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        menu.add(1, 1, 0, "提交").setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
+        menu.add(1, MENU_ID_SUBMIT, 0, "提交").setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
         return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == MENU_ID_SUBMIT) {
+            submit();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    private void submit() {
+        if (selectSku == null) {
+            showDialog(BookActivity.this, "您还未选择场次");
+            return;
+        }
+
+        showLoadingDialog(this);
+
+        List<NameValuePair> params = new ArrayList<NameValuePair>();
+        params.add(new BasicNameValuePair("sid", String.valueOf(selectSku.getId())));
+        params.add(new BasicNameValuePair("pid", pid));
+
+        HttpService.post(Constants.domain() + "/course/booking", params, BaseModel.class, new RequestHandler() {
+            @Override
+            public void onRequestFinish(Object response) {
+                dismissDialog();
+                showDialog(BookActivity.this, "预约成功，您已被拉入该课群组，猛戳 “我的—我的群组” 就可以随意调戏我们的老师啦~", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("duola://mine"));
+                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        startActivity(intent);
+                    }
+                });
+            }
+
+            @Override
+            public void onRequestFailed(BaseModel error) {
+                showDialog(BookActivity.this, error.getErrmsg());
+            }
+        });
     }
 }

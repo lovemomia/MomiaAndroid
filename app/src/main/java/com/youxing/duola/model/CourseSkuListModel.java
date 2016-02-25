@@ -95,6 +95,7 @@ public class CourseSkuListModel extends BaseModel {
         public void setClosed(boolean closed) {
             this.closed = closed;
         }
+
     }
 
     public static class CourseSkuPlace {
