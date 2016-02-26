@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.youxing.duola.course.views.BookedCourseListItem xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center_vertical"
+    android:background="@color/white"
+    android:padding="10dp">
+
+    <com.youxing.common.views.YXNetworkImageView
+        android:id="@+id/icon"
+        android:layout_width="100dp"
+        android:layout_height="75dp"
+        android:scaleType="centerCrop"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingLeft="10dp">
+
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/text_deep_gray"
+            android:singleLine="true"
+            android:text="xxxx"
+            android:textSize="@dimen/text_medium"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/date"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/text_gray"
+                    android:layout_marginTop="10dp"
+                    android:singleLine="true"
+                    android:text="yyyy"
+                    android:textSize="@dimen/text_small"/>
+                <TextView
+                    android:id="@+id/times"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/text_gray"
+                    android:layout_marginTop="10dp"
+                    android:singleLine="true"
+                    android:text="zzzz"
+                    android:textSize="@dimen/text_small"/>
+
+            </LinearLayout>
+
+            <Button android:id="@+id/event"
+                android:layout_width="70dp"
+                android:layout_height="35dp"
+                android:layout_gravity="center_vertical"
+                android:background="@drawable/btn_shape_green"
+                android:text="取消预约"
+                android:textColor="@color/white"
+                android:textSize="@dimen/text_medium"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</com.youxing.duola.course.views.BookedCourseListItem>

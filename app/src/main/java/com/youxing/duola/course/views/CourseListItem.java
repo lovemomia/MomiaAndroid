@@ -17,10 +17,10 @@ import com.youxing.duola.model.Course;
  */
 public class CourseListItem extends LinearLayout {
 
-    private YXNetworkImageView iconIv;
-    private TextView titleTv;
-    private TextView dateTv;
-    private TextView timesTv;
+    protected YXNetworkImageView iconIv;
+    protected TextView titleTv;
+    protected TextView dateTv;
+    protected TextView timesTv;
 
     public CourseListItem(Context context) {
         super(context);

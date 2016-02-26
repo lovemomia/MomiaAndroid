@@ -480,6 +480,38 @@
             </intent-filter>
         </activity>
 
+        <activity
+            android:name=".course.BookedCourseListActivity"
+            android:label="已选课程"
+            android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:host="bookedcourselist"
+                    android:scheme="duola" />
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name=".mine.AddReviewActivity"
+            android:label="写点评"
+            android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:host="addreview"
+                    android:scheme="duola" />
+            </intent-filter>
+        </activity>
+
 
 
         <!-- debug tools -->

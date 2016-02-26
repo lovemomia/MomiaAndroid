@@ -44,7 +44,7 @@ public class RootTabActivity extends SGActivity implements RongIMClient.OnReceiv
                                 R.drawable.ic_tab_home)), HomeFragment.class,
                 null);
 
-        View groupTabItem = createTabItem("学生群组", R.drawable.ic_tab_group);
+        View groupTabItem = createTabItem("群组", R.drawable.ic_tab_group);
         groupDot = groupTabItem.findViewById(R.id.dot);
         tabHost.addTab(tabHost.newTabSpec("chatlist").setIndicator(groupTabItem), ChatListFragment.class, null);
 

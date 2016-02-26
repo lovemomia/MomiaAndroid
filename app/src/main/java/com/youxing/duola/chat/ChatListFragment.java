@@ -42,7 +42,7 @@ public class ChatListFragment extends SGFragment implements AccountChangeListene
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_chatlist, container, false);
         titleBar = (TitleBar) view.findViewById(R.id.titleBar);
-        titleBar.setTitle("学生群组");
+        titleBar.setTitle("群组");
 //        titleBar.getTitleTv().setText("学生群组");
 
         ConversationListFragment fragment = new ConversationListFragment();

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.youxing.duola.mine.views.RatingListItem xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center_vertical"
+    android:background="@color/white"
+    android:padding="10dp">
+
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/text_deep_gray"
+        android:singleLine="true"
+        android:text="总体"
+        android:textSize="@dimen/text_medium"/>
+
+    <RatingBar
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:numStars="5"
+        android:rating="4"
+        android:progressDrawable="@drawable/ic_rating_face_red"/>
+
+</com.youxing.duola.mine.views.RatingListItem>
