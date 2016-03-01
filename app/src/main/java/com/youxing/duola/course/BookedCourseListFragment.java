@@ -1,5 +1,9 @@
 package com.youxing.duola.course;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
@@ -36,6 +40,8 @@ import java.util.List;
 public class BookedCourseListFragment extends SGFragment implements AdapterView.OnItemClickListener,
         BookedCourseListItem.OnCourseCancelBookListener {
 
+    public final static String INTENT_ACTION_DATA_CHANGE = "com.youxing.duola.ACTION_DATA_CHANGE";
+
     private String id;
     private boolean finish;
 
@@ -44,6 +50,15 @@ public class BookedCourseListFragment extends SGFragment implements AdapterView.
     private boolean isEmpty;
     private boolean isEnd;
     private long nextIndex;
+
+    private BroadcastReceiver receiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if (intent.getAction().equals(INTENT_ACTION_DATA_CHANGE)) {
+                reload();
+            }
+        }
+    };
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -62,6 +77,20 @@ public class BookedCourseListFragment extends SGFragment implements AdapterView.
         listView.setAdapter(adapter);
         listView.setOnItemClickListener(this);
         return view;
+    }
+
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction(INTENT_ACTION_DATA_CHANGE);
+        getActivity().registerReceiver(receiver, intentFilter);
+    }
+
+    @Override
+    public void onDetach() {
+        getActivity().unregisterReceiver(receiver);
+        super.onDetach();
     }
 
     public void refresh() {

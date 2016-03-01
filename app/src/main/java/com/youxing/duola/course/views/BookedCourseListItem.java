@@ -68,8 +68,14 @@ public class BookedCourseListItem extends CourseListItem implements View.OnClick
         }
 
         if (finish) {
-            eventBtn.setText("评价");
-            eventBtn.setBackgroundResource(R.drawable.btn_shape_red);
+            if (course.isCommented()) {
+                eventBtn.setVisibility(View.GONE);
+            } else {
+                eventBtn.setText("评价");
+                eventBtn.setVisibility(View.VISIBLE);
+                eventBtn.setBackgroundResource(R.drawable.btn_shape_red);
+            }
+
         } else {
             eventBtn.setText("取消预约");
             eventBtn.setBackgroundResource(R.drawable.btn_shape_green);
@@ -133,7 +139,9 @@ public class BookedCourseListItem extends CourseListItem implements View.OnClick
     }
 
     private void goComment() {
-
+        if (course != null) {
+            getSGActivity().startActivity("duola://addreview?id=" + course.getId() + "&bookingId=" + course.getBookingId());
+        }
     }
 
     public interface OnCourseCancelBookListener {

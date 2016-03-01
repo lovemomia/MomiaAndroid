@@ -24,6 +24,6 @@
         android:minHeight="20dp"
         android:maxHeight="20dp"
         android:layout_marginLeft="10dp"
-        android:progressDrawable="@drawable/ic_rating_star"/>
+        android:progressDrawable="@drawable/ic_rating_face"/>
 
 </com.youxing.duola.mine.views.AddReviewRatingItem>
