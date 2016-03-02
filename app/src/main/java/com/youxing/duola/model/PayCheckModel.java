@@ -23,6 +23,8 @@ public class PayCheckModel extends BaseModel {
         private String abstracts;
         private String url;
 
+        private boolean payed;
+
         public String getThumb() {
             return thumb;
         }
@@ -53,6 +55,14 @@ public class PayCheckModel extends BaseModel {
 
         public void setUrl(String url) {
             this.url = url;
+        }
+
+        public boolean isPayed() {
+            return payed;
+        }
+
+        public void setPayed(boolean payed) {
+            this.payed = payed;
         }
     }
 }

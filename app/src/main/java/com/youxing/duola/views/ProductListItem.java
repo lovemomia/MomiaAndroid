@@ -46,14 +46,6 @@ public class ProductListItem extends LinearLayout {
         priceTv = (TextView) findViewById(R.id.price);
     }
 
-    public void setData(OrderDetailModel.OrderDetailData data) {
-        iconIv.setImageUrl(data.getCover());
-        titleTv.setText(data.getTitle());
-        dateTv.setText(data.getScheduler());
-        addressTv.setText(data.getAddress());
-        priceTv.setText(PriceUtils.formatPriceString(data.getPrice()));
-    }
-
     public void setData(Product data) {
         iconIv.setImageUrl(data.getCover());
         titleTv.setText(data.getTitle());

@@ -26,24 +26,51 @@
             android:singleLine="true"
             android:text="xxxx"
             android:textSize="@dimen/text_medium"/>
-        <TextView
-            android:id="@+id/price"
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textColor="@color/text_gray"
-            android:layout_marginTop="10dp"
-            android:singleLine="true"
-            android:text="yyyy"
-            android:textSize="@dimen/text_small"/>
-        <TextView
-            android:id="@+id/people"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textColor="@color/text_gray"
-            android:layout_marginTop="10dp"
-            android:singleLine="true"
-            android:text="zzzz"
-            android:textSize="@dimen/text_small"/>
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/price"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/text_gray"
+                    android:layout_marginTop="10dp"
+                    android:singleLine="true"
+                    android:text="yyyy"
+                    android:textSize="@dimen/text_small"/>
+                <TextView
+                    android:id="@+id/people"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/text_gray"
+                    android:layout_marginTop="10dp"
+                    android:singleLine="true"
+                    android:text="zzzz"
+                    android:textSize="@dimen/text_small"/>
+
+            </LinearLayout>
+
+            <Button android:id="@+id/event"
+                android:layout_width="70dp"
+                android:layout_height="35dp"
+                android:layout_gravity="center_vertical"
+                android:background="@drawable/btn_shape_red"
+                android:text="预约"
+                android:textColor="@color/white"
+                android:textSize="@dimen/text_medium"
+                android:focusable="false"/>
+
+        </LinearLayout>
+
     </LinearLayout>
 
 </com.youxing.duola.mine.views.OrderListItem>

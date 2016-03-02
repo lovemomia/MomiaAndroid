@@ -34,7 +34,7 @@ import com.youxing.duola.R;
 import com.youxing.duola.app.SGActivity;
 import com.youxing.duola.model.AlipayOrderModel;
 import com.youxing.duola.model.CouponPriceModel;
-import com.youxing.duola.model.OrderDetailModel;
+import com.youxing.duola.model.Order;
 import com.youxing.duola.model.WechatPayModel;
 import com.youxing.duola.pay.views.CashierPayItemView;
 import com.youxing.duola.utils.PriceUtils;
@@ -57,7 +57,7 @@ public class CashierActivity extends SGActivity implements View.OnClickListener,
 
     private static final int REQUEST_CODE_COUPON = 1;
 
-    private OrderDetailModel order;
+    private Order order;
 
     private CouponPriceModel couponPrice;
     private long couponId;
@@ -74,8 +74,7 @@ public class CashierActivity extends SGActivity implements View.OnClickListener,
             if (intent.getAction().equals(BROADCAST_PAY_RESULT)) {
                 int errCode = intent.getIntExtra("errCode", 0);
                 if (errCode == 0) {
-                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("duola://payresult?oid=" + order.getData().getId() +
-                            "&pid=" + order.getData().getProductId() + "&sid=" + order.getData().getSkuId())));
+                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("duola://payresult?oid=" + order.getId())));
 
                 } else {
                     showDialog(CashierActivity.this, "支付失败");
@@ -99,8 +98,7 @@ public class CashierActivity extends SGActivity implements View.OnClickListener,
 
                     // 判断resultStatus 为“9000”则代表支付成功，具体状态码代表含义可参考接口文档
                     if (TextUtils.equals(resultStatus, "9000")) {
-                        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("duola://payresult?oid=" + order.getData().getId() +
-                                "&pid=" + order.getData().getProductId() + "&sid=" + order.getData().getSkuId())));
+                        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("duola://payresult?oid=" + order.getId())));
                     } else {
                         // 判断resultStatus 为非“9000”则代表可能支付失败
                         // “8000”代表支付结果因为支付渠道原因或者系统原因还在等待支付结果确认，最终交易是否成功以服务端异步通知为准（小概率状态）
@@ -133,8 +131,8 @@ public class CashierActivity extends SGActivity implements View.OnClickListener,
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cashier);
 
-        String pom = getIntent().getData().getQueryParameter("pom");
-        order = JSON.parseObject(pom, OrderDetailModel.class);
+        String orderStr = getIntent().getData().getQueryParameter("order");
+        order = JSON.parseObject(orderStr, Order.class);
 
         ListView listView = (ListView)findViewById(R.id.listView);
         adapter = new Adapter();
@@ -165,9 +163,10 @@ public class CashierActivity extends SGActivity implements View.OnClickListener,
         showLoadingDialog(this);
 
         List<NameValuePair> params = new ArrayList<NameValuePair>();
-        params.add(new BasicNameValuePair("oid", String.valueOf(order.getData().getId())));
+        params.add(new BasicNameValuePair("oid", String.valueOf(order.getId())));
         params.add(new BasicNameValuePair("coupon", String.valueOf(couponId)));
-        HttpService.get(Constants.domain() + "/coupon", params, CacheType.DISABLE, CouponPriceModel.class, new RequestHandler() {
+        HttpService.get(Constants.domain() + "/subject/order/coupon", params, CacheType.DISABLE,
+                CouponPriceModel.class, new RequestHandler() {
             @Override
             public void onRequestFinish(Object response) {
                 dismissDialog();
@@ -179,6 +178,7 @@ public class CashierActivity extends SGActivity implements View.OnClickListener,
             public void onRequestFailed(BaseModel error) {
                 dismissDialog();
                 showDialog(CashierActivity.this, error.getErrmsg());
+                CashierActivity.this.couponId = 0;
             }
         });
     }
@@ -186,9 +186,8 @@ public class CashierActivity extends SGActivity implements View.OnClickListener,
     @Override
     public void onClick(View v) {
         // 0元购
-        if (order.getData().getTotalFee() == 0 || (couponPrice != null && couponPrice.getData() == 0)) {
-            startActivity("duola://payresult?oid=" + order.getData().getId()
-                    + "&pid=" + order.getData().getProductId() + "&sid=" + order.getData().getSkuId()
+        if (order.getTotalFee() == 0 || (couponPrice != null && couponPrice.getData() == 0)) {
+            startActivity("duola://payresult?oid=" + order.getId()
                     + "&coupon=" + couponId + "&free=1");
             return;
         }
@@ -215,12 +214,13 @@ public class CashierActivity extends SGActivity implements View.OnClickListener,
         }
 
         List<NameValuePair> params = new ArrayList<NameValuePair>();
-        params.add(new BasicNameValuePair("trade_type", "APP"));
-        params.add(new BasicNameValuePair("oid", String.valueOf(order.getData().getId())));
-        params.add(new BasicNameValuePair("pid", String.valueOf(order.getData().getProductId())));
-        params.add(new BasicNameValuePair("sid", String.valueOf(order.getData().getSkuId())));
+        params.add(new BasicNameValuePair("type", "APP"));
+        params.add(new BasicNameValuePair("oid", String.valueOf(order.getId())));
+        if (couponId > 0) {
+            params.add(new BasicNameValuePair("coupon", String.valueOf(couponId)));
+        }
 
-        HttpService.post(Constants.domainHttps() + "/payment/prepay/wechatpay", params, WechatPayModel.class, new RequestHandler() {
+        HttpService.post(Constants.domainHttps() + "/payment/prepay/weixin", params, WechatPayModel.class, new RequestHandler() {
             @Override
             public void onRequestFinish(Object response) {
                 dismissDialog();
@@ -259,12 +259,11 @@ public class CashierActivity extends SGActivity implements View.OnClickListener,
         showLoadingDialog(CashierActivity.this, "正在准备支付，请稍候...", null);
 
         List<NameValuePair> params = new ArrayList<NameValuePair>();
-        params.add(new BasicNameValuePair("trade_type", "APP"));
-        params.add(new BasicNameValuePair("oid", String.valueOf(order.getData().getId())));
-        params.add(new BasicNameValuePair("pid", String.valueOf(order.getData().getProductId())));
-        params.add(new BasicNameValuePair("sid", String.valueOf(order.getData().getSkuId())));
-
-        //TODO 红包
+        params.add(new BasicNameValuePair("type", "APP"));
+        params.add(new BasicNameValuePair("oid", String.valueOf(order.getId())));
+        if (couponId > 0) {
+            params.add(new BasicNameValuePair("coupon", String.valueOf(couponId)));
+        }
 
         HttpService.post(Constants.domainHttps() + "/payment/prepay/alipay", params, AlipayOrderModel.class, new RequestHandler() {
             @Override
@@ -313,7 +312,7 @@ public class CashierActivity extends SGActivity implements View.OnClickListener,
         GroupStyleAdapter.IndexPath indexPath = adapter.getIndexForPosition(position);
         if (indexPath.section == 1) {
             startActivityForResult("duola://couponlist?oid=" +
-                    order.getData().getId() + "&select=1", REQUEST_CODE_COUPON);
+                    order.getId() + "&select=1", REQUEST_CODE_COUPON);
 
         } else if (indexPath.section == 2) {
             if (indexPath.row == 0) {
@@ -364,10 +363,10 @@ public class CashierActivity extends SGActivity implements View.OnClickListener,
                 SimpleListItem listItem = SimpleListItem.create(CashierActivity.this);
                 if (row == 0) {
                     listItem.setTitle("订单数量");
-                    listItem.setSubTitle(String.valueOf(order.getData().getCount()));
+                    listItem.setSubTitle(String.valueOf(order.getCount()));
                 } else {
                     listItem.setTitle("总价");
-                    listItem.setSubTitle("￥" + PriceUtils.formatPriceString(order.getData().getTotalFee()));
+                    listItem.setSubTitle("￥" + PriceUtils.formatPriceString(order.getTotalFee()));
                 }
                 view = listItem;
             } else if (section == 1) {
@@ -382,7 +381,7 @@ public class CashierActivity extends SGActivity implements View.OnClickListener,
                     if (couponPrice != null) {
                         listItem.setSubTitle("￥" + PriceUtils.formatPriceString(couponPrice.getData()));
                     } else {
-                        listItem.setSubTitle("￥" + PriceUtils.formatPriceString(order.getData().getTotalFee()));
+                        listItem.setSubTitle("￥" + PriceUtils.formatPriceString(order.getTotalFee()));
                     }
                 }
                 view = listItem;

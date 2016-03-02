@@ -105,6 +105,10 @@ public class ViewPagerIndicatorView extends LinearLayout implements TabIndicator
         this.viewPager.setAdapter(new MyFragmentPagerAdapter(pageList));
     }
 
+    public void setCurrentPage(int page) {
+        this.tabIndicatorView.setCurrentTab(page);
+    }
+
     @Override
     public void onTabChanged(int position) {
         viewPager.setCurrentItem(position, true);

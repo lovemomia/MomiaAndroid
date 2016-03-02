@@ -2,6 +2,7 @@ package com.youxing.duola.mine;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.text.TextUtils;
 
 import com.youxing.duola.R;
 import com.youxing.duola.app.SGActivity;
@@ -15,6 +16,8 @@ import java.util.Map;
 public class MyOrderListActivity extends SGActivity {
 
     private ViewPagerIndicatorView viewPagerIndicatorView;
+
+    private int status;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,6 +35,14 @@ public class MyOrderListActivity extends SGActivity {
         map.put("全部", createFragment(1));
         this.viewPagerIndicatorView.setupFragment(titleList, map);
 
+        String statusStr = getIntent().getData().getQueryParameter("status");
+        if (!TextUtils.isEmpty(statusStr)) {
+            status = Integer.valueOf(statusStr);
+        }
+
+        if (status == 3) {
+            this.viewPagerIndicatorView.setCurrentPage(1);
+        }
     }
 
     private Fragment createFragment(int status) {

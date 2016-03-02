@@ -112,7 +112,7 @@ public class OrderListFragment extends SGFragment implements AdapterView.OnItemC
         if (item instanceof Order) {
             Order order = (Order) item;
             startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("duola://orderdetail?oid=" +
-                    order.getId() + "&pid=" + order.getProductId())));
+                    order.getId())));
         }
     }
 

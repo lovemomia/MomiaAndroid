@@ -50,7 +50,7 @@ public class AddReviewActivity extends SGActivity implements RatingBar.OnRatingB
         View.OnClickListener, TextWatcher {
 
     private final static int MENU_ID_SUBMIT = 1;
-    private static final int REQUEST_CODE_PICK_PHOTO = 1;
+    private final static int REQUEST_CODE_PICK_PHOTO = 1;
 
     private String id;
     private String bookingId;

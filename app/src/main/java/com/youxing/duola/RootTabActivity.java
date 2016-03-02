@@ -2,6 +2,7 @@ package com.youxing.duola;
 
 import android.os.Bundle;
 import android.support.v4.app.FragmentTabHost;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TabHost;
@@ -53,6 +54,15 @@ public class RootTabActivity extends SGActivity implements RongIMClient.OnReceiv
                         createTabItem("我的",
                                 R.drawable.ic_tab_mine)),
                 MineFragment.class, null);
+
+        String host = getIntent().getData().getHost();
+        if (!TextUtils.isEmpty(host)) {
+            if (host.equals("mine")) {
+                tabHost.setCurrentTab(2);
+            } else if (host.equals("chatlist")) {
+                tabHost.setCurrentTab(1);
+            }
+        }
 
         // Umeng
         MobclickAgent.updateOnlineConfig(this);

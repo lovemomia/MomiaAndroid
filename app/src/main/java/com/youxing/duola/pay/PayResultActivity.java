@@ -15,7 +15,6 @@ import com.youxing.duola.R;
 import com.youxing.duola.RootTabActivity;
 import com.youxing.duola.app.SGActivity;
 import com.youxing.duola.model.PayCheckModel;
-import com.youxing.duola.views.ShareDialog;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
@@ -29,8 +28,6 @@ import java.util.List;
 public class PayResultActivity extends SGActivity implements View.OnClickListener {
 
     private String oid;
-    private String pid;
-    private String sid;
     private String coupon;
     private String free;
 
@@ -48,8 +45,6 @@ public class PayResultActivity extends SGActivity implements View.OnClickListene
         setContentView(R.layout.activity_pay_result);
 
         oid = getIntent().getData().getQueryParameter("oid");
-        pid = getIntent().getData().getQueryParameter("pid");
-        sid = getIntent().getData().getQueryParameter("sid");
         coupon = getIntent().getData().getQueryParameter("coupon");
         free = getIntent().getData().getQueryParameter("free");
 
@@ -72,8 +67,6 @@ public class PayResultActivity extends SGActivity implements View.OnClickListene
 
         List<NameValuePair> params = new ArrayList<NameValuePair>();
         params.add(new BasicNameValuePair("oid", oid));
-        params.add(new BasicNameValuePair("pid", pid));
-        params.add(new BasicNameValuePair("sid", sid));
         params.add(new BasicNameValuePair("coupon", coupon));
 
         HttpService.post(Constants.domainHttps() + "/payment/prepay/free", params, PayCheckModel.class, new RequestHandler() {
@@ -82,16 +75,17 @@ public class PayResultActivity extends SGActivity implements View.OnClickListene
                 dismissDialog();
 
                 model = (PayCheckModel) response;
-                paySuccess = true;
+                if (model.getData().isPayed()) {
+                    paySuccess = true;
+                } else {
+                    setPayFailed();
+                }
             }
 
             @Override
             public void onRequestFailed(BaseModel error) {
                 dismissDialog();
-                titleTv.setText("购买失败");
-                descTv.setText("请重新确认订单，如有问题可拨打客服热线：021-62578700");
-                leftBtn.setText("联系客服");
-                paySuccess = false;
+                setPayFailed();
             }
         });
     }
@@ -101,8 +95,6 @@ public class PayResultActivity extends SGActivity implements View.OnClickListene
 
         List<NameValuePair> params = new ArrayList<NameValuePair>();
         params.add(new BasicNameValuePair("oid", oid));
-        params.add(new BasicNameValuePair("pid", pid));
-        params.add(new BasicNameValuePair("sid", sid));
 
         HttpService.post(Constants.domainHttps() + "/payment/check", params, PayCheckModel.class, new RequestHandler() {
             @Override
@@ -110,18 +102,27 @@ public class PayResultActivity extends SGActivity implements View.OnClickListene
                 dismissDialog();
 
                 model = (PayCheckModel) response;
-                paySuccess = true;
+                if (model.getData().isPayed()) {
+                    paySuccess = true;
+                } else {
+                    setPayFailed();
+                }
             }
 
             @Override
             public void onRequestFailed(BaseModel error) {
                 dismissDialog();
-                titleTv.setText("购买失败");
-                descTv.setText("请重新确认订单，如有问题可拨打客服热线：021-62578700");
-                leftBtn.setText("联系客服");
-                paySuccess = false;
+                setPayFailed();
             }
         });
+    }
+
+    private void setPayFailed() {
+        titleTv.setText("购买失败");
+        descTv.setText("请重新确认订单，如有问题可联系客服微信：dorakids01");
+        leftBtn.setVisibility(View.GONE);
+        rightBtn.setVisibility(View.GONE);
+        paySuccess = false;
     }
 
     @Override
@@ -146,15 +147,7 @@ public class PayResultActivity extends SGActivity implements View.OnClickListene
     public void onClick(View v) {
         if (v.getId() == R.id.pay_result_left_btn) {
             if (paySuccess) {
-                // 分享
-                if (model != null) {
-                    ShareDialog shareDialog = new ShareDialog(this, model.getData().getUrl(),
-                            model.getData().getTitle(), model.getData().getAbstracts(), model.getData().getThumb());
-                    shareDialog.show();
-                }
-
-            } else {
-                startActivity("tel://02162578700");
+                startActivity("duola://bookingsubjectlist");
             }
 
         } else if (v.getId() == R.id.pay_result_right_btn) {
