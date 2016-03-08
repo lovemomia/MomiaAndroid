@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.youxing.duola.course.views.CourseReviewListItem
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <com.youxing.common.views.CircularImage
+            android:id="@+id/avatar"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:layout_margin="10dp" />
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:paddingRight="10dp">
+
+            <TextView android:id="@+id/name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/text_deep_gray"
+                android:textSize="@dimen/text_medium"
+                android:text="aaaaa"/>
+
+            <TextView android:id="@+id/date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/text_light_gray"
+                android:textSize="@dimen/text_small"
+                android:layout_gravity="right"
+                android:text="03-01"/>
+
+            <TextView android:id="@+id/children"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/text_light_gray"
+                android:textSize="@dimen/text_small"
+                android:layout_gravity="bottom"
+                android:text="5岁，1岁"/>
+
+            <RatingBar
+                android:id="@+id/ratingBar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:numStars="5"
+                android:stepSize="1"
+                android:isIndicator="true"
+                android:minHeight="14dp"
+                android:maxHeight="14dp"
+                android:layout_gravity="bottom|right"
+                android:progressDrawable="@drawable/ic_rating_star_small"/>
+
+        </FrameLayout>
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/text_deep_gray"
+        android:textSize="@dimen/text_medium"
+        android:layout_marginLeft="65dp"
+        android:layout_marginBottom="10dp"
+        android:text="content"/>
+
+    <android.support.v7.widget.GridLayout
+        android:id="@+id/grid"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:columnCount="3"
+        android:layout_marginLeft="62dp"
+        android:layout_marginBottom="10dp">
+
+    </android.support.v7.widget.GridLayout>
+
+</com.youxing.duola.course.views.CourseReviewListItem>

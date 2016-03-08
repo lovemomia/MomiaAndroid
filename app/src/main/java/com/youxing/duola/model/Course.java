@@ -19,18 +19,22 @@ public class Course {
     private long bookingId; //预约id
     private String subject;
     private long subjectId;
-    private int type; // 0:一般课程，1:公益课， 2:推荐课程
-    private String notice;
+    private int type; //0:一般课程，1:公益课， 2:推荐课程
+    private String notice; //课程的购买须知，用于单买时展示，纯文本
+    private String subjectNotice; //课程包的购买须知，用于只能按包买时展示，JSON格式
+    private Sku cheapestSku; //价格最低的包
 
     private List<String> imgs;
     private String goal;
-    private CoursePlace place;
+    private CoursePlace place; //上课地点
+    private List<CourseDetail> detail; //课程详情
+    private ReviewList comments; //评价
 
     private String tips; //提示
     private String institution; //合作机构
     private boolean commented; //是否已评论过
-    private boolean buyable;
-    private int status; //1 可购买  2 不可购买
+    private boolean buyable;//1 可购买  2 不可购买
+    private int status; //  1 正常   2 已售完
 
     public long getId() {
         return id;
@@ -144,6 +148,22 @@ public class Course {
         this.notice = notice;
     }
 
+    public String getSubjectNotice() {
+        return subjectNotice;
+    }
+
+    public void setSubjectNotice(String subjectNotice) {
+        this.subjectNotice = subjectNotice;
+    }
+
+    public Sku getCheapestSku() {
+        return cheapestSku;
+    }
+
+    public void setCheapestSku(Sku cheapestSku) {
+        this.cheapestSku = cheapestSku;
+    }
+
     public List<String> getImgs() {
         return imgs;
     }
@@ -208,6 +228,22 @@ public class Course {
         this.status = status;
     }
 
+    public List<CourseDetail> getDetail() {
+        return detail;
+    }
+
+    public void setDetail(List<CourseDetail> detail) {
+        this.detail = detail;
+    }
+
+    public ReviewList getComments() {
+        return comments;
+    }
+
+    public void setComments(ReviewList comments) {
+        this.comments = comments;
+    }
+
     public static class CoursePlace {
         private long id;
         private String name;
@@ -262,6 +298,49 @@ public class Course {
 
         public void setScheduler(String scheduler) {
             this.scheduler = scheduler;
+        }
+
+    }
+
+    public static class CourseDetail {
+        private String title;
+        private List<CourseDetailContent> content;
+
+        public String getTitle() {
+            return title;
+        }
+
+        public void setTitle(String title) {
+            this.title = title;
+        }
+
+        public List<CourseDetailContent> getContent() {
+            return content;
+        }
+
+        public void setContent(List<CourseDetailContent> content) {
+            this.content = content;
+        }
+    }
+
+    public static class CourseDetailContent {
+        private String img;
+        private String text;
+
+        public String getImg() {
+            return img;
+        }
+
+        public void setImg(String img) {
+            this.img = img;
+        }
+
+        public String getText() {
+            return text;
+        }
+
+        public void setText(String text) {
+            this.text = text;
         }
     }
 }

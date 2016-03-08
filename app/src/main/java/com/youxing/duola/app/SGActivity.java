@@ -27,8 +27,7 @@ public class SGActivity extends YXActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-
-        if (!(this instanceof RootTabActivity)) {
+        if (!(this instanceof RootTabActivity) && getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_action_back);
         }

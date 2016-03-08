@@ -67,9 +67,8 @@ public class MineFragment extends SGFragment implements AdapterView.OnItemClickL
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        titleBar.setTitle("我的");
         if (rebuild) {
-            titleBar.setTitle("我的");
-
             AccountService.instance().addListener(this);
         }
     }

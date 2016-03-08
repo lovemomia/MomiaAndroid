@@ -9,6 +9,7 @@ public class Sku {
 
     private String desc;
     private int limit;
+
     private double minPrice;
     private boolean needRealName;
     private long productId;
@@ -18,6 +19,52 @@ public class Sku {
     private int type;
     private List<Price> prices;
     private long placeId;
+
+    private long id;
+    private long subjectId;
+    private long courseId;
+    private double price;
+    private int count;
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public long getSubjectId() {
+        return subjectId;
+    }
+
+    public void setSubjectId(long subjectId) {
+        this.subjectId = subjectId;
+    }
+
+    public long getCourseId() {
+        return courseId;
+    }
+
+    public void setCourseId(long courseId) {
+        this.courseId = courseId;
+    }
+
+    public double getPrice() {
+        return price;
+    }
+
+    public void setPrice(double price) {
+        this.price = price;
+    }
+
+    public int getCount() {
+        return count;
+    }
+
+    public void setCount(int count) {
+        this.count = count;
+    }
 
     public String getDesc() {
         return desc;

@@ -25,11 +25,11 @@ public class TitleBar extends android.support.v7.widget.Toolbar {
     protected void onFinishInflate() {
         super.onFinishInflate();
         titleTv = (TextView) findViewById(R.id.toolbar_title);
+        super.setTitle("");
     }
 
     public void setTitle(String title) {
         titleTv.setText(title);
-        super.setTitle("");
     }
 
     public TextView getTitleTv() {

@@ -55,12 +55,14 @@ public class RootTabActivity extends SGActivity implements RongIMClient.OnReceiv
                                 R.drawable.ic_tab_mine)),
                 MineFragment.class, null);
 
-        String host = getIntent().getData().getHost();
-        if (!TextUtils.isEmpty(host)) {
-            if (host.equals("mine")) {
-                tabHost.setCurrentTab(2);
-            } else if (host.equals("chatlist")) {
-                tabHost.setCurrentTab(1);
+        if (getIntent().getData() != null) {
+            String host = getIntent().getData().getHost();
+            if (!TextUtils.isEmpty(host)) {
+                if (host.equals("mine")) {
+                    tabHost.setCurrentTab(2);
+                } else if (host.equals("chatlist")) {
+                    tabHost.setCurrentTab(1);
+                }
             }
         }
 
