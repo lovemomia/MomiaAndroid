@@ -392,14 +392,14 @@ public class CashierActivity extends SGActivity implements View.OnClickListener,
                     payItemView.setIcon(R.drawable.ic_wxpay);
                     payItemView.setTitle("微信支付");
                     payItemView.setSubTitle("推荐已安装微信的用户使用");
-                    payItemView.setChecked(false);
+                    payItemView.setChecked(true);
                     wechatItem = payItemView;
 
                 } else if (row == 1) {
                     payItemView.setIcon(R.drawable.ic_alipay);
                     payItemView.setTitle("支付宝支付");
                     payItemView.setSubTitle("推荐支付宝用户使用");
-                    payItemView.setChecked(true);
+                    payItemView.setChecked(false);
                     alipayItem = payItemView;
 
                 }

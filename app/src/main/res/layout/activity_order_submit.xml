@@ -13,7 +13,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="60dp"
         android:gravity="center_vertical"
         android:background="@color/white">
 
@@ -22,7 +22,7 @@
             android:layout_height="wrap_content"
             android:textColor="@color/text_deep_gray"
             android:textSize="@dimen/text_large"
-            android:layout_marginLeft="20dp"
+            android:layout_marginLeft="10dp"
             android:text="总价：￥"/>
 
         <TextView
@@ -38,14 +38,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@drawable/btn_shape_red"
-            android:layout_marginTop="5dp"
-            android:layout_marginBottom="5dp"
             android:layout_marginRight="10dp"
             android:paddingTop="10dp"
             android:paddingBottom="10dp"
             android:paddingLeft="20dp"
             android:paddingRight="20dp"
             android:textColor="@color/white"
+            android:layout_gravity="center_vertical"
             android:textSize="@dimen/text_large"
             android:text="确认订单"
             android:id="@+id/done" />

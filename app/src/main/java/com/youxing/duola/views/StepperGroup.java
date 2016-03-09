@@ -49,23 +49,23 @@ public class StepperGroup {
         return totalPrice;
     }
 
-    public void compute(List<Sku.Price> skuPrices) {
-        double totalPrice = 0;
-        int adultNum = 0;
-        int childNum = 0;
-        for (int i = 0; i < skuPrices.size(); i++) {
-            Sku.Price price = skuPrices.get(i);
-            Integer count = countMap.get(i);
-            if (count != null) {
-                totalPrice += price.getPrice() * count;
-                adultNum += price.getAdult() * count;
-                childNum += price.getChild() * count;
-            }
-        }
-        this.selectAdultNum = adultNum;
-        this.selectChildNum = childNum;
-        this.totalPrice = totalPrice;
-    }
+//    public void compute(List<Sku.Price> skuPrices) {
+//        double totalPrice = 0;
+//        int adultNum = 0;
+//        int childNum = 0;
+//        for (int i = 0; i < skuPrices.size(); i++) {
+//            Sku.Price price = skuPrices.get(i);
+//            Integer count = countMap.get(i);
+//            if (count != null) {
+//                totalPrice += price.getPrice() * count;
+//                adultNum += price.getAdult() * count;
+//                childNum += price.getChild() * count;
+//            }
+//        }
+//        this.selectAdultNum = adultNum;
+//        this.selectChildNum = childNum;
+//        this.totalPrice = totalPrice;
+//    }
 
     public void adjustStepper(StepperView stepper) {
         updateTotal();

@@ -3,26 +3,21 @@ package com.youxing.duola.order.views;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
-import android.view.View;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.youxing.duola.R;
 import com.youxing.duola.model.Sku;
-import com.youxing.duola.utils.PriceUtils;
+import com.youxing.duola.views.StepperView;
 
 /**
  * Created by Jun Deng on 15/8/11.
  */
 public class OrderSkuItem extends LinearLayout {
 
-    private TextView dateTv;
-    private TextView priceTv;
-    private ImageView selectIv;
-
-    private boolean select;
-    private boolean isSelectAble;
+    private TextView titleTv;
+    private TextView subTitleTv;
+    private StepperView stepper;
 
     public OrderSkuItem(Context context) {
         this(context, null);
@@ -39,50 +34,26 @@ public class OrderSkuItem extends LinearLayout {
     @Override
     protected void onFinishInflate() {
         super.onFinishInflate();
-        dateTv = (TextView) findViewById(R.id.order_sku_date);
-        priceTv = (TextView) findViewById(R.id.order_sku_price);
-        selectIv = (ImageView) findViewById(R.id.order_sku_select);
+        titleTv = (TextView) findViewById(R.id.title);
+        subTitleTv = (TextView) findViewById(R.id.subTitle);
+        stepper = (StepperView) findViewById(R.id.stepper);
     }
 
-    public void setData(Sku sku) {
-        isSelectAble = true;
-        dateTv.setText(sku.getTime());
-        StringBuilder sb = new StringBuilder("￥" + PriceUtils.formatPriceString(sku.getMinPrice()) + "起");
-        sb.append("    ");
-        if (sku.getType() == 1) { //无上限
-            if (sku.getLimit() != 0) {
-                sb.append("每人限" + sku.getLimit() + "单");
-            }
+    public void setData(Sku sku, boolean isPackage) {
+        String unit = isPackage ? "组" : "次";
+        titleTv.setText("￥" + sku.getPrice() + "元／" + unit);
 
+        subTitleTv.setText(sku.getDesc());
+        stepper.setNumber(sku.getCount());
+        if (sku.getLimit() > 0) {
+            stepper.setMax(sku.getLimit());
         } else {
-            if (sku.getStock() == 0) {
-                sb.append("名额已满");
-                isSelectAble = false;
-            } else {
-                sb.append("仅剩" + sku.getStock() + "名额");
-            }
-
-            if (sku.getLimit() != 0) {
-                sb.append("，每人限" + sku.getLimit() + "单");
-            }
-        }
-        priceTv.setText(sb.toString());
-    }
-
-    public void setSelect(boolean select) {
-        this.select = select;
-        if (select) {
-            selectIv.setVisibility(View.VISIBLE);
-        } else {
-            selectIv.setVisibility(View.GONE);
+            stepper.setMax(Integer.MAX_VALUE);
         }
     }
 
-    public boolean isSelectAble() {
-        return isSelectAble;
+    public StepperView getStepper() {
+        return stepper;
     }
 
-    public boolean isSelect() {
-        return select;
-    }
 }

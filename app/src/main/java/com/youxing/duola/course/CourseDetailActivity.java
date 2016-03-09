@@ -1,6 +1,8 @@
 package com.youxing.duola.course;
 
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
@@ -26,6 +28,8 @@ import com.youxing.duola.course.views.CourseDetailTagsItem;
 import com.youxing.duola.course.views.CourseReviewListItem;
 import com.youxing.duola.model.Course;
 import com.youxing.duola.model.CourseDetailModel;
+import com.youxing.duola.model.Sku;
+import com.youxing.duola.utils.PriceUtils;
 import com.youxing.duola.views.SimpleListItem;
 
 import org.apache.http.NameValuePair;
@@ -42,7 +46,6 @@ public class CourseDetailActivity extends SGActivity implements CourseDetailTabI
     private String id;
     private Course model;
 
-    private Toolbar titleBar;
     private Adapter adapter;
     private TextView priceTv;
     private TextView unitTv;
@@ -63,7 +66,7 @@ public class CourseDetailActivity extends SGActivity implements CourseDetailTabI
 
             @Override
             public void onClick(View v) {
-                
+                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("duola://fillorder?id=" + id)));
             }
 
         });
@@ -73,9 +76,6 @@ public class CourseDetailActivity extends SGActivity implements CourseDetailTabI
         adapter = new Adapter(this);
         ListView listView = (ListView) findViewById(R.id.listView);
         listView.setAdapter(adapter);
-
-//        titleBar = (Toolbar) findViewById(R.id.titleBar);
-//        setSupportActionBar(titleBar);
 
         requestData();
     }
@@ -91,6 +91,7 @@ public class CourseDetailActivity extends SGActivity implements CourseDetailTabI
                 dismissDialog();
                 model = ((CourseDetailModel) response).getData();
                 adapter.notifyDataSetChanged();
+                setBuyView();
             }
 
             @Override
@@ -98,6 +99,29 @@ public class CourseDetailActivity extends SGActivity implements CourseDetailTabI
                 showDialog(CourseDetailActivity.this, error.getErrmsg());
             }
         });
+    }
+
+    private void setBuyView() {
+        if (model == null) {
+            return;
+        }
+
+        // TODO 单位、说明如何传
+        Sku sku = model.getCheapestSku();
+        if (sku == null) {
+            return;
+        }
+        priceTv.setText(PriceUtils.formatPriceString(sku.getPrice()));
+        unitTv.setText("起／月");
+        chooseTv.setText("任选两门");
+
+        if (!model.isBuyable()) {
+            buyBtn.setEnabled(false);
+            buyBtn.setText("已售完");
+        } else {
+            buyBtn.setEnabled(true);
+            buyBtn.setText("立即抢购");
+        }
     }
 
     @Override
