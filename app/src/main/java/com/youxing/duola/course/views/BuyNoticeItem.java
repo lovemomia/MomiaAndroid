@@ -8,6 +8,7 @@ import android.widget.TextView;
 import com.alibaba.fastjson.JSONArray;
 import com.youxing.common.utils.UnitTools;
 import com.youxing.duola.R;
+import com.youxing.duola.model.Notice;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,48 +33,30 @@ public class BuyNoticeItem extends LinearLayout {
         return new BuyNoticeItem(context);
     }
 
-    public void setData(String notice) {
-        List<Notice> notices = new ArrayList<Notice>(JSONArray.parseArray(notice, Notice.class));
-
+    public void setData(List<Notice> notices) {
         removeAllViews();
         for (Notice n : notices) {
 
             TextView titleTv = new TextView(getContext());
             titleTv.setText(n.getTitle());
             titleTv.setTextSize(14);
-            titleTv.setTextColor(getResources().getColor(R.color.text_blue));
+            titleTv.setTextColor(getResources().getColor(R.color.text_deep_gray));
             titleTv.setPadding(0, 0, 0, UnitTools.dip2px(getContext(), 5));
             addView(titleTv);
 
             TextView contentTv = new TextView(getContext());
             contentTv.setText(n.getContent());
-            contentTv.setTextSize(14);
-            contentTv.setTextColor(getResources().getColor(R.color.text_deep_gray));
+            contentTv.setTextSize(12);
+            contentTv.setTextColor(getResources().getColor(R.color.text_gray));
             contentTv.setLineSpacing(3, 1.2f);
             contentTv.setPadding(0, 0, 0, UnitTools.dip2px(getContext(), 10));
             addView(contentTv);
         }
     }
 
-    private static class Notice {
-        private String title;
-        private String content;
-
-        public String getTitle() {
-            return title;
-        }
-
-        public void setTitle(String title) {
-            this.title = title;
-        }
-
-        public String getContent() {
-            return content;
-        }
-
-        public void setContent(String content) {
-            this.content = content;
-        }
+    public void setData(String notice) {
+        List<Notice> notices = new ArrayList<Notice>(JSONArray.parseArray(notice, Notice.class));
+        setData(notices);
     }
 
 }

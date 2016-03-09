@@ -26,7 +26,6 @@
     <ImageView
         android:id="@+id/add"
         android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:src="@drawable/user"/>
+        android:layout_height="50dp"/>
 
 </com.youxing.duola.views.SelectListItem>

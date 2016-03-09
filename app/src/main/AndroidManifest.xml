@@ -544,6 +544,22 @@
             </intent-filter>
         </activity>
 
+        <activity
+            android:name=".course.ReviewListActivity"
+            android:label="用户评价"
+            android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:host="reviewlist"
+                    android:scheme="duola" />
+            </intent-filter>
+        </activity>
+
 
 
         <!-- debug tools -->

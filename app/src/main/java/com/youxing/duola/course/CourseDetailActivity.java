@@ -66,7 +66,10 @@ public class CourseDetailActivity extends SGActivity implements CourseDetailTabI
 
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("duola://fillorder?id=" + id)));
+                if (model == null) {
+                    return;
+                }
+                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("duola://fillorder?id=" + model.getSubjectId())));
             }
 
         });
@@ -85,7 +88,7 @@ public class CourseDetailActivity extends SGActivity implements CourseDetailTabI
 
         List<NameValuePair> params = new ArrayList<NameValuePair>();
         params.add(new BasicNameValuePair("id", id));
-        HttpService.get(Constants.domain() + "/v2/course", params, CacheType.DISABLE, CourseDetailModel.class, new RequestHandler() {
+        HttpService.get(Constants.domain() + "/v3/course", params, CacheType.DISABLE, CourseDetailModel.class, new RequestHandler() {
             @Override
             public void onRequestFinish(Object response) {
                 dismissDialog();
@@ -115,12 +118,13 @@ public class CourseDetailActivity extends SGActivity implements CourseDetailTabI
         unitTv.setText("起／月");
         chooseTv.setText("任选两门");
 
-        if (!model.isBuyable()) {
-            buyBtn.setEnabled(false);
-            buyBtn.setText("已售完");
-        } else {
+        if (model.getStatus() == 1) {
             buyBtn.setEnabled(true);
             buyBtn.setText("立即抢购");
+
+        } else {
+            buyBtn.setEnabled(false);
+            buyBtn.setText("已售完");
         }
     }
 
