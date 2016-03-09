@@ -22,7 +22,9 @@ public class Subject {
     private String intro;
 
     private List<Notice> notice;
-    private Sku cheapestSku;
+    private String cheapestSkuDesc;
+    private double cheapestSkuPrice;
+    private String cheapestSkuTimeUnit;
 
     private int status;
 
@@ -138,11 +140,27 @@ public class Subject {
         this.status = status;
     }
 
-    public Sku getCheapestSku() {
-        return cheapestSku;
+    public String getCheapestSkuDesc() {
+        return cheapestSkuDesc;
     }
 
-    public void setCheapestSku(Sku cheapestSku) {
-        this.cheapestSku = cheapestSku;
+    public void setCheapestSkuDesc(String cheapestSkuDesc) {
+        this.cheapestSkuDesc = cheapestSkuDesc;
+    }
+
+    public double getCheapestSkuPrice() {
+        return cheapestSkuPrice;
+    }
+
+    public void setCheapestSkuPrice(double cheapestSkuPrice) {
+        this.cheapestSkuPrice = cheapestSkuPrice;
+    }
+
+    public String getCheapestSkuTimeUnit() {
+        return cheapestSkuTimeUnit;
+    }
+
+    public void setCheapestSkuTimeUnit(String cheapestSkuTimeUnit) {
+        this.cheapestSkuTimeUnit = cheapestSkuTimeUnit;
     }
 }

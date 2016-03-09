@@ -109,14 +109,9 @@ public class CourseDetailActivity extends SGActivity implements CourseDetailTabI
             return;
         }
 
-        // TODO 单位、说明如何传
-        Sku sku = model.getCheapestSku();
-        if (sku == null) {
-            return;
-        }
-        priceTv.setText(PriceUtils.formatPriceString(sku.getPrice()));
-        unitTv.setText("起／月");
-        chooseTv.setText("任选两门");
+        priceTv.setText(PriceUtils.formatPriceString(model.getCheapestSkuPrice()));
+        unitTv.setText("起／" + model.getCheapestSkuTimeUnit());
+        chooseTv.setText(model.getCheapestSkuDesc());
 
         if (model.getStatus() == 1) {
             buyBtn.setEnabled(true);

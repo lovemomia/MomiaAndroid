@@ -107,14 +107,9 @@ public class SubjectDetailActivity extends SGActivity implements AdapterView.OnI
             return;
         }
 
-        // TODO 单位、说明如何传
-        Sku sku = model.getData().getSubject().getCheapestSku();
-        if (sku == null) {
-            return;
-        }
-        priceTv.setText(PriceUtils.formatPriceString(sku.getPrice()));
-        unitTv.setText("起／月");
-        chooseTv.setText("任选两门");
+        priceTv.setText(PriceUtils.formatPriceString(model.getData().getSubject().getCheapestSkuPrice()));
+        unitTv.setText("起／" + model.getData().getSubject().getCheapestSkuTimeUnit());
+        chooseTv.setText(model.getData().getSubject().getCheapestSkuDesc());
 
         if (model.getData().getSubject().getStatus() == 1) {
             buyBtn.setEnabled(true);

@@ -22,7 +22,10 @@ public class Course {
     private int type; //0:一般课程，1:公益课， 2:推荐课程
     private String notice; //课程的购买须知，用于单买时展示，纯文本
     private String subjectNotice; //课程包的购买须知，用于只能按包买时展示，JSON格式
-    private Sku cheapestSku; //价格最低的包
+//    private Sku cheapestSku; //价格最低的包
+    private String cheapestSkuDesc;
+    private double cheapestSkuPrice;
+    private String cheapestSkuTimeUnit;
 
     private List<String> imgs;
     private String goal;
@@ -156,12 +159,28 @@ public class Course {
         this.subjectNotice = subjectNotice;
     }
 
-    public Sku getCheapestSku() {
-        return cheapestSku;
+    public String getCheapestSkuDesc() {
+        return cheapestSkuDesc;
     }
 
-    public void setCheapestSku(Sku cheapestSku) {
-        this.cheapestSku = cheapestSku;
+    public void setCheapestSkuDesc(String cheapestSkuDesc) {
+        this.cheapestSkuDesc = cheapestSkuDesc;
+    }
+
+    public double getCheapestSkuPrice() {
+        return cheapestSkuPrice;
+    }
+
+    public void setCheapestSkuPrice(double cheapestSkuPrice) {
+        this.cheapestSkuPrice = cheapestSkuPrice;
+    }
+
+    public String getCheapestSkuTimeUnit() {
+        return cheapestSkuTimeUnit;
+    }
+
+    public void setCheapestSkuTimeUnit(String cheapestSkuTimeUnit) {
+        this.cheapestSkuTimeUnit = cheapestSkuTimeUnit;
     }
 
     public List<String> getImgs() {
