@@ -162,6 +162,9 @@
                 <data
                     android:host="web"
                     android:scheme="duola" />
+                <data
+                    android:host="web"
+                    android:scheme="duoladebug" />
             </intent-filter>
         </activity>
         <activity
@@ -559,7 +562,6 @@
                     android:scheme="duola" />
             </intent-filter>
         </activity>
-
 
 
         <!-- debug tools -->

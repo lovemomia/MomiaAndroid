@@ -1,0 +1,90 @@
+Applications Graphics Acceleration Info:
+Uptime: 3392437 Realtime: 3392437
+
+** Graphics info for pid 9401 [com.youxing.duola] **
+
+Recent DisplayList operations
+multiDraw
+  DrawBitmap
+DrawText
+DrawBitmapRect
+DrawBitmap
+DrawText
+multiDraw
+  DrawText
+multiDraw
+  DrawText
+DrawBitmapRect
+DrawBitmap
+DrawText
+multiDraw
+  DrawText
+multiDraw
+  DrawText
+DrawBitmapRect
+DrawBitmap
+DrawText
+multiDraw
+  DrawText
+multiDraw
+  DrawText
+DrawRect
+DrawRect
+DrawBitmap
+DrawShadow
+DrawRect
+DrawRect
+DrawRect
+DrawBitmapRect
+DrawBitmap
+DrawRect
+DrawRect
+DrawRect
+DrawRect
+DrawRect
+DrawRect
+DrawRect
+DrawRect
+multiDraw
+  DrawText
+multiDraw
+  DrawText
+DrawText
+DrawBitmap
+DrawBitmap
+DrawBitmap
+DrawBitmap
+
+Caches:
+Current memory usage / total memory usage (bytes):
+  TextureCache         16042408 / 25165824
+  LayerCache             327680 / 16777216 (numLayers = 2)
+  Garbage layers              0
+  Active layers               0
+  RenderBufferCache           0 /  2097152
+  GradientCache               0 /   524288
+  PathCache               71267 / 10485760
+  TessellationCache        9312 /  1048576
+  TextDropShadowCache         0 /  2097152
+  PatchCache              16128 /   131072
+  FontRenderer 0 A8      524288 /   524288
+  FontRenderer 0 RGBA         0 /        0
+  FontRenderer 0 total   524288 /   524288
+Other:
+  FboCache                    0 /        0
+Total memory usage:
+  16991083 bytes, 16.20 MB
+
+Profile data in ms:
+
+	com.youxing.duola/com.youxing.duola.RootTabActivity/android.view.ViewRootImpl@3efa9e0a (visibility=0)
+View hierarchy:
+
+  com.youxing.duola/com.youxing.duola.RootTabActivity/android.view.ViewRootImpl@3efa9e0a
+  69 views, 73.75 kB of display lists
+
+
+Total ViewRootImpl: 1
+Total Views:        69
+Total DisplayList:  73.75 kB
+

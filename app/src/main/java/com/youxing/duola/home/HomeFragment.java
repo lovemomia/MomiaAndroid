@@ -1,14 +1,10 @@
 package com.youxing.duola.home;
 
-import android.content.Intent;
+import android.content.Context;
 import android.graphics.Color;
-import android.graphics.drawable.Drawable;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,7 +12,7 @@ import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
-import com.youxing.common.adapter.BasicAdapter;
+import com.youxing.common.adapter.GroupStyleAdapter;
 import com.youxing.common.app.Constants;
 import com.youxing.common.model.Account;
 import com.youxing.common.model.BaseModel;
@@ -26,14 +22,18 @@ import com.youxing.common.services.http.CacheType;
 import com.youxing.common.services.http.HttpService;
 import com.youxing.common.services.http.RequestHandler;
 import com.youxing.common.utils.CityManager;
+import com.youxing.common.utils.UnitTools;
 import com.youxing.duola.R;
 import com.youxing.duola.app.SGFragment;
+import com.youxing.duola.home.views.HomeEventItem;
 import com.youxing.duola.home.views.HomeHeaderView;
 import com.youxing.duola.home.views.HomeListItem;
+import com.youxing.duola.home.views.HomeSubjectContentItem;
+import com.youxing.duola.home.views.HomeSubjectCoverItem;
 import com.youxing.duola.home.views.HomeTitleBar;
+import com.youxing.duola.home.views.HomeTopicItem;
+import com.youxing.duola.model.Course;
 import com.youxing.duola.model.HomeModel;
-import com.youxing.duola.model.Product;
-import com.youxing.duola.views.TitleBar;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
@@ -45,6 +45,7 @@ import java.util.List;
  * 首页
  *
  * Created by Jun Deng on 15/8/3.
+ * Refactor on 16/3/10 v1.4
  */
 public class HomeFragment extends SGFragment implements AdapterView.OnItemClickListener,
         SwipeRefreshLayout.OnRefreshListener, RequestHandler, CityManager.CityChangeListener {
@@ -57,13 +58,12 @@ public class HomeFragment extends SGFragment implements AdapterView.OnItemClickL
     private ListView listView;
     private Adapter adapter;
 
-    private List<HomeModel.HomeBanner> bannerList = new ArrayList<HomeModel.HomeBanner>();
-    private List<Product> productList = new ArrayList<Product>();
-    private int nextPage = -1;
+    private HomeModel model;
 
     private boolean isRefresh;
     private boolean hasBannel;
-    private boolean isEmpty;
+    private boolean hasEvent;
+    private boolean hasTopic;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -80,7 +80,7 @@ public class HomeFragment extends SGFragment implements AdapterView.OnItemClickL
 
             listView = (ListView)rootView.findViewById(R.id.listView);
             listView.setOnItemClickListener(this);
-            adapter = new Adapter();
+            adapter = new Adapter(getContext());
             listView.setAdapter(adapter);
 
             swipeLayout = (SwipeRefreshLayout)rootView.findViewById(R.id.refresh);
@@ -124,14 +124,14 @@ public class HomeFragment extends SGFragment implements AdapterView.OnItemClickL
     }
 
     private void requestData() {
-        if (nextPage == -1) {
+        if (model == null) {
             getDLActivity().showLoadingDialog(getActivity(), null, null);
         }
 
-        String url = Constants.domain() + "/home";
+        String url = Constants.domain() + "/v3/index";
 
         List<NameValuePair> params = new ArrayList<NameValuePair>();
-        params.add(new BasicNameValuePair("pageindex", String.valueOf(nextPage == -1 ? 0 : nextPage)));
+        params.add(new BasicNameValuePair("start", "0"));
 
         HttpService.get(url, params, CacheType.DISABLE, HomeModel.class, this);
     }
@@ -139,11 +139,9 @@ public class HomeFragment extends SGFragment implements AdapterView.OnItemClickL
     @Override
     public void onRefresh() {
         isRefresh = true;
-        nextPage = -1;
-        bannerList.clear();
-        productList.clear();
         hasBannel = false;
-        isEmpty = false;
+        hasEvent = false;
+        hasTopic = false;
         requestData();
     }
 
@@ -155,11 +153,52 @@ public class HomeFragment extends SGFragment implements AdapterView.OnItemClickL
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        int index = position - 1;
-        if (index >= 0 && index < productList.size()) {
-            Product product = productList.get(index);
-            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("duola://productdetail?id=" + product.getId())));
+        if (model == null) {
+            return;
         }
+
+        GroupStyleAdapter.IndexPath ip = adapter.getIndexForPosition(position);
+        int sec = ip.section;
+        if (hasBannel) {
+            if (sec == 0) {
+                // handler by it self
+                return;
+            }
+            sec--;
+        }
+
+        if (hasEvent) {
+            if (sec == 0) {
+                // handler by it self
+                return;
+            }
+            sec--;
+        }
+
+        if (sec < model.getData().getSubjects().size() * 2) {
+            HomeModel.HomeSubject subject = model.getData().getSubjects().get(sec / 2);
+            if (sec % 2 == 0) {
+                startActivity("duola://subjectdetail?id=" + subject.getId());
+                return;
+
+            } else {
+                // handler by it self
+                return;
+            }
+        }
+
+        sec -= model.getData().getSubjects().size() * 2;
+
+        if (hasTopic) {
+            if (sec == 0) {
+                // topic
+                return;
+            }
+            sec--;
+        }
+
+        Course course = model.getData().getCourses().getList().get(sec);
+        startActivity("duola://coursedetail?id=" + course.getId());
     }
 
     @Override
@@ -169,20 +208,28 @@ public class HomeFragment extends SGFragment implements AdapterView.OnItemClickL
             swipeLayout.setRefreshing(false);
         }
 
-        HomeModel homeModel = (HomeModel) response;
-        productList.addAll(homeModel.getData().getProducts());
-
-        if (homeModel.getData().getBanners() != null && homeModel.getData().getBanners().size() > 0) {
-            bannerList.addAll(homeModel.getData().getBanners());
-            hasBannel = true;
-        }
-
-        if (nextPage == -1) {
+        if (model == null) {
             getDLActivity().dismissDialog();
         }
-        nextPage = homeModel.getData().getNextpage();
-        if (nextPage == 0) {
-            isEmpty = true;
+
+        model = (HomeModel) response;
+
+        if (model.getData().getBanners() != null && model.getData().getBanners().size() > 0) {
+            hasBannel = true;
+        } else {
+            hasBannel = false;
+        }
+
+        if (model.getData().getEvents() != null && model.getData().getEvents().size() > 0) {
+            hasEvent = true;
+        } else {
+            hasEvent = false;
+        }
+
+        if (model.getData().getTopics() != null && model.getData().getTopics().size() > 0) {
+            hasTopic = true;
+        } else {
+            hasTopic = false;
         }
 
         new Handler().post(new Runnable() {
@@ -203,62 +250,102 @@ public class HomeFragment extends SGFragment implements AdapterView.OnItemClickL
         getDLActivity().showDialog(getDLActivity(), error.getErrmsg());
     }
 
-    class Adapter extends BasicAdapter {
+    class Adapter extends GroupStyleAdapter {
 
-        private Object BANNEL = new Object();
-        private Object SECTION = new Object();
+        public Adapter(Context context) {
+            super(context);
+        }
 
         @Override
-        public int getCount() {
-            if (nextPage == -1) {
+        public int getSectionCount() {
+            if (model != null) {
+                int count = 0;
+                if (hasBannel) {
+                    count++;
+                }
+                if (hasEvent) {
+                    count++;
+                }
+                count += model.getData().getSubjects().size() * 2;
+                if (hasTopic) {
+                    count++;
+                }
+                count += model.getData().getCourses().getList().size();
+                return count;
+            }
+            return 0;
+        }
+
+        @Override
+        public int getCountInSection(int section) {
+            return 1;
+        }
+
+        @Override
+        public int getHeightForSectionView(int section) {
+            if (section == 0) {
                 return 0;
             }
-            return productList.size() + 2;
+            return super.getHeightForSectionView(section);
         }
 
         @Override
-        public Object getItem(int position) {
-            if (position == 0) {
-                return hasBannel ? BANNEL : SECTION;
-            }
-
-            int pos = position - 1;
-            if (pos < productList.size()) {
-                return productList.get(pos);
-            }
-            return isEmpty ? EMPTY : LOADING;
-        }
-
-        @Override
-        public long getItemId(int position) {
-            return position;
-        }
-
-        @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-            Object item = getItem(position);
-            View view = convertView;
-            if (item == BANNEL) {
-                HomeHeaderView header = HomeHeaderView.create(getActivity());
-                header.setData(bannerList);
-                view = header;
-
-            } else if (item == SECTION) {
-                view = new View(getActivity());
-                view.setLayoutParams(new AbsListView.LayoutParams(AbsListView.LayoutParams.MATCH_PARENT, 0));
-
-            } else if (item == EMPTY) {
-                view = getEmptyView("- 更多活动敬请期待 -", parent, convertView);
-            } else if (item == LOADING) {
-                view = getLoadingView(parent, convertView);
-                requestData();
-            } else {
-                if (!(view instanceof HomeListItem)) {
-                    view = HomeListItem.create(getDLActivity());
+        public View getViewForRow(View convertView, ViewGroup parent, int section, int row) {
+            View cell = null;
+            int sec = section;
+            if (hasBannel) {
+                if (sec == 0) {
+                    HomeHeaderView header = HomeHeaderView.create(getActivity());
+                    header.setData(model.getData().getBanners());
+                    cell = header;
+                    return cell;
                 }
-                ((HomeListItem) view).setData((Product)item);
+                sec--;
             }
-            return view;
+
+            if (hasEvent) {
+                if (sec == 0) {
+                    HomeEventItem item = HomeEventItem.create(getActivity());
+                    item.setData(model);
+                    cell = item;
+                    return cell;
+                }
+                sec--;
+            }
+
+            if (sec < model.getData().getSubjects().size() * 2) {
+                HomeModel.HomeSubject subject = model.getData().getSubjects().get(sec / 2);
+                if (sec % 2 == 0) {
+                    HomeSubjectCoverItem item = HomeSubjectCoverItem.create(getActivity());
+                    item.setData(subject.getCover());
+                    cell = item;
+                    return cell;
+
+                } else {
+                    HomeSubjectContentItem item = HomeSubjectContentItem.create(getActivity());
+                    item.setData(subject);
+                    cell = item;
+                    return cell;
+                }
+            }
+
+            sec -= model.getData().getSubjects().size() * 2;
+
+            if (hasTopic) {
+                if (sec == 0) {
+                    HomeTopicItem item = HomeTopicItem.create(getActivity());
+                    item.setData(model.getData().getTopics().get(0));
+                    cell = item;
+                    return cell;
+                }
+                sec--;
+            }
+
+            HomeListItem item = HomeListItem.create(getActivity());
+            item.setData(model.getData().getCourses().getList().get(sec));
+            cell = item;
+
+            return cell;
         }
 
     }

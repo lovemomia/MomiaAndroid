@@ -11,6 +11,7 @@ import com.youxing.common.app.Enviroment;
 import com.youxing.common.utils.UnitTools;
 import com.youxing.common.views.YXNetworkImageView;
 import com.youxing.duola.R;
+import com.youxing.duola.model.Course;
 import com.youxing.duola.model.Product;
 import com.youxing.duola.utils.PriceUtils;
 
@@ -49,22 +50,21 @@ public class HomeListItem extends RelativeLayout {
         priceTv = (TextView) findViewById(R.id.price);
     }
 
-    public void setData(Product product) {
-        int width = Enviroment.screenWidth(getContext()) - 20;
-        RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(width, width * 3/4);
-        lp.setMargins(UnitTools.dip2px(getContext(), 10), 0, UnitTools.dip2px(getContext(), 10), 0);
+    public void setData(Course course) {
+        int width = Enviroment.screenWidth(getContext());
+        RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(width, width * 1/2);
         coverIv.setLayoutParams(lp);
         coverIv.setDefaultImageResId(R.drawable.bg_default_image);
-        coverIv.setImageUrl(product.getCover());
-        titleTv.setText(product.getTitle());
-        addressTv.setText(product.getRegion());
-        dateTv.setText(product.getScheduler());
-        if (product.getJoined() > 0) {
-            numberTv.setText(product.getJoined() + "人报名");
+        coverIv.setImageUrl(course.getCover());
+        titleTv.setText(course.getTitle());
+        addressTv.setText(course.getAge() + " | " + course.getRegion());
+        dateTv.setText(course.getKeyWord());
+        if (course.getJoined() > 0) {
+            numberTv.setText(course.getJoined() + "人报名");
             numberTv.setVisibility(View.VISIBLE);
         } else {
             numberTv.setVisibility(View.GONE);
         }
-        priceTv.setText(PriceUtils.formatPriceString(product.getPrice()));
+        priceTv.setText(PriceUtils.formatPriceString(course.getPrice()));
     }
 }

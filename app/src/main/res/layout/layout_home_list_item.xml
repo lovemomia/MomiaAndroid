@@ -1,36 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.youxing.duola.home.views.HomeListItem xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:background="@color/bg_window">
+    android:layout_height="wrap_content">
 
     <com.youxing.common.views.YXNetworkImageView
         android:id="@+id/cover"
         android:layout_width="match_parent"
         android:layout_height="200dp"
         android:scaleType="centerCrop"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
         android:background="@color/bg_image"
         android:layout_alignParentTop="true"/>
 
-    <FrameLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingLeft="8dp"
-        android:paddingRight="8dp"
         android:layout_marginTop="-2dp"
+        android:gravity="center_vertical"
         android:layout_below="@id/cover">
 
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:scaleType="fitXY"
-            android:src="@drawable/bg_home_item"/>
-
         <LinearLayout
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:orientation="vertical">
 
             <TextView
@@ -43,34 +34,82 @@
                 android:paddingTop="10dp"
                 android:paddingLeft="10dp"
                 android:paddingRight="10dp"
-                android:paddingBottom="8dp"
+                android:paddingBottom="6dp"
                 android:singleLine="true"
                 android:text="星光游乐园，与家人共享欢乐时光"/>
 
-            <TextView
-                android:id="@+id/date"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="@dimen/text_medium"
-                android:textColor="@color/text_gray"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
-                android:layout_marginBottom="8dp"
-                android:text="每周末 10：30"/>
-
-            <TextView
-                android:id="@+id/address"
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textSize="@dimen/text_medium"
-                android:textColor="@color/text_gray"
-                android:paddingLeft="10dp"
-                android:paddingRight="10dp"
-                android:paddingBottom="20dp"
-                android:text="太湖公园游乐场  -  2km"/>
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/date"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/text_medium"
+                    android:textColor="@color/text_light_gray"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginBottom="6dp"
+                    android:background="@color/bg_section"
+                    android:paddingLeft="5dp"
+                    android:paddingRight="5dp"
+                    android:paddingTop="2dp"
+                    android:paddingBottom="2dp"
+                    android:text="职业体验"/>
+
+                <TextView
+                    android:id="@+id/address"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/text_medium"
+                    android:textColor="@color/text_light_gray"
+                    android:paddingRight="10dp"
+                    android:text="4-7周岁 ｜ 多商区"/>
+
+            </LinearLayout>
+
+
         </LinearLayout>
 
-    </FrameLayout>
+        <View
+            android:layout_width="1dp"
+            android:layout_height="wrap_content"
+            android:background="@color/bg_section"/>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentBottom="true"
+            android:paddingRight="10dp">
+
+            <!--<TextView-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:textSize="@dimen/text_small"-->
+            <!--android:textColor="@color/text_red"-->
+            <!--android:text="￥"/>-->
+
+            <TextView
+                android:id="@+id/price"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/text_super_large"
+                android:textColor="@color/text_red"
+                android:text="36"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/text_small"
+                android:textColor="@color/text_red"
+                android:paddingRight="10dp"
+                android:paddingLeft="2dp"
+                android:text="元"/>
+        </LinearLayout>
+
+    </LinearLayout>
 
     <TextView
         android:id="@+id/number"
@@ -79,8 +118,6 @@
         android:textSize="@dimen/text_small"
         android:textColor="@color/white"
         android:layout_marginTop="19dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
         android:paddingLeft="10dp"
         android:paddingRight="5dp"
         android:paddingBottom="2dp"
@@ -88,38 +125,6 @@
         android:text="106人报名"
         android:gravity="center"
         android:background="@drawable/ic_home_tag"/>
-
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentBottom="true"
-        android:paddingBottom="15dp"
-        android:paddingRight="10dp">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="@dimen/text_small"
-            android:textColor="@color/text_red"
-            android:text="￥"/>
-
-        <TextView
-            android:id="@+id/price"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="@dimen/text_super_large"
-            android:textColor="@color/text_red"
-            android:text="36"/>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="@dimen/text_small"
-            android:textColor="@color/text_red"
-            android:paddingRight="10dp"
-            android:text="起"/>
-    </LinearLayout>
 
 
 </com.youxing.duola.home.views.HomeListItem>

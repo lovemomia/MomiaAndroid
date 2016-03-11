@@ -39,6 +39,8 @@ public class Course {
     private boolean buyable;//1 可购买  2 不可购买
     private int status; //  1 正常   2 已售完
 
+    private String keyWord;
+
     public long getId() {
         return id;
     }
@@ -261,6 +263,14 @@ public class Course {
 
     public void setComments(ReviewList comments) {
         this.comments = comments;
+    }
+
+    public String getKeyWord() {
+        return keyWord;
+    }
+
+    public void setKeyWord(String keyWord) {
+        this.keyWord = keyWord;
     }
 
     public static class CoursePlace {

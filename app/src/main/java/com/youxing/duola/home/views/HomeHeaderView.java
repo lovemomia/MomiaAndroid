@@ -10,8 +10,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 
 import com.youxing.common.adapter.RecyclingPagerAdapter;
+import com.youxing.common.app.Enviroment;
 import com.youxing.common.views.YXNetworkImageView;
 import com.youxing.duola.R;
 import com.youxing.duola.model.HomeModel;
@@ -49,6 +51,9 @@ public class HomeHeaderView extends FrameLayout implements ViewPager.OnPageChang
         super.onFinishInflate();
         pager = (AutoScrollViewPager) findViewById(R.id.pager);
         pageControl = (PageControl) findViewById(R.id.pageControl);
+
+        int width = Enviroment.screenWidth(getContext());
+        setLayoutParams(new RelativeLayout.LayoutParams(width, width * 180 / 320));
     }
 
     public void setData(final List<HomeModel.HomeBanner> banners) {

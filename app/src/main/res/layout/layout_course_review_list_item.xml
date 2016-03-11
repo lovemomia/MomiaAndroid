@@ -54,8 +54,8 @@
                 android:numStars="5"
                 android:stepSize="1"
                 android:isIndicator="true"
-                android:minHeight="14dp"
-                android:maxHeight="14dp"
+                android:minHeight="15dp"
+                android:maxHeight="15dp"
                 android:layout_gravity="bottom|right"
                 android:progressDrawable="@drawable/ic_rating_star_small"/>
 

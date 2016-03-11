@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.youxing.duola.home.views.HomeEventItem xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:layout_gravity="center">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_home_wave"/>
+
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="新用户专享"
+            android:textColor="@color/text_deep_gray"
+            android:textSize="@dimen/text_large"
+            android:padding="10dp"/>
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_home_wave"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:id="@+id/eventLeft"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:padding="10dp"
+            android:layout_weight="1">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/eventTitleLeft"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="一元试听"
+                    android:textColor="@color/text_deep_gray"
+                    android:textSize="@dimen/text_medium"
+                    android:padding="10dp"/>
+
+                <TextView
+                    android:id="@+id/eventDescLeft"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="新用户专享"
+                    android:textColor="@color/text_blue"
+                    android:textSize="@dimen/text_small"
+                    android:background="@drawable/bg_shape_green_frame"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp"
+                    android:paddingTop="5dp"
+                    android:paddingBottom="5dp"/>
+
+            </LinearLayout>
+
+            <com.youxing.common.views.YXNetworkImageView
+                android:id="@+id/iconLeft"
+                android:layout_width="50dp"
+                android:layout_height="50dp"/>
+
+        </LinearLayout>
+        
+        <View
+            android:layout_width="1dp"
+            android:layout_height="60dp"
+            android:background="@color/bg_section"
+            android:layout_gravity="center"/>
+
+        <LinearLayout
+            android:id="@+id/eventRight"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:padding="10dp"
+            android:layout_weight="1">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/eventTitleRight"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="邀请返现"
+                    android:textColor="@color/text_deep_gray"
+                    android:textSize="@dimen/text_medium"
+                    android:padding="10dp"/>
+
+                <TextView
+                    android:id="@+id/eventDescRight"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="新用户专享"
+                    android:textColor="@color/text_red"
+                    android:textSize="@dimen/text_small"
+                    android:background="@drawable/bg_shape_red_frame"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp"
+                    android:paddingTop="5dp"
+                    android:paddingBottom="5dp"/>
+
+            </LinearLayout>
+
+            <com.youxing.common.views.YXNetworkImageView
+                android:id="@+id/iconRight"
+                android:layout_width="50dp"
+                android:layout_height="50dp"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+
+</com.youxing.duola.home.views.HomeEventItem>
