@@ -6,7 +6,7 @@ import android.view.LayoutInflater;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.youxing.common.views.CircleImageView;
+import com.youxing.common.views.YXNetworkImageView;
 import com.youxing.duola.R;
 import com.youxing.duola.model.Course;
 
@@ -16,7 +16,7 @@ import com.youxing.duola.model.Course;
  */
 public class HomeSubjectContentCourseItem extends LinearLayout {
 
-    private CircleImageView iconIv;
+    private YXNetworkImageView iconIv;
     private TextView titleTv;
     private TextView ageTv;
     private TextView joinedTv;
@@ -29,24 +29,31 @@ public class HomeSubjectContentCourseItem extends LinearLayout {
         super(context, attrs);
     }
 
-    public static HomeSubjectContentCourseItem create(Context context) {
+    public static HomeSubjectContentCourseItem create(Context context, int type) {
+        if (type == 1) { //热门
+            return (HomeSubjectContentCourseItem) LayoutInflater.from(context).inflate(R.layout.layout_home_subject_content_couse_item2, null);
+        }
         return (HomeSubjectContentCourseItem) LayoutInflater.from(context).inflate(R.layout.layout_home_subject_content_couse_item, null);
     }
 
     @Override
     protected void onFinishInflate() {
         super.onFinishInflate();
-        iconIv = (CircleImageView) findViewById(R.id.icon);
+        iconIv = (YXNetworkImageView) findViewById(R.id.icon);
         titleTv = (TextView) findViewById(R.id.title);
         ageTv = (TextView) findViewById(R.id.age);
         joinedTv = (TextView) findViewById(R.id.join);
     }
 
-    public void setData(Course course) {
+    public void setData(Course course, int type) {
 //        iconIv.setImageURI(Uri.parse(course.getCover()));
         iconIv.setImageUrl(course.getCover());
         titleTv.setText(course.getTitle());
         ageTv.setText(course.getAge());
-        joinedTv.setText(course.getJoined() + "人已参加");
+        if (type == 1) {
+            joinedTv.setText(course.getJoined() + "人已参加");
+        } else {
+            joinedTv.setText(course.getFeature());
+        }
     }
 }

@@ -68,21 +68,21 @@ public class CourseDetailTabItem extends FrameLayout implements View.OnClickList
             setIndex(0);
 
             if (listener != null) {
-                listener.onTabChanged(0);
+                listener.onTabChanged(this, 0);
             }
 
         } else if (v.getId() == R.id.tab_center) {
             setIndex(1);
 
             if (listener != null) {
-                listener.onTabChanged(1);
+                listener.onTabChanged(this, 1);
             }
 
         } else if (v.getId() == R.id.tab_right) {
             setIndex(2);
 
             if (listener != null) {
-                listener.onTabChanged(2);
+                listener.onTabChanged(this, 2);
             }
         }
     }
@@ -118,7 +118,7 @@ public class CourseDetailTabItem extends FrameLayout implements View.OnClickList
     }
 
     public interface OnTabChangeListener {
-        void onTabChanged(int index);
+        void onTabChanged(CourseDetailTabItem tabItem, int index);
     }
 
 }

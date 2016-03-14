@@ -46,7 +46,7 @@ public class BuyNoticeItem extends LinearLayout {
 
             TextView contentTv = new TextView(getContext());
             contentTv.setText(n.getContent());
-            contentTv.setTextSize(12);
+            contentTv.setTextSize(13);
             contentTv.setTextColor(getResources().getColor(R.color.text_gray));
             contentTv.setLineSpacing(3, 1.2f);
             contentTv.setPadding(0, 0, 0, UnitTools.dip2px(getContext(), 10));

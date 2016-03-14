@@ -40,6 +40,8 @@ public class Course {
     private int status; //  1 正常   2 已售完
 
     private String keyWord;
+    private String feature; //特色
+    private List<CourseTeacher> teachers;
 
     public long getId() {
         return id;
@@ -273,6 +275,22 @@ public class Course {
         this.keyWord = keyWord;
     }
 
+    public String getFeature() {
+        return feature;
+    }
+
+    public void setFeature(String feature) {
+        this.feature = feature;
+    }
+
+    public List<CourseTeacher> getTeachers() {
+        return teachers;
+    }
+
+    public void setTeachers(List<CourseTeacher> teachers) {
+        this.teachers = teachers;
+    }
+
     public static class CoursePlace {
         private long id;
         private String name;
@@ -370,6 +388,54 @@ public class Course {
 
         public void setText(String text) {
             this.text = text;
+        }
+    }
+
+    public static class CourseTeacher {
+        private long id;
+        private String avatar;
+        private String name;
+        private String education;
+        private String experience;
+
+        public long getId() {
+            return id;
+        }
+
+        public void setId(long id) {
+            this.id = id;
+        }
+
+        public String getAvatar() {
+            return avatar;
+        }
+
+        public void setAvatar(String avatar) {
+            this.avatar = avatar;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public void setName(String name) {
+            this.name = name;
+        }
+
+        public String getEducation() {
+            return education;
+        }
+
+        public void setEducation(String education) {
+            this.education = education;
+        }
+
+        public String getExperience() {
+            return experience;
+        }
+
+        public void setExperience(String experience) {
+            this.experience = experience;
         }
     }
 }

@@ -4,9 +4,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -22,14 +23,16 @@ import com.youxing.duola.app.SGActivity;
 import com.youxing.duola.course.views.BuyNoticeItem;
 import com.youxing.duola.course.views.CourseDetailContentItem;
 import com.youxing.duola.course.views.CourseDetailHeaderItem;
+import com.youxing.duola.course.views.CourseDetailNoticeItem;
 import com.youxing.duola.course.views.CourseDetailPlaceItem;
 import com.youxing.duola.course.views.CourseDetailTabItem;
 import com.youxing.duola.course.views.CourseDetailTagsItem;
+import com.youxing.duola.course.views.CourseDetailTeacherItem;
 import com.youxing.duola.course.views.CourseReviewListItem;
 import com.youxing.duola.model.Course;
 import com.youxing.duola.model.CourseDetailModel;
-import com.youxing.duola.model.Sku;
 import com.youxing.duola.utils.PriceUtils;
+import com.youxing.duola.views.EmptyView;
 import com.youxing.duola.views.SimpleListItem;
 
 import org.apache.http.NameValuePair;
@@ -41,18 +44,22 @@ import java.util.List;
 /**
  * Created by Jun Deng on 16/3/4.
  */
-public class CourseDetailActivity extends SGActivity implements CourseDetailTabItem.OnTabChangeListener {
+public class CourseDetailActivity extends SGActivity implements CourseDetailTabItem.OnTabChangeListener,
+        AbsListView.OnScrollListener, AdapterView.OnItemClickListener {
 
     private String id;
     private Course model;
 
+    private ListView listView;
     private Adapter adapter;
     private TextView priceTv;
     private TextView unitTv;
     private TextView chooseTv;
     private Button buyBtn;
+    private CourseDetailTabItem topTab;
 
     private int tabIndex;
+    private int firstVisibleItem;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,9 +83,15 @@ public class CourseDetailActivity extends SGActivity implements CourseDetailTabI
 
         id = getIntent().getData().getQueryParameter("id");
 
+        topTab = (CourseDetailTabItem) findViewById(R.id.top_tab);
+        topTab.setListener(this);
+        topTab.setVisibility(View.GONE);
+
         adapter = new Adapter(this);
-        ListView listView = (ListView) findViewById(R.id.listView);
+        listView = (ListView) findViewById(R.id.listView);
         listView.setAdapter(adapter);
+        listView.setOnScrollListener(this);
+        listView.setOnItemClickListener(this);
 
         requestData();
     }
@@ -119,14 +132,48 @@ public class CourseDetailActivity extends SGActivity implements CourseDetailTabI
 
         } else {
             buyBtn.setEnabled(false);
-            buyBtn.setText("已售完");
+            buyBtn.setText("  已售完  ");
         }
     }
 
     @Override
-    public void onTabChanged(int index) {
+    public void onTabChanged(CourseDetailTabItem tabItem, int index) {
+        topTab.setIndex(index);
         tabIndex = index;
         adapter.notifyDataSetChanged();
+        listView.smoothScrollToPosition(getTabPosition());
+    }
+
+    @Override
+    public void onScrollStateChanged(AbsListView view, int scrollState) {
+
+    }
+
+    @Override
+    public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+        if (firstVisibleItem >= getTabPosition()) {
+            topTab.setVisibility(View.VISIBLE);
+
+        } else if (firstVisibleItem < getTabPosition()) {
+            topTab.setVisibility(View.GONE);
+        }
+        this.firstVisibleItem = firstVisibleItem;
+    }
+
+    private int getTabPosition() {
+        if (model != null && model.getPlace() != null) {
+            return 7;
+        }
+        return 6;
+    }
+
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        GroupStyleAdapter.IndexPath ip = adapter.getIndexForPosition(position);
+        if (ip.section == 1 && ip.row == 0) {
+            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("duola://book?id=" +
+                    this.id + "&onlyshow=1")));
+        }
     }
 
     class Adapter extends GroupStyleAdapter {
@@ -153,10 +200,20 @@ public class CourseDetailActivity extends SGActivity implements CourseDetailTabI
                 }
                 return 2;
             } else if (section == 2) {
-                if (tabIndex == 0 || tabIndex == 1) {
+                if (tabIndex == 0) {
+                    if (model.getTeachers() != null) {
+                        return 3 + model.getTeachers().size();
+                    }
+                    return 3;
+
+                } else if (tabIndex == 1) {
                     return 2;
+
                 } else {
                     //TODO comments, load next page
+                    if (model.getComments() == null) {
+                        return 2;
+                    }
                     return 1 + model.getComments().getList().size();
                 }
             }
@@ -199,9 +256,19 @@ public class CourseDetailActivity extends SGActivity implements CourseDetailTabI
                     cell = view;
                 } else {
                     if (tabIndex == 0) {
-                        CourseDetailContentItem view = CourseDetailContentItem.create(CourseDetailActivity.this);
-                        view.setData(model);
-                        cell = view;
+                        if (row == 1) {
+                            CourseDetailContentItem view = CourseDetailContentItem.create(CourseDetailActivity.this);
+                            view.setData(model);
+                            cell = view;
+                        } else if (row == 2) {
+                            CourseDetailNoticeItem view = CourseDetailNoticeItem.create(CourseDetailActivity.this);
+                            view.setData(model.getTips());
+                            cell = view;
+                        } else {
+                            CourseDetailTeacherItem view = CourseDetailTeacherItem.create(CourseDetailActivity.this);
+                            view.setData(model.getTeachers().get(row - 3), row == 3); //只有第一个显示title
+                            cell = view;
+                        }
 
                     } else if (tabIndex == 1) {
                         BuyNoticeItem view = BuyNoticeItem.create(CourseDetailActivity.this);
@@ -209,9 +276,16 @@ public class CourseDetailActivity extends SGActivity implements CourseDetailTabI
                         cell = view;
 
                     } else {
-                        CourseReviewListItem view = CourseReviewListItem.create(CourseDetailActivity.this);
-                        view.setData(model.getComments().getList().get(row - 1));
-                        cell = view;
+                        if (model.getComments() == null || model.getComments().getList().size() == 0) {
+                            EmptyView view = EmptyView.create(CourseDetailActivity.this);
+                            view.setMessage("还没有人评价哦～");
+                            cell = view;
+
+                        } else {
+                            CourseReviewListItem view = CourseReviewListItem.create(CourseDetailActivity.this);
+                            view.setData(model.getComments().getList().get(row - 1));
+                            cell = view;
+                        }
                     }
                 }
             }

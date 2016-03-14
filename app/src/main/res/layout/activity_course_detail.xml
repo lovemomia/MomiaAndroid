@@ -79,7 +79,6 @@
             android:textColor="@color/text_deep_gray"
             android:textSize="@dimen/text_medium"
             android:maxEms="2"
-            android:text="任选两门"
             android:layout_marginRight="10dp"
             android:layout_gravity="center_vertical" />
 
@@ -100,5 +99,8 @@
 
 
     </LinearLayout>
+
+    <include android:id="@+id/top_tab"
+        layout="@layout/layout_course_detail_tab_item" />
 
 </FrameLayout>

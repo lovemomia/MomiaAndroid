@@ -50,10 +50,10 @@ public class HomeSubjectContentItem extends LinearLayout {
                 break;
             }
             final Course course = subject.getCourses().get(i);
-            HomeSubjectContentCourseItem item = HomeSubjectContentCourseItem.create(getContext());
+            HomeSubjectContentCourseItem item = HomeSubjectContentCourseItem.create(getContext(), subject.getSubjectCourseType());
             item.setLayoutParams(new LayoutParams(Enviroment.screenWidth(getContext())/subject.getCourses().size(),
                     ViewGroup.LayoutParams.WRAP_CONTENT));
-            item.setData(course);
+            item.setData(course, subject.getSubjectCourseType());
             contentLay.addView(item);
 
             item.setOnClickListener(new OnClickListener() {

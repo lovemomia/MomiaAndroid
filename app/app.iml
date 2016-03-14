@@ -41,6 +41,12 @@
       <sourceFolder url="file://$MODULE_DIR$/src/umengDebug/java" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/src/umengDebug/jni" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/src/umengDebug/rs" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/build/generated/source/r/androidTest/umeng/debug" isTestSource="true" generated="true" />
+      <sourceFolder url="file://$MODULE_DIR$/build/generated/source/aidl/androidTest/umeng/debug" isTestSource="true" generated="true" />
+      <sourceFolder url="file://$MODULE_DIR$/build/generated/source/buildConfig/androidTest/umeng/debug" isTestSource="true" generated="true" />
+      <sourceFolder url="file://$MODULE_DIR$/build/generated/source/rs/androidTest/umeng/debug" isTestSource="true" generated="true" />
+      <sourceFolder url="file://$MODULE_DIR$/build/generated/res/rs/androidTest/umeng/debug" type="java-test-resource" />
+      <sourceFolder url="file://$MODULE_DIR$/build/generated/res/resValues/androidTest/umeng/debug" type="java-test-resource" />
       <sourceFolder url="file://$MODULE_DIR$/src/testUmengDebug/res" type="java-test-resource" />
       <sourceFolder url="file://$MODULE_DIR$/src/testUmengDebug/resources" type="java-test-resource" />
       <sourceFolder url="file://$MODULE_DIR$/src/testUmengDebug/assets" type="java-test-resource" />
@@ -48,12 +54,6 @@
       <sourceFolder url="file://$MODULE_DIR$/src/testUmengDebug/java" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/src/testUmengDebug/jni" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/src/testUmengDebug/rs" isTestSource="true" />
-      <sourceFolder url="file://$MODULE_DIR$/build/generated/source/r/androidTest/umeng/debug" isTestSource="true" generated="true" />
-      <sourceFolder url="file://$MODULE_DIR$/build/generated/source/aidl/androidTest/umeng/debug" isTestSource="true" generated="true" />
-      <sourceFolder url="file://$MODULE_DIR$/build/generated/source/buildConfig/androidTest/umeng/debug" isTestSource="true" generated="true" />
-      <sourceFolder url="file://$MODULE_DIR$/build/generated/source/rs/androidTest/umeng/debug" isTestSource="true" generated="true" />
-      <sourceFolder url="file://$MODULE_DIR$/build/generated/res/rs/androidTest/umeng/debug" type="java-test-resource" />
-      <sourceFolder url="file://$MODULE_DIR$/build/generated/res/resValues/androidTest/umeng/debug" type="java-test-resource" />
       <sourceFolder url="file://$MODULE_DIR$/src/umeng/res" type="java-resource" />
       <sourceFolder url="file://$MODULE_DIR$/src/umeng/resources" type="java-resource" />
       <sourceFolder url="file://$MODULE_DIR$/src/umeng/assets" type="java-resource" />
@@ -155,8 +155,8 @@
     <orderEntry type="library" exported="" name="support-v4-23.1.1" level="project" />
     <orderEntry type="library" exported="" name="libammsdk" level="project" />
     <orderEntry type="library" exported="" name="appcompat-v7-23.1.1" level="project" />
-    <orderEntry type="library" exported="" name="library-1.0.18" level="project" />
     <orderEntry type="library" exported="" name="android-auto-scroll-view-pager-1.1.2" level="project" />
+    <orderEntry type="library" exported="" name="library-1.0.18" level="project" />
     <orderEntry type="library" exported="" name="analytics-5.6.4" level="project" />
     <orderEntry type="library" exported="" name="fastjson-1.2.6" level="project" />
     <orderEntry type="library" exported="" name="gridlayout-v7-23.1.1" level="project" />

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.youxing.duola.course.views.CourseDetailNoticeItem xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="10dp">
+    
+    <LinearLayout
+        android:id="@+id/title_lay"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical">
+        
+        <View
+            android:layout_width="4dp"
+            android:layout_height="20dp"
+            android:layout_marginRight="10dp"
+            android:background="@color/app_theme"/>
+
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/text_deep_gray"
+            android:singleLine="true"
+            android:text="上课注意事项"
+            android:textSize="@dimen/text_medium"/>
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/text_gray"
+        android:layout_marginTop="10dp"
+        android:lineSpacingExtra="2dp"
+        android:lineSpacingMultiplier="1.2"
+        android:text="yyyy"
+        android:textSize="@dimen/text_content"/>
+
+</com.youxing.duola.course.views.CourseDetailNoticeItem>

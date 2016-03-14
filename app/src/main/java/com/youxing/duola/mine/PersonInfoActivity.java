@@ -649,8 +649,18 @@ public class PersonInfoActivity extends SGActivity implements StepperView.OnNumb
                 payBtn.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        AccountService.instance().dispatchAccountChanged(null);
-                        finish();
+                        showDialog(PersonInfoActivity.this, null, "确认退出已登录账号？", "确认", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                AccountService.instance().dispatchAccountChanged(null);
+                                finish();
+                            }
+                        }, "取消", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                            }
+                        });
+
                     }
                 });
                 padding = UnitTools.dip2px(PersonInfoActivity.this, 10);

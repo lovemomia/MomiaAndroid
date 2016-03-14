@@ -38,7 +38,7 @@ public class BookActivity extends SGActivity implements ViewPagerIndicatorView.O
 
     private String id;
     private String pid;
-    private boolean onlyshow;
+    private int onlyshow;
 
     private ViewPagerIndicatorView viewPagerIndicatorView;
     private BookSkuListFragment currentMonthFragment;
@@ -55,7 +55,13 @@ public class BookActivity extends SGActivity implements ViewPagerIndicatorView.O
         pid = getIntent().getData().getQueryParameter("pid");
         String onlyshowStr = getIntent().getData().getQueryParameter("onlyshow");
         if (!TextUtils.isEmpty(onlyshowStr)) {
-            onlyshow = Boolean.valueOf(onlyshowStr);
+            onlyshow = Integer.valueOf(onlyshowStr);
+        }
+
+        if (onlyshow == 1) {
+            setTitle("课程表");
+        } else {
+            setTitle("预约课程");
         }
 
         this.viewPagerIndicatorView = (ViewPagerIndicatorView) findViewById(R.id.viewpager_indicator_view);
@@ -91,7 +97,7 @@ public class BookActivity extends SGActivity implements ViewPagerIndicatorView.O
         Bundle bundle = new Bundle();
         bundle.putString("id", id);
         bundle.putInt("month", month);
-        bundle.putBoolean("onlyshow", onlyshow);
+        bundle.putBoolean("onlyshow", onlyshow == 1);
         fragment.setArguments(bundle);
         return fragment;
     }
@@ -138,7 +144,9 @@ public class BookActivity extends SGActivity implements ViewPagerIndicatorView.O
     @SuppressLint("NewApi")
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        menu.add(1, MENU_ID_SUBMIT, 0, "提交").setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
+        if (onlyshow != 1) {
+            menu.add(1, MENU_ID_SUBMIT, 0, "提交").setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
+        }
         return super.onCreateOptionsMenu(menu);
     }
 

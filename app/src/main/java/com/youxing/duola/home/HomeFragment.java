@@ -17,6 +17,7 @@ import com.youxing.common.app.Constants;
 import com.youxing.common.model.Account;
 import com.youxing.common.model.BaseModel;
 import com.youxing.common.model.City;
+import com.youxing.common.services.account.AccountChangeListener;
 import com.youxing.common.services.account.AccountService;
 import com.youxing.common.services.http.CacheType;
 import com.youxing.common.services.http.HttpService;
@@ -48,7 +49,8 @@ import java.util.List;
  * Refactor on 16/3/10 v1.4
  */
 public class HomeFragment extends SGFragment implements AdapterView.OnItemClickListener,
-        SwipeRefreshLayout.OnRefreshListener, RequestHandler, CityManager.CityChangeListener {
+        SwipeRefreshLayout.OnRefreshListener, RequestHandler, CityManager.CityChangeListener,
+        AccountChangeListener {
 
     private View rootView;
     private boolean rebuild;
@@ -110,15 +112,31 @@ public class HomeFragment extends SGFragment implements AdapterView.OnItemClickL
         }
 
         CityManager.instance().addListener(this);
+        AccountService.instance().addListener(this);
     }
 
     @Override
     public void onResume() {
         super.onResume();
+        setupTitle();
+    }
+
+    private void setupTitle() {
+        titleBar.getAvatarIv().setDefaultImageResId(R.drawable.ic_default_avatar);
+        titleBar.getChildLay().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity("duola://personinfo");
+            }
+        });
         if (AccountService.instance().isLogin()) {
             Account account = AccountService.instance().account();
             titleBar.getAvatarIv().setImageUrl(account.getAvatar());
             titleBar.getNameTv().setText(account.getNickName() + " " + account.getAgeOfChild());
+
+        } else {
+            titleBar.getAvatarIv().setImageUrl("");
+            titleBar.getNameTv().setText("松果亲子／点击登录");
         }
     }
 
@@ -249,6 +267,11 @@ public class HomeFragment extends SGFragment implements AdapterView.OnItemClickL
         getDLActivity().showDialog(getDLActivity(), error.getErrmsg());
     }
 
+    @Override
+    public void onAccountChange(AccountService service) {
+        setupTitle();
+    }
+
     class Adapter extends GroupStyleAdapter {
 
         public Adapter(Context context) {
@@ -353,6 +376,7 @@ public class HomeFragment extends SGFragment implements AdapterView.OnItemClickL
     public void onDestroy() {
         HttpService.abort(this);
         CityManager.instance().removeListener(this);
+        AccountService.instance().removeListener(this);
         super.onDestroy();
     }
 

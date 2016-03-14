@@ -165,6 +165,7 @@ public class HomeModel extends BaseModel {
         private double price;
         private String title;
         private String subTitle;
+        private int subjectCourseType;
         private String coursesTitle;
         private List<Course> courses;
 
@@ -238,6 +239,14 @@ public class HomeModel extends BaseModel {
 
         public void setCourses(List<Course> courses) {
             this.courses = courses;
+        }
+
+        public int getSubjectCourseType() {
+            return subjectCourseType;
+        }
+
+        public void setSubjectCourseType(int subjectCourseType) {
+            this.subjectCourseType = subjectCourseType;
         }
     }
 

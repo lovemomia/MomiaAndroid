@@ -102,7 +102,7 @@ public class BookSkuListFragment extends SGFragment implements AdapterView.OnIte
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        if (isEmpty) {
+        if (isEmpty || onlyshow) {
             return;
         }
 

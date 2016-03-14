@@ -37,6 +37,10 @@ public class HomeTitleBar extends android.support.v7.widget.Toolbar {
         cityTv = (TextView) findViewById(R.id.city);
     }
 
+    public LinearLayout getChildLay() {
+        return childLay;
+    }
+
     public CircleImageView getAvatarIv() {
         return avatarIv;
     }
