@@ -56,7 +56,10 @@ public class LoginActivity extends SGActivity implements View.OnClickListener {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == MENU_REGISTER) {
+        if (item.getItemId() == android.R.id.home) {
+            AccountService.instance().cancelLogin();
+
+        } else if (item.getItemId() == MENU_REGISTER) {
             Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("duola://register"));
             startActivityForResult(intent, REQUEST_CODE_REGISTER);
             return true;

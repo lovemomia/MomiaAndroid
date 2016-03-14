@@ -52,7 +52,7 @@ public class SubjectDetailActivity extends SGActivity implements AdapterView.OnI
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_course_detail);
+        setContentView(R.layout.activity_subject_detail);
         priceTv = (TextView) findViewById(R.id.priceTv);
         unitTv = (TextView) findViewById(R.id.unitTv);
         chooseTv = (TextView) findViewById(R.id.chooseTv);

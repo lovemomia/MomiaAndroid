@@ -66,6 +66,27 @@ public class RootTabActivity extends SGActivity implements RongIMClient.OnReceiv
             }
         }
 
+        tabHost.setOnTabChangedListener(this);
+        tabHost.getTabWidget().getChildAt(1).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (!AccountService.instance().isLogin()) {
+                    AccountService.instance().login(RootTabActivity.this, new AccountService.LoginListener() {
+                        @Override
+                        public void onLoginSuccess() {
+                            doRCIMConnect(3);
+                        }
+
+                        @Override
+                        public void onLoginFailed() {
+                        }
+                    });
+                } else {
+                    tabHost.setCurrentTab(1);
+                }
+            }
+        });
+
         // Umeng
         MobclickAgent.updateOnlineConfig(this);
         UmengUpdateAgent.silentUpdate(this);
@@ -149,13 +170,16 @@ public class RootTabActivity extends SGActivity implements RongIMClient.OnReceiv
 
     @Override
     public void onTabChanged(String tabId) {
-        refreshDot();
+        if (AccountService.instance().isLogin()) {
+            refreshDot();
+        }
     }
 
     private void refreshDot() {
         int unreadGroup = RongIM.getInstance().getRongIMClient().getUnreadCount(Conversation.ConversationType.PRIVATE, Conversation.ConversationType.GROUP);
         if (unreadGroup > 0) {
             groupDot.setVisibility(View.VISIBLE);
+
         } else {
             groupDot.setVisibility(View.GONE);
         }
