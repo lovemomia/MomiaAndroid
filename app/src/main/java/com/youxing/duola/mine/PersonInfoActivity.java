@@ -33,6 +33,7 @@ import com.youxing.common.services.http.HttpService;
 import com.youxing.common.services.http.RequestHandler;
 import com.youxing.common.utils.Log;
 import com.youxing.common.utils.UnitTools;
+import com.youxing.common.views.CircleImageView;
 import com.youxing.common.views.CircularImage;
 import com.youxing.duola.R;
 import com.youxing.duola.app.SGActivity;
@@ -572,7 +573,7 @@ public class PersonInfoActivity extends SGActivity implements StepperView.OnNumb
                 view = LayoutInflater.from(PersonInfoActivity.this).inflate(R.layout.layout_personinfo_avatar_item, null);
                 TextView title = (TextView) view.findViewById(R.id.title);
                 title.setText("头像");
-                CircularImage avatar = (CircularImage) view.findViewById(R.id.avatar);
+                CircleImageView avatar = (CircleImageView) view.findViewById(R.id.avatar);
                 avatar.setDefaultImageResId(R.drawable.ic_default_avatar);
                 avatar.setImageUrl(account.getAvatar());
 

@@ -118,8 +118,7 @@ public class HomeFragment extends SGFragment implements AdapterView.OnItemClickL
         if (AccountService.instance().isLogin()) {
             Account account = AccountService.instance().account();
             titleBar.getAvatarIv().setImageUrl(account.getAvatar());
-            titleBar.getNameTv().setText(account.getNickName());
-            titleBar.getAgeTv().setText(account.getAgeOfChild());
+            titleBar.getNameTv().setText(account.getNickName() + " " + account.getAgeOfChild());
         }
     }
 

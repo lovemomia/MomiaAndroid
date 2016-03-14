@@ -126,7 +126,7 @@ public class Account {
         int nowMonth = now.get(Calendar.MONTH);
         int nowDay = childCalendar.get(Calendar.DAY_OF_MONTH);
 
-        StringBuilder sb = new StringBuilder(child.getSex() + "孩");
+        StringBuilder sb = new StringBuilder();
         if (nowYear < childYear || (nowYear == childYear && nowMonth < childMonth)) {
             return sb.append("还未出生").toString();
         }

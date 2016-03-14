@@ -65,10 +65,10 @@
                     android:textColor="@color/text_blue"
                     android:textSize="@dimen/text_small"
                     android:background="@drawable/bg_shape_green_frame"
-                    android:paddingLeft="10dp"
-                    android:paddingRight="10dp"
-                    android:paddingTop="5dp"
-                    android:paddingBottom="5dp"/>
+                    android:paddingLeft="6dp"
+                    android:paddingRight="6dp"
+                    android:paddingTop="2dp"
+                    android:paddingBottom="2dp"/>
 
             </LinearLayout>
 
@@ -116,10 +116,10 @@
                     android:textColor="@color/text_red"
                     android:textSize="@dimen/text_small"
                     android:background="@drawable/bg_shape_red_frame"
-                    android:paddingLeft="10dp"
-                    android:paddingRight="10dp"
-                    android:paddingTop="5dp"
-                    android:paddingBottom="5dp"/>
+                    android:paddingLeft="6dp"
+                    android:paddingRight="6dp"
+                    android:paddingTop="2dp"
+                    android:paddingBottom="2dp"/>
 
             </LinearLayout>
 

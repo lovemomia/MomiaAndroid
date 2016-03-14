@@ -5,10 +5,13 @@
     android:gravity="center_vertical"
     android:padding="10dp">
 
-    <com.youxing.common.views.CircularImage
+    <com.youxing.common.views.CircleImageView
+        xmlns:app="http://schemas.android.com/apk/res-auto"
         android:id="@+id/avatar"
         android:layout_width="60dp"
-        android:layout_height="60dp"/>
+        android:layout_height="60dp"
+        app:civ_border_color="@color/bg_section"
+        app:civ_border_width="1dp" />
 
     <LinearLayout
         android:layout_width="0dp"

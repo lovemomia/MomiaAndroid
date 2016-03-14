@@ -3,8 +3,10 @@ package com.youxing.duola.home.views;
 import android.content.Context;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.youxing.common.views.CircleImageView;
 import com.youxing.common.views.CircularImage;
 import com.youxing.duola.R;
 
@@ -13,9 +15,9 @@ import com.youxing.duola.R;
  */
 public class HomeTitleBar extends android.support.v7.widget.Toolbar {
 
-    private CircularImage avatarIv;
+    private LinearLayout childLay;
+    private CircleImageView avatarIv;
     private TextView nameTv;
-    private TextView ageTv;
     private TextView cityTv;
 
     public HomeTitleBar(Context context) {
@@ -29,22 +31,18 @@ public class HomeTitleBar extends android.support.v7.widget.Toolbar {
     @Override
     protected void onFinishInflate() {
         super.onFinishInflate();
-        avatarIv = (CircularImage) findViewById(R.id.avatar);
+        childLay = (LinearLayout) findViewById(R.id.child_lay);
+        avatarIv = (CircleImageView) findViewById(R.id.avatar);
         nameTv = (TextView) findViewById(R.id.name);
-        ageTv = (TextView) findViewById(R.id.age);
         cityTv = (TextView) findViewById(R.id.city);
     }
 
-    public CircularImage getAvatarIv() {
+    public CircleImageView getAvatarIv() {
         return avatarIv;
     }
 
     public TextView getNameTv() {
         return nameTv;
-    }
-
-    public TextView getAgeTv() {
-        return ageTv;
     }
 
     public TextView getCityTv() {

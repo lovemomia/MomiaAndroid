@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.youxing.common.views.CircleImageView;
 import com.youxing.common.views.CircularImage;
 import com.youxing.duola.R;
 
@@ -14,7 +15,7 @@ import com.youxing.duola.R;
  */
 public class MineHeaderView extends LinearLayout {
 
-    private CircularImage avartaIv;
+    private CircleImageView avartaIv;
     private TextView nameTv;
     private TextView ageTv;
 
@@ -33,13 +34,13 @@ public class MineHeaderView extends LinearLayout {
     @Override
     protected void onFinishInflate() {
         super.onFinishInflate();
-        avartaIv = (CircularImage) findViewById(R.id.avatar);
+        avartaIv = (CircleImageView) findViewById(R.id.avatar);
         avartaIv.setDefaultImageResId(R.drawable.ic_default_avatar);
         nameTv = (TextView) findViewById(R.id.name);
         ageTv = (TextView) findViewById(R.id.age);
     }
 
-    public CircularImage getAvartaIv() {
+    public CircleImageView getAvartaIv() {
         return avartaIv;
     }
 

@@ -2,46 +2,49 @@
 <com.youxing.duola.home.views.HomeSubjectContentCourseItem xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
+    android:layout_weight="1"
     android:gravity="center_horizontal"
-    android:padding="10dp"
-    android:layout_weight="1">
+    android:orientation="vertical"
+    android:padding="10dp">
 
-        <com.youxing.common.views.CircularImage
-            android:id="@+id/icon"
-            android:layout_width="70dp"
-            android:layout_height="70dp"/>
+    <com.youxing.common.views.CircleImageView
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/icon"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        app:civ_border_color="@color/bg_section"
+        app:civ_border_width="1dp" />
 
-        <TextView
-            android:id="@+id/title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="小小牙医"
-            android:maxLength="6"
-            android:textColor="@color/text_deep_gray"
-            android:textSize="@dimen/text_medium"
-            android:padding="5dp"/>
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:maxLength="6"
+        android:padding="5dp"
+        android:text="小小牙医"
+        android:textColor="@color/text_deep_gray"
+        android:textSize="@dimen/text_medium" />
 
-        <TextView
-            android:id="@+id/age"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="3-5岁"
-            android:textColor="@color/text_red"
-            android:textSize="@dimen/text_small"
-            android:paddingLeft="10dp"
-            android:paddingRight="10dp"
-            android:paddingBottom="5dp"/>
+    <TextView
+        android:id="@+id/age"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingBottom="5dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:text="3-5岁"
+        android:textColor="@color/text_red"
+        android:textSize="@dimen/text_small" />
 
-        <TextView
-            android:id="@+id/join"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="200人已参加"
-            android:textColor="@color/text_gray"
-            android:textSize="@dimen/text_small"
-            android:paddingLeft="10dp"
-            android:paddingRight="10dp"
-            android:paddingBottom="5dp"/>
+    <TextView
+        android:id="@+id/join"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingBottom="5dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:text="200人已参加"
+        android:textColor="@color/text_gray"
+        android:textSize="@dimen/text_small" />
 
 </com.youxing.duola.home.views.HomeSubjectContentCourseItem>

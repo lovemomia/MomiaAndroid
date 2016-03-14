@@ -61,13 +61,6 @@
       <sourceFolder url="file://$MODULE_DIR$/src/umeng/java" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/src/umeng/jni" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/src/umeng/rs" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/src/androidTestUmeng/res" type="java-test-resource" />
-      <sourceFolder url="file://$MODULE_DIR$/src/androidTestUmeng/resources" type="java-test-resource" />
-      <sourceFolder url="file://$MODULE_DIR$/src/androidTestUmeng/assets" type="java-test-resource" />
-      <sourceFolder url="file://$MODULE_DIR$/src/androidTestUmeng/aidl" isTestSource="true" />
-      <sourceFolder url="file://$MODULE_DIR$/src/androidTestUmeng/java" isTestSource="true" />
-      <sourceFolder url="file://$MODULE_DIR$/src/androidTestUmeng/jni" isTestSource="true" />
-      <sourceFolder url="file://$MODULE_DIR$/src/androidTestUmeng/rs" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/src/testUmeng/res" type="java-test-resource" />
       <sourceFolder url="file://$MODULE_DIR$/src/testUmeng/resources" type="java-test-resource" />
       <sourceFolder url="file://$MODULE_DIR$/src/testUmeng/assets" type="java-test-resource" />
@@ -75,6 +68,13 @@
       <sourceFolder url="file://$MODULE_DIR$/src/testUmeng/java" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/src/testUmeng/jni" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/src/testUmeng/rs" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/src/androidTestUmeng/res" type="java-test-resource" />
+      <sourceFolder url="file://$MODULE_DIR$/src/androidTestUmeng/resources" type="java-test-resource" />
+      <sourceFolder url="file://$MODULE_DIR$/src/androidTestUmeng/assets" type="java-test-resource" />
+      <sourceFolder url="file://$MODULE_DIR$/src/androidTestUmeng/aidl" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/src/androidTestUmeng/java" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/src/androidTestUmeng/jni" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/src/androidTestUmeng/rs" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/src/debug/res" type="java-resource" />
       <sourceFolder url="file://$MODULE_DIR$/src/debug/resources" type="java-resource" />
       <sourceFolder url="file://$MODULE_DIR$/src/debug/assets" type="java-resource" />
