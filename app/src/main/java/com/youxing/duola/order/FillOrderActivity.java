@@ -253,6 +253,8 @@ public class FillOrderActivity extends SGActivity implements View.OnClickListene
                 });
                 if (!TextUtils.isEmpty(coid)) {
                     skuItem.getStepper().setNumber(1);
+                    sku.setCount(1);
+                    updatePrices();
                 }
                 view = skuItem;
 
