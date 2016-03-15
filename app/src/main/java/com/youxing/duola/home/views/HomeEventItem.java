@@ -7,16 +7,11 @@ import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.youxing.common.app.Enviroment;
-import com.youxing.common.utils.UnitTools;
 import com.youxing.common.views.YXNetworkImageView;
 import com.youxing.duola.R;
 import com.youxing.duola.model.HomeModel;
-import com.youxing.duola.model.Product;
-import com.youxing.duola.utils.PriceUtils;
 
 /**
  * Created by Jun Deng on 15/6/15.

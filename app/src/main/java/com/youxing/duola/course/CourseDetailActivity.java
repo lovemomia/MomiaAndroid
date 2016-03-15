@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
@@ -45,9 +46,10 @@ import java.util.List;
  * Created by Jun Deng on 16/3/4.
  */
 public class CourseDetailActivity extends SGActivity implements CourseDetailTabItem.OnTabChangeListener,
-        AbsListView.OnScrollListener, AdapterView.OnItemClickListener {
+        AbsListView.OnScrollListener, AdapterView.OnItemClickListener, View.OnClickListener {
 
     private String id;
+    private int recommend; // 1 表示推荐，可不传或传0，表示课程包点进去的
     private Course model;
 
     private ListView listView;
@@ -59,7 +61,6 @@ public class CourseDetailActivity extends SGActivity implements CourseDetailTabI
     private CourseDetailTabItem topTab;
 
     private int tabIndex;
-    private int firstVisibleItem;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,19 +70,13 @@ public class CourseDetailActivity extends SGActivity implements CourseDetailTabI
         unitTv = (TextView) findViewById(R.id.unitTv);
         chooseTv = (TextView) findViewById(R.id.chooseTv);
         buyBtn = (Button) findViewById(R.id.buyBtn);
-        buyBtn.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                if (model == null) {
-                    return;
-                }
-                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("duola://fillorder?id=" + model.getSubjectId())));
-            }
-
-        });
+        buyBtn.setOnClickListener(this);
 
         id = getIntent().getData().getQueryParameter("id");
+        String recommendStr = getIntent().getData().getQueryParameter("recommend");
+        if (!TextUtils.isEmpty(recommendStr)) {
+            recommend = Integer.valueOf(recommendStr);
+        }
 
         topTab = (CourseDetailTabItem) findViewById(R.id.top_tab);
         topTab.setListener(this);
@@ -101,6 +96,7 @@ public class CourseDetailActivity extends SGActivity implements CourseDetailTabI
 
         List<NameValuePair> params = new ArrayList<NameValuePair>();
         params.add(new BasicNameValuePair("id", id));
+        params.add(new BasicNameValuePair("recommend", String.valueOf(recommend)));
         HttpService.get(Constants.domain() + "/v3/course", params, CacheType.DISABLE, CourseDetailModel.class, new RequestHandler() {
             @Override
             public void onRequestFinish(Object response) {
@@ -122,9 +118,17 @@ public class CourseDetailActivity extends SGActivity implements CourseDetailTabI
             return;
         }
 
-        priceTv.setText(PriceUtils.formatPriceString(model.getCheapestSkuPrice()));
-        unitTv.setText("起／" + model.getCheapestSkuTimeUnit());
-        chooseTv.setText(model.getCheapestSkuDesc());
+        if (model.isBuyable()) {
+            //单次课程
+            priceTv.setText(PriceUtils.formatPriceString(model.getPrice()));
+            unitTv.setText("／次");
+            chooseTv.setText("");
+
+        } else {
+            priceTv.setText(PriceUtils.formatPriceString(model.getCheapestSkuPrice()));
+            unitTv.setText("起／" + model.getCheapestSkuTimeUnit());
+            chooseTv.setText(model.getCheapestSkuDesc());
+        }
 
         if (model.getStatus() == 1) {
             buyBtn.setEnabled(true);
@@ -157,7 +161,6 @@ public class CourseDetailActivity extends SGActivity implements CourseDetailTabI
         } else if (firstVisibleItem < getTabPosition()) {
             topTab.setVisibility(View.GONE);
         }
-        this.firstVisibleItem = firstVisibleItem;
     }
 
     private int getTabPosition() {
@@ -174,6 +177,18 @@ public class CourseDetailActivity extends SGActivity implements CourseDetailTabI
             startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("duola://book?id=" +
                     this.id + "&onlyshow=1")));
         }
+    }
+
+    @Override
+    public void onClick(View v) {
+        if (model == null) {
+            return;
+        }
+        StringBuilder sb = new StringBuilder("duola://fillorder?id=" + model.getSubjectId());
+        if (model.isBuyable()) {
+            sb.append("&coid=" + model.getId() + "&coname=" + model.getSubject());
+        }
+        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(sb.toString())));
     }
 
     class Adapter extends GroupStyleAdapter {
@@ -283,7 +298,7 @@ public class CourseDetailActivity extends SGActivity implements CourseDetailTabI
 
                         } else {
                             CourseReviewListItem view = CourseReviewListItem.create(CourseDetailActivity.this);
-                            view.setData(model.getComments().getList().get(row - 1));
+                            view.setData(model.getComments().getList().get(row - 1), 3);
                             cell = view;
                         }
                     }

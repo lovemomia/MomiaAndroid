@@ -16,16 +16,6 @@
         android:textSize="@dimen/text_medium"/>
 
     <TextView
-        android:id="@+id/date"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textColor="@color/text_gray"
-        android:layout_marginTop="10dp"
-        android:singleLine="true"
-        android:text="yyyy"
-        android:textSize="@dimen/text_small"/>
-
-    <TextView
         android:id="@+id/address"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -33,6 +23,20 @@
         android:layout_marginTop="10dp"
         android:singleLine="true"
         android:text="zzzz"
-        android:textSize="@dimen/text_small"/>
+        android:textSize="@dimen/text_small"
+        android:drawableLeft="@drawable/ic_address"
+        android:drawablePadding="5dp"/>
+
+    <TextView
+        android:id="@+id/date"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/text_gray"
+        android:layout_marginTop="10dp"
+        android:singleLine="true"
+        android:text="yyyy"
+        android:textSize="@dimen/text_small"
+        android:drawableLeft="@drawable/ic_alarm"
+        android:drawablePadding="5dp"/>
 
 </com.youxing.duola.course.views.CourseDetailPlaceItem>

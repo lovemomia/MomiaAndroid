@@ -4,6 +4,7 @@ import android.content.Context;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
+import android.widget.AbsListView;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
@@ -40,7 +41,7 @@ public class SubjectDetailCourseItem extends FrameLayout {
         numberTv = (TextView) findViewById(R.id.number);
 
         int width = Enviroment.screenWidth(getContext());
-        setLayoutParams(new LayoutParams(width, width * 180 / 300));
+        setLayoutParams(new AbsListView.LayoutParams(width, width * 180 / 300));
     }
 
     public static SubjectDetailCourseItem create(Context context) {

@@ -56,6 +56,10 @@ public class CourseReviewListItem extends LinearLayout {
     }
 
     public void setData(ReviewList.Review review) {
+        setData(review, Integer.MAX_VALUE);
+    }
+
+    public void setData(ReviewList.Review review, int limit) {
         avatar.setImageUrl(review.getAvatar());
         nameTv.setText(review.getNickName());
         dateTv.setText(review.getAddTime());
@@ -65,7 +69,7 @@ public class CourseReviewListItem extends LinearLayout {
         gridLayout.removeAllViews();
         int margin = UnitTools.dip2px(getContext(), 10);
         int width = (Enviroment.screenWidth(getContext()) - 4 * margin - UnitTools.dip2px(getContext(), 65)) / 3;
-        for (int i = 0; i < review.getImgs().size(); i++) {
+        for (int i = 0; i < review.getImgs().size() && i < limit; i++) {
             String url = review.getImgs().get(i);
             YXNetworkImageView iv = new YXNetworkImageView(getContext());
             GridLayout.LayoutParams lp = new GridLayout.LayoutParams();

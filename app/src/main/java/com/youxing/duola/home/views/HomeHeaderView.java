@@ -8,9 +8,9 @@ import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 
 import com.youxing.common.adapter.RecyclingPagerAdapter;
 import com.youxing.common.app.Enviroment;
@@ -53,7 +53,7 @@ public class HomeHeaderView extends FrameLayout implements ViewPager.OnPageChang
         pageControl = (PageControl) findViewById(R.id.pageControl);
 
         int width = Enviroment.screenWidth(getContext());
-        setLayoutParams(new RelativeLayout.LayoutParams(width, width * 180 / 320));
+        setLayoutParams(new AbsListView.LayoutParams(width, width * 180 / 320));
     }
 
     public void setData(final List<HomeModel.HomeBanner> banners) {

@@ -2,6 +2,7 @@ package com.youxing.duola.views;
 
 import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.text.TextUtils;
@@ -14,7 +15,6 @@ import com.tencent.mm.sdk.openapi.IWXAPI;
 import com.tencent.mm.sdk.openapi.WXAPIFactory;
 import com.youxing.common.app.Constants;
 import com.youxing.duola.R;
-import com.youxing.duola.app.SGActivity;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
@@ -71,7 +71,14 @@ public class ShareDialog extends AlertDialog implements View.OnClickListener {
         // 微信分享
         final IWXAPI api = WXAPIFactory.createWXAPI(getContext(), Constants.WECHAT_APP_ID);
         if (!api.isWXAppInstalled() || !api.isWXAppSupportAPI()) {
-            ((SGActivity)getContext()).showDialog(getContext(), "使用微信分享功能需要您安装最新的微信客户端");
+            AlertDialog dlg = new AlertDialog.Builder(getContext()).create();
+            dlg.setMessage("使用微信分享功能需要您安装最新的微信客户端");
+            dlg.setButton(DialogInterface.BUTTON_POSITIVE, "确定", new OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                }
+            });
+            dlg.show();
             return;
         }
 

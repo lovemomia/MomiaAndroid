@@ -1,14 +1,12 @@
 package com.youxing.duola.home;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
@@ -23,7 +21,6 @@ import com.youxing.common.services.http.CacheType;
 import com.youxing.common.services.http.HttpService;
 import com.youxing.common.services.http.RequestHandler;
 import com.youxing.common.utils.CityManager;
-import com.youxing.common.utils.UnitTools;
 import com.youxing.duola.R;
 import com.youxing.duola.app.SGFragment;
 import com.youxing.duola.home.views.HomeEventItem;
@@ -209,13 +206,15 @@ public class HomeFragment extends SGFragment implements AdapterView.OnItemClickL
         if (hasTopic) {
             if (sec == 0) {
                 // topic
+                String url = Constants.domainWeb() + "/discuss/topic?id=" + model.getData().getTopics().get(0).getId();
+                startActivity("duola://web?url=" + url);
                 return;
             }
             sec--;
         }
 
         Course course = model.getData().getCourses().getList().get(sec);
-        startActivity("duola://coursedetail?id=" + course.getId());
+        startActivity("duola://coursedetail?id=" + course.getId() + "&recommend=1");
     }
 
     @Override

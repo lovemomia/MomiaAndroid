@@ -3,20 +3,42 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <com.youxing.common.views.YXNetworkImageView
-        android:id="@+id/cover"
+    <FrameLayout
+        android:id="@+id/cover_lay"
         android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:scaleType="centerCrop"
-        android:background="@color/bg_image"
-        android:layout_alignParentTop="true"/>
+        android:layout_height="200dp">
+
+        <com.youxing.common.views.YXNetworkImageView
+            android:id="@+id/cover"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="centerCrop"
+            android:background="@color/bg_image"
+            android:layout_alignParentTop="true"/>
+
+        <TextView
+            android:id="@+id/number"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/text_small"
+            android:textColor="@color/white"
+            android:layout_marginTop="19dp"
+            android:paddingLeft="10dp"
+            android:paddingRight="5dp"
+            android:paddingBottom="2dp"
+            android:layout_alignParentRight="true"
+            android:text="106人报名"
+            android:gravity="center"
+            android:layout_gravity="right"
+            android:background="@drawable/ic_home_tag"/>
+
+    </FrameLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="-2dp"
-        android:gravity="center_vertical"
-        android:layout_below="@id/cover">
+        android:gravity="center_vertical">
 
         <LinearLayout
             android:layout_width="0dp"
@@ -113,21 +135,5 @@
         </LinearLayout>
 
     </LinearLayout>
-
-    <TextView
-        android:id="@+id/number"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="@dimen/text_small"
-        android:textColor="@color/white"
-        android:layout_marginTop="19dp"
-        android:paddingLeft="10dp"
-        android:paddingRight="5dp"
-        android:paddingBottom="2dp"
-        android:layout_alignParentRight="true"
-        android:text="106人报名"
-        android:gravity="center"
-        android:background="@drawable/ic_home_tag"/>
-
 
 </com.youxing.duola.home.views.HomeListItem>

@@ -435,7 +435,7 @@ public class PersonInfoActivity extends SGActivity implements StepperView.OnNumb
         showLoadingDialog(this);
 
         Child child = new Child();
-        child.setName("毛毛");
+        child.setName(AccountService.instance().account().getNickName() + "的宝宝");
         child.setSex("男");
         child.setBirthday("2015-07-01");
         List<Child> children = new ArrayList<Child>();

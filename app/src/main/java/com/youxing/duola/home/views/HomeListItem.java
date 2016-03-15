@@ -4,22 +4,21 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.RelativeLayout;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.youxing.common.app.Enviroment;
-import com.youxing.common.utils.UnitTools;
 import com.youxing.common.views.YXNetworkImageView;
 import com.youxing.duola.R;
 import com.youxing.duola.model.Course;
-import com.youxing.duola.model.Product;
 import com.youxing.duola.utils.PriceUtils;
 
 /**
  * Created by Jun Deng on 15/6/15.
  */
-public class HomeListItem extends RelativeLayout {
+public class HomeListItem extends LinearLayout {
 
+    private View coverLay;
     private YXNetworkImageView coverIv;
     private TextView titleTv;
     private TextView addressTv;
@@ -42,6 +41,7 @@ public class HomeListItem extends RelativeLayout {
     @Override
     protected void onFinishInflate() {
         super.onFinishInflate();
+        coverLay = findViewById(R.id.cover_lay);
         coverIv = (YXNetworkImageView)findViewById(R.id.cover);
         titleTv = (TextView) findViewById(R.id.title);
         addressTv = (TextView) findViewById(R.id.address);
@@ -52,13 +52,13 @@ public class HomeListItem extends RelativeLayout {
 
     public void setData(Course course) {
         int width = Enviroment.screenWidth(getContext());
-        RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(width, width * 1/2);
-        coverIv.setLayoutParams(lp);
+        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(width, width * 1/2);
+        coverLay.setLayoutParams(lp);
         coverIv.setDefaultImageResId(R.drawable.bg_default_image);
         coverIv.setImageUrl(course.getCover());
         titleTv.setText(course.getTitle());
         addressTv.setText(course.getAge() + " | " + course.getRegion());
-        dateTv.setText(course.getKeyWord());
+        dateTv.setText(course.getSubject());
         if (course.getJoined() > 0) {
             numberTv.setText(course.getJoined() + "人报名");
             numberTv.setVisibility(View.VISIBLE);

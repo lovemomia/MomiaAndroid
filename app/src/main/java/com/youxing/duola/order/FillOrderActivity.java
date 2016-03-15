@@ -251,6 +251,9 @@ public class FillOrderActivity extends SGActivity implements View.OnClickListene
                         updatePrices();
                     }
                 });
+                if (!TextUtils.isEmpty(coid)) {
+                    skuItem.getStepper().setNumber(1);
+                }
                 view = skuItem;
 
             } else if (section == 1 && model.getData().getPackages() != null &&
@@ -262,7 +265,7 @@ public class FillOrderActivity extends SGActivity implements View.OnClickListene
 
                 } else {
                     OrderSkuItem skuItem = OrderSkuItem.create(FillOrderActivity.this);
-                    Sku sku = model.getData().getPackages().get(row);
+                    Sku sku = model.getData().getPackages().get(row - 1);
                     skuItem.setData(sku, true);
                     skuItem.getStepper().setVisibility(View.GONE);
                     view = skuItem;

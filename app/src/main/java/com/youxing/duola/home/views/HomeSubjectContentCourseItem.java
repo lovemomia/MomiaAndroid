@@ -48,7 +48,7 @@ public class HomeSubjectContentCourseItem extends LinearLayout {
     public void setData(Course course, int type) {
 //        iconIv.setImageURI(Uri.parse(course.getCover()));
         iconIv.setImageUrl(course.getCover());
-        titleTv.setText(course.getTitle());
+        titleTv.setText(course.getKeyWord());
         ageTv.setText(course.getAge());
         if (type == 1) {
             joinedTv.setText(course.getJoined() + "人已参加");

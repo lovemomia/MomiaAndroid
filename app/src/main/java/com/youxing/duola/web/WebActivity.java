@@ -1,10 +1,15 @@
 package com.youxing.duola.web;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.view.KeyEvent;
+import android.webkit.CookieManager;
+import android.webkit.CookieSyncManager;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
+import com.youxing.common.app.Constants;
+import com.youxing.common.services.account.AccountService;
 import com.youxing.duola.app.SGWebActivity;
 
 import java.net.URLDecoder;
@@ -13,6 +18,7 @@ public class WebActivity extends SGWebActivity {
 	private String url;
 	private String title;
 	private boolean openexternal;
+	private boolean appendParams;
 
 	@Override
 	public void onCreate(Bundle icicle) {
@@ -29,12 +35,43 @@ public class WebActivity extends SGWebActivity {
 			title = getIntent().getStringExtra("title");
 			openexternal = getIntent().getBooleanExtra("openExternal", false);
 		}
+		appendParams = getIntent().getBooleanExtra("appendParams", true);
 
 		if (url == null)
 			finish();
 
-		webView.loadUrl(url);
+		webView.loadUrl(appendUrl(url));
 		setTitle(title);
+
+		// set cookie
+		String domain = Constants.DEBUG ? "http://m.momia.cn" : "http://m.sogokids.com";
+		if (AccountService.instance().isLogin()) {
+			synCookies(this, domain, "utoken="
+					+ AccountService.instance().account().getToken()
+					+ "; path=/; domain=" + (Constants.DEBUG ? "momia.cn" : "sogokids.com"));
+		} else {
+			synCookies(this, domain,
+					"utoken=; path=/; domain=" + (Constants.DEBUG ? "momia.cn" : "sogokids.com"));
+		}
+	}
+
+	private String appendUrl(String url) {
+		if (!appendParams) {
+			return url;
+		}
+
+		if (url.contains("?")) {
+			return url + "&_src=androidapp";
+		}
+		return url + "&_src=androidapp";
+	}
+
+	public void synCookies(Context context, String url, String cookies) {
+		CookieSyncManager.createInstance(context);
+		CookieManager cookieManager = CookieManager.getInstance();
+		cookieManager.setAcceptCookie(true);
+		cookieManager.setCookie(url, cookies);
+		CookieSyncManager.getInstance().sync();
 	}
 
 	@Override

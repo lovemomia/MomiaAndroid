@@ -197,7 +197,7 @@ public class SubjectDetailActivity extends SGActivity implements AdapterView.OnI
 
                 } else {
                     CourseReviewListItem view = CourseReviewListItem.create(SubjectDetailActivity.this);
-                    view.setData(model.getData().getComments().getList().get(row - 1));
+                    view.setData(model.getData().getComments().getList().get(row - 1), 3);
                     cell = view;
                 }
 

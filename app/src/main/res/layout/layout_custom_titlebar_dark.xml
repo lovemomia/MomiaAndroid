@@ -3,65 +3,79 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="?actionBarSize"
-    android:id="@+id/titleBar"
-    app:theme="@style/MyActionBar.Dark">
+    android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/toolbar_title"
-        android:layout_height="wrap_content"
-        android:layout_width="wrap_content"
-        android:layout_gravity="center"
-        android:paddingRight="60dp"
-        android:paddingLeft="60dp"
-        android:singleLine="true"
-        android:ellipsize="end"
-        android:textSize="@dimen/text_large"
-        android:textColor="@color/white"/>
-
-    <com.youxing.duola.views.TitleBarButton
-        android:id="@+id/title_left_btn"
-        android:layout_height="match_parent"
-        android:layout_width="60dp"
-        android:layout_gravity="left|center_vertical"
-        android:background="@drawable/bg_action_button_dark">
-
-        <ImageView
-            android:id="@+id/icon"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"/>
+    <android.support.v7.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/titleBar"
+        android:layout_width="match_parent"
+        android:layout_height="?actionBarSize"
+        app:theme="@style/MyActionBar.Dark">
 
         <TextView
-            android:id="@+id/text"
+            android:id="@+id/toolbar_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:ellipsize="end"
+            android:paddingLeft="60dp"
+            android:paddingRight="60dp"
+            android:singleLine="true"
             android:textColor="@color/white"
-            android:textSize="@dimen/text_medium"
-            android:layout_gravity="center"/>
+            android:textSize="@dimen/text_large" />
 
-    </com.youxing.duola.views.TitleBarButton>
+        <com.youxing.duola.views.TitleBarButton
+            android:id="@+id/title_left_btn"
+            android:layout_width="60dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="left|center_vertical"
+            android:background="@drawable/bg_action_button_dark">
 
-    <com.youxing.duola.views.TitleBarButton
-        android:id="@+id/title_right_btn"
-        android:layout_height="match_parent"
-        android:layout_width="60dp"
-        android:layout_gravity="right|center_vertical"
-        android:padding="10dp"
-        android:background="@drawable/bg_action_button_dark">
+            <ImageView
+                android:id="@+id/icon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center" />
 
-        <ImageView
-            android:id="@id/icon"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"/>
+            <TextView
+                android:id="@+id/text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:textColor="@color/white"
+                android:textSize="@dimen/text_medium" />
 
-        <TextView
-            android:id="@id/text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@color/white"
-            android:textSize="@dimen/text_medium"
-            android:layout_gravity="center"/>
+        </com.youxing.duola.views.TitleBarButton>
 
-    </com.youxing.duola.views.TitleBarButton>
+        <com.youxing.duola.views.TitleBarButton
+            android:id="@+id/title_right_btn"
+            android:layout_width="60dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="right|center_vertical"
+            android:background="@drawable/bg_action_button_dark"
+            android:padding="10dp">
+
+            <ImageView
+                android:id="@id/icon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center" />
+
+            <TextView
+                android:id="@id/text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:textColor="@color/white"
+                android:textSize="@dimen/text_medium" />
+
+        </com.youxing.duola.views.TitleBarButton>
+    </android.support.v7.widget.Toolbar>
+
+    <View
+        android:id="@+id/shadow"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@drawable/shadow"
+        android:visibility="gone"/>
 </com.youxing.duola.views.TitleBar>

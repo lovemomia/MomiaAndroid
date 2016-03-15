@@ -34,9 +34,5 @@ dependencies {
     compile 'com.android.support:gridlayout-v7:23.1.1'
     compile 'com.mcxiaoke.volley:library:1.0.18'
     compile 'com.alibaba:fastjson:1.2.6'
-    compile 'com.github.mmin18.layoutcast:library:1.+@aar'
-//    compile files('libs/httpcore-4.3.1.jar')
-//    compile files('libs/httpmime-4.3.1.jar')
-    compile 'me.imid.swipebacklayout.lib:library:1.0.0'
     compile 'com.jakewharton:disklrucache:2.0.2'
 }

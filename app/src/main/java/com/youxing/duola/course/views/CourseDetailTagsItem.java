@@ -32,8 +32,8 @@ public class CourseDetailTagsItem extends LinearLayout {
         for (String tag : tags) {
             TextView tv = new TextView(getContext());
             tv.setText(tag);
-            tv.setTextColor(getResources().getColor(R.color.app_theme));
-            tv.setTextSize(13);
+            tv.setTextColor(getResources().getColor(R.color.text_light_gray));
+            tv.setTextSize(12);
             Drawable img = getResources().getDrawable(R.drawable.ic_product_header_tag);
             img.setBounds(0, 0, img.getMinimumWidth(), img.getMinimumHeight());
             tv.setCompoundDrawables(img, null, null, null);

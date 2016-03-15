@@ -176,12 +176,16 @@ public class RootTabActivity extends SGActivity implements RongIMClient.OnReceiv
     }
 
     private void refreshDot() {
-        int unreadGroup = RongIM.getInstance().getRongIMClient().getUnreadCount(Conversation.ConversationType.PRIVATE, Conversation.ConversationType.GROUP);
-        if (unreadGroup > 0) {
-            groupDot.setVisibility(View.VISIBLE);
+        try {
+            int unreadGroup = RongIM.getInstance().getRongIMClient().getUnreadCount(Conversation.ConversationType.PRIVATE,
+                    Conversation.ConversationType.GROUP);
+            if (unreadGroup > 0) {
+                groupDot.setVisibility(View.VISIBLE);
 
-        } else {
-            groupDot.setVisibility(View.GONE);
+            } else {
+                groupDot.setVisibility(View.GONE);
+            }
+        } catch (Exception e) {
         }
     }
 }

@@ -39,7 +39,7 @@ public class MineFragment extends SGFragment implements AdapterView.OnItemClickL
         if (rootView == null) {
             rootView = inflater.inflate(R.layout.activity_mine, null);
             titleBar = (TitleBar) rootView.findViewById(R.id.titleBar);
-            ((AppCompatActivity)getActivity()).setSupportActionBar(titleBar);
+            ((AppCompatActivity)getActivity()).setSupportActionBar(titleBar.getToolbar());
             listView = (ListView)rootView.findViewById(R.id.listView);
             adapter = new Adapter();
             listView.setAdapter(adapter);
@@ -104,10 +104,12 @@ public class MineFragment extends SGFragment implements AdapterView.OnItemClickL
             if (row == 0) {
                 // 我的订单
                 startActivity("duola://myorderlist");
-            } else if (row == 1) {
-                // 我的评价
-                startActivity("duola://userinfo?uid=" + "&me=1");
-            } else {
+            }
+//            else if (row == 1) {
+//                // 我的评价
+//                startActivity("duola://userinfo?uid=" + "&me=1");
+//            }
+            else {
                 startActivity("duola://couponlist?status=0");
             }
 
@@ -132,9 +134,10 @@ public class MineFragment extends SGFragment implements AdapterView.OnItemClickL
         public int getCountInSection(int section) {
             if (section == 0) {
                 return 1;
-            } else if (section == 2) {
-                return 3;
             }
+//            else if (section == 2) {
+//                return 3;
+//            }
             return 2;
         }
 
@@ -184,11 +187,13 @@ public class MineFragment extends SGFragment implements AdapterView.OnItemClickL
                         simpleListItem.setTitle("我的订单");
                         simpleListItem.setIcon(R.drawable.ic_mine_order);
 
-                    } else if (row == 1) {
-                        simpleListItem.setTitle("我的评价");
-                        simpleListItem.setIcon(R.drawable.ic_mine_comment);
-
-                    } else {
+                    }
+//                    else if (row == 1) {
+//                        simpleListItem.setTitle("我的评价");
+//                        simpleListItem.setIcon(R.drawable.ic_mine_comment);
+//
+//                    }
+                    else {
                         simpleListItem.setTitle("我的红包");
                         simpleListItem.setIcon(R.drawable.ic_mine_coupon);
                     }

@@ -54,7 +54,7 @@
         android:paddingLeft="10dp"
         android:paddingRight="10dp"
         android:text="200人已参加"
-        android:textColor="@color/text_gray"
+        android:textColor="@color/text_light_gray"
         android:textSize="@dimen/text_small" />
 
 </com.youxing.duola.home.views.HomeSubjectContentCourseItem>

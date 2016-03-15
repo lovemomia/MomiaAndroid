@@ -7,10 +7,8 @@ import android.net.Uri;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
-import android.support.v7.gridlayout.BuildConfig;
 import android.text.TextUtils;
 
-import com.github.mmin18.layoutcast.LayoutCast;
 import com.youxing.common.services.account.AccountService;
 import com.youxing.common.services.config.ConfigService;
 import com.youxing.common.utils.Log;
@@ -41,10 +39,6 @@ public class YXApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-
-        if (BuildConfig.DEBUG) {
-            LayoutCast.init(this);
-        }
     }
 
     // **** Application Life Circle **** //
@@ -156,7 +150,7 @@ public class YXApplication extends Application {
             if (uri == null) {
                 break;
             }
-            if (uri.getScheme() == null || !"duola".equals(uri.getScheme())) {
+            if (uri.getScheme() == null || !("duola".equals(uri.getScheme()) || "duoladebug".equals(uri.getScheme()))) {
                 break;
             }
 

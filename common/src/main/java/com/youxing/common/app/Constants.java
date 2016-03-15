@@ -22,6 +22,9 @@ public class Constants {
     public static final String DOMAIN_ONLINE_UPLOAD_IMAGE = "http://s.sogokids.com";
     public static final String DOMAIN_QA_UPLOAD_IMAGE = "http://s.momia.cn";
 
+    public static final String DOMAIN_ONLINE_WEB = "http://m.sogokids.com";
+    public static final String DOMAIN_QA_WEB = "http://m.momia.cn";
+
     public static String domain() {
         if (DEBUG) {
             return DOMAIN_QA;
@@ -41,5 +44,12 @@ public class Constants {
             return DOMAIN_QA_UPLOAD_IMAGE;
         }
         return DOMAIN_ONLINE_UPLOAD_IMAGE;
+    }
+
+    public static String domainWeb() {
+        if (DEBUG) {
+            return DOMAIN_QA_WEB;
+        }
+        return DOMAIN_ONLINE_WEB;
     }
 }

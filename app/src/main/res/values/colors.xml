@@ -13,7 +13,7 @@
     <color name="bg_image">#CCCCCC</color>
     <color name="bg_window">#f1f1f1</color>
     <color name="bg_dot_normal">#99f1f1f1</color>
-    <color name="bg_dot_select">#991ebba6</color>
+    <color name="bg_dot_select">#9900c49d</color>
 
     <!-- 基本颜色 -->
     <color name="red">#FF3030</color>
@@ -27,6 +27,6 @@
     <color name="text_light_gray">#999999</color>
     <color name="text_red">#F67531</color>
     <color name="text_yellow">#FFCC06</color>
-    <color name="text_blue">#1ebba6</color>
+    <color name="text_blue">#00c49d</color>
 
 </resources>

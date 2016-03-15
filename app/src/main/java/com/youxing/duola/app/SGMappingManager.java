@@ -27,6 +27,9 @@ public class SGMappingManager extends MappingManager {
 
         // 预约课程
         putPage("bookingsubjectlist", new MappingPage("bookingsubjectlist", true));
+
+        // 邀请好友
+        putPage("share", new MappingPage("share", true));
     }
 
 }

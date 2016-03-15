@@ -3,6 +3,7 @@ package com.youxing.duola.home.views;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
+import android.widget.AbsListView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
@@ -35,7 +36,7 @@ public class HomeSubjectCoverItem extends LinearLayout {
         coverIv = (YXNetworkImageView) findViewById(R.id.cover);
 
         int width = Enviroment.screenWidth(getContext());
-        setLayoutParams(new LinearLayout.LayoutParams(width, width * 180 / 320));
+        setLayoutParams(new AbsListView.LayoutParams(width, width * 180 / 320));
     }
 
     public void setData(String coverUrl) {

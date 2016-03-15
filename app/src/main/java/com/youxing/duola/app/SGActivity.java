@@ -5,13 +5,16 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.support.annotation.LayoutRes;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.FrameLayout;
 
 import com.umeng.analytics.MobclickAgent;
 import com.youxing.common.app.YXActivity;
+import com.youxing.common.utils.UnitTools;
 import com.youxing.duola.R;
 import com.youxing.duola.RootTabActivity;
 import com.youxing.duola.views.ProgressHUD;
@@ -31,6 +34,21 @@ public class SGActivity extends YXActivity {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_action_back);
         }
+    }
+
+    @Override
+    public void setContentView(@LayoutRes int layoutResID) {
+        super.setContentView(layoutResID);
+        if (!(this instanceof RootTabActivity)) {
+            addShadowView();
+        }
+    }
+
+    private void addShadowView() {
+        View shadow = new View(this);
+        FrameLayout.LayoutParams lp = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, UnitTools.dip2px(this, 1));
+        shadow.setBackgroundResource(R.drawable.shadow);
+        addContentView(shadow, lp);
     }
 
     public void onResume() {

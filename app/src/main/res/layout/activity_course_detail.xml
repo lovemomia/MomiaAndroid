@@ -45,7 +45,6 @@
                 android:layout_height="wrap_content"
                 android:textColor="@color/text_deep_gray"
                 android:textSize="@dimen/text_medium"
-                android:text="¥"
                 android:paddingRight="2dp"
                 android:layout_gravity="bottom" />
 
@@ -55,7 +54,6 @@
                 android:layout_height="wrap_content"
                 android:textColor="@color/text_red"
                 android:textSize="28sp"
-                android:text="0"
                 android:textStyle="bold"
                 android:layout_gravity="bottom"/>
 
@@ -65,7 +63,6 @@
                 android:layout_height="wrap_content"
                 android:textColor="@color/text_deep_gray"
                 android:textSize="@dimen/text_medium"
-                android:text="起／月"
                 android:paddingLeft="2dp"
                 android:layout_gravity="bottom"/>
 
