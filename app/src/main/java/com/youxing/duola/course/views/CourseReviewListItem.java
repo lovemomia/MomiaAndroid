@@ -1,6 +1,8 @@
 package com.youxing.duola.course.views;
 
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.support.v7.widget.GridLayout;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
@@ -21,7 +23,7 @@ import com.youxing.duola.model.ReviewList;
 /**
  * Created by Jun Deng on 16/2/23.
  */
-public class CourseReviewListItem extends LinearLayout {
+public class CourseReviewListItem extends LinearLayout implements View.OnClickListener {
 
     private CircularImage avatar;
     private TextView nameTv;
@@ -30,6 +32,8 @@ public class CourseReviewListItem extends LinearLayout {
     private RatingBar ratingBar;
     private TextView contentTv;
     private GridLayout gridLayout;
+
+    private ReviewList.Review review;
 
     public CourseReviewListItem(Context context) {
         super(context);
@@ -49,6 +53,7 @@ public class CourseReviewListItem extends LinearLayout {
         ratingBar = (RatingBar) findViewById(R.id.ratingBar);
         contentTv = (TextView) findViewById(R.id.content);
         gridLayout = (GridLayout) findViewById(R.id.grid);
+        gridLayout.setOnClickListener(this);
     }
 
     public static CourseReviewListItem create(Context context) {
@@ -60,6 +65,7 @@ public class CourseReviewListItem extends LinearLayout {
     }
 
     public void setData(ReviewList.Review review, int limit) {
+        this.review = review;
         avatar.setImageUrl(review.getAvatar());
         nameTv.setText(review.getNickName());
         dateTv.setText(review.getAddTime());
@@ -88,4 +94,12 @@ public class CourseReviewListItem extends LinearLayout {
         }
     }
 
+    @Override
+    public void onClick(View v) {
+        if (review != null) {
+            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("duola://photoviewer"));
+            intent.putExtra("urls", review.getLargeImgs().toArray(new String[0]));
+            getContext().startActivity(intent);
+        }
+    }
 }
