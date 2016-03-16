@@ -1,6 +1,7 @@
 package com.youxing.duola.course.views;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 import android.widget.LinearLayout;
@@ -27,6 +28,7 @@ public class CourseDetailTagsItem extends LinearLayout {
     }
 
     public void setData(String[] tags) {
+        setBackgroundColor(Color.parseColor("#fff8f8f8"));
         int padding = UnitTools.dip2px(getContext(), 10);
         this.setPadding(padding, padding, padding, padding);
         for (String tag : tags) {

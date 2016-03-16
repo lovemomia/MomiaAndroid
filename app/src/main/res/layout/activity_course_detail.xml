@@ -4,15 +4,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <!--<android.support.v7.widget.Toolbar-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="?actionBarSize"-->
-        <!--android:id="@+id/titleBar"-->
-        <!--android:background="@android:color/transparent"-->
-        <!--app:theme="@style/MyActionBar.Transparent">-->
-
-    <!--</android.support.v7.widget.Toolbar>-->
-
     <ListView
         android:id="@+id/listView"
         android:layout_width="match_parent"
@@ -97,7 +88,33 @@
 
     </LinearLayout>
 
-    <include android:id="@+id/top_tab"
-        layout="@layout/layout_course_detail_tab_item" />
+    <ImageView
+        android:id="@+id/back"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_action_back_white"
+        android:padding="16dp"/>
+
+    <LinearLayout
+        android:id="@+id/title_lay"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="@color/white"
+        android:alpha="0">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?actionBarSize">
+        </android.support.v7.widget.Toolbar>
+
+        <include android:id="@+id/top_tab"
+            layout="@layout/layout_course_detail_tab_item" />
+
+    </LinearLayout>
+
+
+
 
 </FrameLayout>

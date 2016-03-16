@@ -1,12 +1,16 @@
 package com.youxing.duola.course;
 
+import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AlphaAnimation;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -19,6 +23,9 @@ import com.youxing.common.model.BaseModel;
 import com.youxing.common.services.http.CacheType;
 import com.youxing.common.services.http.HttpService;
 import com.youxing.common.services.http.RequestHandler;
+import com.youxing.common.utils.Log;
+import com.youxing.common.utils.UnitTools;
+import com.youxing.common.views.ListViewScrollTracker;
 import com.youxing.duola.R;
 import com.youxing.duola.app.SGActivity;
 import com.youxing.duola.course.views.BuyNoticeItem;
@@ -52,6 +59,10 @@ public class CourseDetailActivity extends SGActivity implements CourseDetailTabI
     private int recommend; // 1 表示推荐，可不传或传0，表示课程包点进去的
     private Course model;
 
+    private View titleLay;
+    private Toolbar toolbar;
+    private View backBtn;
+
     private ListView listView;
     private Adapter adapter;
     private TextView priceTv;
@@ -62,10 +73,25 @@ public class CourseDetailActivity extends SGActivity implements CourseDetailTabI
 
     private int tabIndex;
 
+    private int tabY;
+    private ListViewScrollTracker scrollTracker;
+    private int scrolly;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_course_detail);
+
+        titleLay = findViewById(R.id.title_lay);
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar.setTitle("课程详情");
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_action_back);
+
+        backBtn = findViewById(R.id.back);
+        backBtn.setOnClickListener(this);
+
         priceTv = (TextView) findViewById(R.id.priceTv);
         unitTv = (TextView) findViewById(R.id.unitTv);
         chooseTv = (TextView) findViewById(R.id.chooseTv);
@@ -87,6 +113,7 @@ public class CourseDetailActivity extends SGActivity implements CourseDetailTabI
         listView.setAdapter(adapter);
         listView.setOnScrollListener(this);
         listView.setOnItemClickListener(this);
+        scrollTracker = new ListViewScrollTracker(listView);
 
         requestData();
     }
@@ -151,14 +178,34 @@ public class CourseDetailActivity extends SGActivity implements CourseDetailTabI
     @Override
     public void onScrollStateChanged(AbsListView view, int scrollState) {
 
+
     }
 
     @Override
     public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
-        if (firstVisibleItem >= getTabPosition()) {
-            topTab.setVisibility(View.VISIBLE);
+        if (tabY == 0) {
+            return;
+        }
 
-        } else if (firstVisibleItem < getTabPosition()) {
+        int incrementalOffset = scrollTracker.calculateIncrementalOffset(firstVisibleItem, visibleItemCount);
+        scrolly += incrementalOffset;
+
+        int titleHeight = toolbar.getHeight();
+
+        if (Build.VERSION.SDK_INT >= 11) {
+            float p = -scrolly / 200.0f;
+            if (p > 1) {
+                p = 1;
+            }
+            titleLay.setAlpha(p);
+
+        } else {
+
+        }
+
+        if (-scrolly > tabY - titleHeight) {
+            topTab.setVisibility(View.VISIBLE);
+        } else {
             topTab.setVisibility(View.GONE);
         }
     }
@@ -181,14 +228,20 @@ public class CourseDetailActivity extends SGActivity implements CourseDetailTabI
 
     @Override
     public void onClick(View v) {
-        if (model == null) {
-            return;
+        if (v.getId() == R.id.back) {
+            finish();
+
+        } else {
+            if (model == null) {
+                return;
+            }
+            StringBuilder sb = new StringBuilder("duola://fillorder?id=" + model.getSubjectId());
+            if (model.isBuyable()) {
+                sb.append("&coid=" + model.getId() + "&coname=" + model.getSubject());
+            }
+            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(sb.toString())));
         }
-        StringBuilder sb = new StringBuilder("duola://fillorder?id=" + model.getSubjectId());
-        if (model.isBuyable()) {
-            sb.append("&coid=" + model.getId() + "&coname=" + model.getSubject());
-        }
-        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(sb.toString())));
+
     }
 
     class Adapter extends GroupStyleAdapter {
@@ -265,6 +318,9 @@ public class CourseDetailActivity extends SGActivity implements CourseDetailTabI
                 }
             } else if (section == 2) {
                 if (row == 0) {
+                    if (tabY == 0) {
+                        tabY = parent.getChildAt(getTabPosition() - 1).getBottom();
+                    }
                     CourseDetailTabItem view = CourseDetailTabItem.create(CourseDetailActivity.this);
                     view.setListener(CourseDetailActivity.this);
                     view.setIndex(tabIndex);
