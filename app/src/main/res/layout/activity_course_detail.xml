@@ -109,6 +109,11 @@
             android:layout_height="?actionBarSize">
         </android.support.v7.widget.Toolbar>
 
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@drawable/shadow" />
+
         <include android:id="@+id/top_tab"
             layout="@layout/layout_course_detail_tab_item" />
 
