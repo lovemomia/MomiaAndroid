@@ -1,18 +1,14 @@
 package com.youxing.duola.course.views;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.support.v4.view.ViewPager;
-import android.text.SpannableString;
-import android.text.Spanned;
-import android.text.style.ForegroundColorSpan;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.youxing.common.adapter.RecyclingPagerAdapter;
@@ -20,18 +16,20 @@ import com.youxing.common.app.Enviroment;
 import com.youxing.common.views.YXNetworkImageView;
 import com.youxing.duola.R;
 import com.youxing.duola.model.Course;
+import com.youxing.duola.views.PageControl;
 
 import java.util.List;
 
 /**
  * Created by Jun Deng on 15/6/16.
  */
-public class CourseDetailHeaderItem extends RelativeLayout implements ViewPager.OnPageChangeListener {
+public class CourseDetailHeaderItem extends LinearLayout implements ViewPager.OnPageChangeListener {
 
     private ViewPager pager;
+    private PageControl pageControl;
 
     private TextView titleTv;
-    private TextView pageNumTv;
+//    private TextView pageNumTv;
 
     private int pageCount;
 
@@ -52,9 +50,10 @@ public class CourseDetailHeaderItem extends RelativeLayout implements ViewPager.
         super.onFinishInflate();
         pager = (ViewPager) findViewById(R.id.pager);
         int width = Enviroment.screenWidth(getContext());
-        pager.setLayoutParams(new LayoutParams(width, width * 225 / 320));
+        pager.setLayoutParams(new FrameLayout.LayoutParams(width, width * 225 / 320));
         titleTv = (TextView) findViewById(R.id.title);
-        pageNumTv = (TextView) findViewById(R.id.page_num);
+//        pageNumTv = (TextView) findViewById(R.id.page_num);
+        pageControl = (PageControl) findViewById(R.id.pageControl);
     }
 
     public void setData(Course product) {
@@ -69,23 +68,28 @@ public class CourseDetailHeaderItem extends RelativeLayout implements ViewPager.
         pager.setOnPageChangeListener(this);
         pager.setCurrentItem(Integer.MAX_VALUE / 2 - Integer.MAX_VALUE / 2 % pageCount);
 
+        pageControl.setNumberOfPages(pageCount);
+        pageControl.setCurrentPage(0);
+
         if (pageCount <= 1) {
-            pageNumTv.setVisibility(View.GONE);
+            pageControl.setVisibility(View.GONE);
             return;
         }
     }
 
     @Override
     public void onPageSelected(int position) {
-        int current = position % pageCount + 1;
-        String text = current + "/" + pageCount;
+//        int current = position % pageCount + 1;
+//        String text = current + "/" + pageCount;
+//
+//        SpannableString ss = new SpannableString(text);
+//        ss.setSpan(new ForegroundColorSpan(Color.WHITE), 0, text.indexOf("/"), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+//        ss.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.bg_image)),
+//                text.indexOf("/"), text.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+//
+//        pageNumTv.setText(ss);
 
-        SpannableString ss = new SpannableString(text);
-        ss.setSpan(new ForegroundColorSpan(Color.WHITE), 0, text.indexOf("/"), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-        ss.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.bg_image)),
-                text.indexOf("/"), text.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-
-        pageNumTv.setText(ss);
+        pageControl.setCurrentPage(position % pageCount);
     }
 
     @Override

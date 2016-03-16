@@ -4,12 +4,25 @@
     android:layout_height="match_parent"
     android:paddingBottom="10dp">
 
-    <android.support.v4.view.ViewPager
-        android:id="@+id/pager"
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:layout_alignParentTop="true"
-        android:background="@color/bg_image"/>
+        android:layout_height="wrap_content">
+
+        <android.support.v4.view.ViewPager
+            android:id="@+id/pager"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:background="@color/bg_image"/>
+
+        <com.youxing.duola.views.PageControl
+            android:id="@+id/pageControl"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|center_horizontal"
+            android:layout_marginBottom="15dp"/>
+
+    </FrameLayout>
+
 
     <TextView
         android:id="@+id/title"
@@ -18,18 +31,17 @@
         android:textSize="@dimen/text_large"
         android:textColor="@color/text_deep_gray"
         android:padding="10dp"
-        android:layout_below="@id/pager"
         android:text="星光游乐园，与家人共享欢乐时光"/>
 
-    <TextView
-        android:id="@+id/page_num"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@drawable/bg_page_tag"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentRight="true"
-        android:gravity="center"
-        android:layout_marginTop="10dp"
-        android:layout_marginRight="10dp"/>
+    <!--<TextView-->
+        <!--android:id="@+id/page_num"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:background="@drawable/bg_page_tag"-->
+        <!--android:layout_alignParentBottom="true"-->
+        <!--android:layout_alignParentRight="true"-->
+        <!--android:gravity="center"-->
+        <!--android:layout_marginBottom="10dp"-->
+        <!--android:layout_marginRight="10dp"/>-->
 
 </com.youxing.duola.course.views.CourseDetailHeaderItem>
