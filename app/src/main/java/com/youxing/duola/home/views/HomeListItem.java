@@ -4,6 +4,7 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -25,6 +26,7 @@ public class HomeListItem extends LinearLayout {
     private TextView dateTv;
     private TextView numberTv;
     private TextView priceTv;
+    private ImageView soldoutIv;
 
     public HomeListItem(Context context) {
         this(context, null);
@@ -48,6 +50,7 @@ public class HomeListItem extends LinearLayout {
         dateTv = (TextView) findViewById(R.id.date);
         numberTv = (TextView) findViewById(R.id.number);
         priceTv = (TextView) findViewById(R.id.price);
+        soldoutIv = (ImageView) findViewById(R.id.sold_out);
     }
 
     public void setData(Course course) {
@@ -66,5 +69,10 @@ public class HomeListItem extends LinearLayout {
             numberTv.setVisibility(View.GONE);
         }
         priceTv.setText(PriceUtils.formatPriceString(course.getPrice()));
+        if (course.getStatus() == 2) {
+            soldoutIv.setVisibility(View.VISIBLE);
+        } else {
+            soldoutIv.setVisibility(View.GONE);
+        }
     }
 }

@@ -32,6 +32,13 @@
             android:layout_gravity="right"
             android:background="@drawable/ic_home_tag"/>
 
+        <ImageView
+            android:id="@+id/sold_out"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_sold_out"
+            android:visibility="gone"/>
+
     </FrameLayout>
 
     <LinearLayout
