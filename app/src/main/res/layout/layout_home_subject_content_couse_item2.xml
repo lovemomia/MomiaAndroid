@@ -44,7 +44,7 @@
         android:paddingRight="10dp"
         android:text="3-5岁"
         android:textColor="@color/text_red"
-        android:textSize="@dimen/text_small" />
+        android:textSize="@dimen/text_super_small" />
 
     <TextView
         android:id="@+id/join"
@@ -55,6 +55,6 @@
         android:paddingRight="10dp"
         android:text="200人已参加"
         android:textColor="@color/text_light_gray"
-        android:textSize="@dimen/text_small" />
+        android:textSize="@dimen/text_super_small" />
 
 </com.youxing.duola.home.views.HomeSubjectContentCourseItem>

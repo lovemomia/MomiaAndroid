@@ -6,6 +6,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
 
+import com.youxing.common.utils.UnitTools;
+
 /**
  * 类似iOS group样式ListView的Adapter
  *
@@ -114,7 +116,7 @@ public abstract class GroupStyleAdapter extends BasicAdapter {
      * @return
      */
     public int getHeightForSectionView(int section) {
-        return 20;
+        return UnitTools.dip2px(context, 10);
     }
 
     /**

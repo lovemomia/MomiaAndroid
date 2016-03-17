@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.youxing.sogoteacher.chat.views.GroupNoticeView xmlns:android="http://schemas.android.com/apk/res/android"
+<com.youxing.duola.chat.views.GroupNoticeView xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white">
@@ -109,4 +109,4 @@
 
     </LinearLayout>
 
-</com.youxing.sogoteacher.chat.views.GroupNoticeView>
+</com.youxing.duola.chat.views.GroupNoticeView>

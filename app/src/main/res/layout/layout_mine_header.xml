@@ -31,7 +31,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textColor="@color/text_gray"
-            android:textSize="@dimen/text_small"/>
+            android:textSize="@dimen/text_super_small"/>
     </LinearLayout>
 
 

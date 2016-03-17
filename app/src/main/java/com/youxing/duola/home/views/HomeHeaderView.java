@@ -58,15 +58,18 @@ public class HomeHeaderView extends FrameLayout implements ViewPager.OnPageChang
 
     public void setData(final List<HomeModel.HomeBanner> banners) {
         pageCount = banners.size();
-        pageControl.setNumberOfPages(pageCount);
-        pageControl.setCurrentPage(0);
 
-        adapter = new ImagePagerAdapter(getContext(), banners).setInfiniteLoop(true);
+        adapter = new ImagePagerAdapter(getContext(), banners).setInfiniteLoop(pageCount > 1);
         pager.setAdapter(adapter);
         pager.setOnPageChangeListener(this);
-        pager.setInterval(2000);
-        pager.startAutoScroll();
         pager.setCurrentItem(Integer.MAX_VALUE / 2 - Integer.MAX_VALUE / 2 % pageCount);
+
+        if (pageCount > 1) {
+            pageControl.setNumberOfPages(pageCount);
+            pageControl.setCurrentPage(0);
+            pager.setInterval(2000);
+            pager.startAutoScroll();
+        }
     }
 
     @Override

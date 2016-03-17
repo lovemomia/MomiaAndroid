@@ -2,7 +2,7 @@
 <com.youxing.duola.course.views.CourseDetailTeacherItem xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="10dp">
+    android:padding="12dp">
     
     <LinearLayout
         android:id="@+id/title_lay"
@@ -55,7 +55,7 @@
                 android:textColor="@color/text_deep_gray"
                 android:singleLine="true"
                 android:text="许巍"
-                android:textSize="@dimen/text_content"/>
+                android:textSize="@dimen/text_small"/>
 
             <TextView
                 android:id="@+id/education"
@@ -65,7 +65,7 @@
                 android:layout_marginTop="5dp"
                 android:singleLine="true"
                 android:text="yyyy"
-                android:textSize="@dimen/text_content"/>
+                android:textSize="@dimen/text_small"/>
         </LinearLayout>
 
     </LinearLayout>
@@ -79,6 +79,6 @@
         android:lineSpacingExtra="2dp"
         android:lineSpacingMultiplier="1.2"
         android:text="yyyy"
-        android:textSize="@dimen/text_content"/>
+        android:textSize="@dimen/text_small"/>
 
 </com.youxing.duola.course.views.CourseDetailTeacherItem>

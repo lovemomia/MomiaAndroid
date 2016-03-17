@@ -28,8 +28,7 @@ public class CourseDetailTagsItem extends LinearLayout {
     }
 
     public void setData(String[] tags) {
-        setBackgroundColor(Color.parseColor("#fff8f8f8"));
-        int padding = UnitTools.dip2px(getContext(), 10);
+        int padding = UnitTools.dip2px(getContext(), 12);
         this.setPadding(padding, padding, padding, padding);
         for (String tag : tags) {
             TextView tv = new TextView(getContext());
@@ -39,7 +38,7 @@ public class CourseDetailTagsItem extends LinearLayout {
             Drawable img = getResources().getDrawable(R.drawable.ic_product_header_tag);
             img.setBounds(0, 0, img.getMinimumWidth(), img.getMinimumHeight());
             tv.setCompoundDrawables(img, null, null, null);
-            tv.setCompoundDrawablePadding(10);
+            tv.setCompoundDrawablePadding(UnitTools.dip2px(getContext(), 6));
             tv.setPadding(0, 0, 40, 0);
             this.addView(tv);
         }

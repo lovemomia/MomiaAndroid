@@ -23,7 +23,7 @@
         android:layout_marginTop="10dp"
         android:singleLine="true"
         android:text="zzzz"
-        android:textSize="@dimen/text_small"
+        android:textSize="@dimen/text_super_small"
         android:drawableLeft="@drawable/ic_address"
         android:drawablePadding="5dp"/>
 
@@ -35,7 +35,7 @@
         android:layout_marginTop="10dp"
         android:singleLine="true"
         android:text="yyyy"
-        android:textSize="@dimen/text_small"
+        android:textSize="@dimen/text_super_small"
         android:drawableLeft="@drawable/ic_alarm"
         android:drawablePadding="5dp"/>
 

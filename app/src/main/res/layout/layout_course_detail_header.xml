@@ -30,7 +30,10 @@
         android:layout_height="wrap_content"
         android:textSize="@dimen/text_large"
         android:textColor="@color/text_deep_gray"
-        android:padding="10dp"
+        android:paddingLeft="12dp"
+        android:paddingTop="10dp"
+        android:paddingRight="12dp"
+        android:paddingBottom="8dp"
         android:text="星光游乐园，与家人共享欢乐时光"/>
 
     <!--<TextView-->

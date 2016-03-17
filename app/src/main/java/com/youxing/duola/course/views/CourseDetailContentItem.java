@@ -39,7 +39,7 @@ public class CourseDetailContentItem extends LinearLayout {
     }
 
     public void setData(Course course) {
-        int padding = UnitTools.dip2px(getContext(), 10);
+        int padding = UnitTools.dip2px(getContext(), 12);
         this.setPadding(padding, padding, padding, padding);
 
         // goal

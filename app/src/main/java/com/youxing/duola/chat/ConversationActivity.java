@@ -4,10 +4,12 @@ import android.app.AlertDialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.view.View;
+import android.view.Menu;
+import android.view.MenuItem;
 
 import com.youxing.duola.R;
 import com.youxing.duola.app.SGActivity;
+import com.youxing.duola.chat.views.GroupNoticeView;
 
 import java.util.Locale;
 
@@ -18,6 +20,9 @@ import io.rong.imlib.model.Conversation;
  * Created by Jun Deng on 16/1/21.
  */
 public class ConversationActivity extends SGActivity {
+
+    private static final int MENU_ID_NOTICE = 1;
+    private static final int MENU_ID_MEMBER = 2;
 
     /**
      * 目标 Id
@@ -42,26 +47,37 @@ public class ConversationActivity extends SGActivity {
 
         getIntentDate(intent);
 
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
         if (mConversationType == Conversation.ConversationType.GROUP) {
-//            getTitleBar().getRightBtn().setIcon(R.drawable.ic_action_group);
-//            getTitleBar().getRightBtn().setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View v) {
-//                    startActivity("duola://groupmember?id=" + mTargetId);
-//                }
-//            });
-//            getTitleBar().getRightBtn2().setIcon(R.drawable.ic_action_notice);
-//            getTitleBar().getRightBtn2().setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View v) {
-//                    AlertDialog dialog = new AlertDialog.Builder(ConversationActivity.this).create();
-//                    dialog.show();
-//                    GroupNoticeView noticeView = GroupNoticeView.create(ConversationActivity.this);
-//                    noticeView.setData(RongCloudEvent.instance().getGroupCache().get(mTargetId));
-//                    dialog.getWindow().setContentView(noticeView);
-//                }
-//            });
+            MenuItem item1 = menu.add(1, MENU_ID_NOTICE, 0, "公告");
+            item1.setIcon(R.drawable.ic_action_notice);
+            item1.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
+
+            MenuItem item2 = menu.add(1, MENU_ID_MEMBER, 1, "成员");
+            item2.setIcon(R.drawable.ic_action_group);
+            item2.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
         }
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == MENU_ID_NOTICE) {
+            AlertDialog dialog = new AlertDialog.Builder(ConversationActivity.this).create();
+            dialog.show();
+            GroupNoticeView noticeView = GroupNoticeView.create(ConversationActivity.this);
+            noticeView.setData(RongCloudEvent.instance().getGroupCache().get(mTargetId));
+            dialog.getWindow().setContentView(noticeView);
+            return true;
+
+        } else if (item.getItemId() == MENU_ID_MEMBER) {
+            startActivity("sgteacher://groupmember?id=" + mTargetId);
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     /**
