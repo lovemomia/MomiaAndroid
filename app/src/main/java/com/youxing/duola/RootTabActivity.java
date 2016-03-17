@@ -107,6 +107,11 @@ public class RootTabActivity extends SGActivity implements RongIMClient.OnReceiv
         return root;
     }
 
+    @Override
+    protected boolean showTitleShadow() {
+        return false;
+    }
+
     private long mPrevbackPress = -1;
 
     @Override

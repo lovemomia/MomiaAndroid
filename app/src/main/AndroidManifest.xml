@@ -623,7 +623,7 @@
         </activity>
 
         <activity
-            android:name=".course.PhotoViewerActivity"
+            android:name=".utils.PhotoViewerActivity"
             android:label=""
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.Dark">
@@ -638,6 +638,25 @@
                     android:scheme="duola" />
                 <data
                     android:host="photoviewer"
+                    android:scheme="duoladebug" />
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name=".utils.PhotoActivity"
+            android:label=""
+            android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:host="photo"
+                    android:scheme="duola" />
+                <data
+                    android:host="photo"
                     android:scheme="duoladebug" />
             </intent-filter>
         </activity>

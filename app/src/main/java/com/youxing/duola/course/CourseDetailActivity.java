@@ -71,6 +71,11 @@ public class CourseDetailActivity extends SGActivity implements CourseDetailTabI
     private int tabIndex;
 
     @Override
+    protected boolean showTitleShadow() {
+        return false;
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_course_detail);

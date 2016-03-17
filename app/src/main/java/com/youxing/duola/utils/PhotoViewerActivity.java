@@ -1,4 +1,4 @@
-package com.youxing.duola.course;
+package com.youxing.duola.utils;
 
 import android.content.Context;
 import android.os.Bundle;

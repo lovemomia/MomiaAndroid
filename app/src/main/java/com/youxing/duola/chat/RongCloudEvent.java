@@ -1,6 +1,10 @@
 package com.youxing.duola.chat;
 
+import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
+import android.text.TextUtils;
+import android.view.View;
 
 import com.youxing.common.app.Constants;
 import com.youxing.common.model.BaseModel;
@@ -20,16 +24,25 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import io.rong.imkit.RongContext;
 import io.rong.imkit.RongIM;
+import io.rong.imkit.widget.provider.CameraInputProvider;
+import io.rong.imkit.widget.provider.ImageInputProvider;
+import io.rong.imkit.widget.provider.InputProvider;
+import io.rong.imkit.widget.provider.LocationInputProvider;
+import io.rong.imlib.model.Conversation;
 import io.rong.imlib.model.Group;
+import io.rong.imlib.model.Message;
 import io.rong.imlib.model.UserInfo;
+import io.rong.message.ImageMessage;
+import io.rong.message.TextMessage;
 
 /**
  * 融云SDK事件监听
  * <p/>
  * Created by Jun Deng on 16/1/22.
  */
-public class RongCloudEvent implements RongIM.UserInfoProvider, RongIM.GroupInfoProvider {
+public class RongCloudEvent implements RongIM.UserInfoProvider, RongIM.GroupInfoProvider, RongIM.ConversationBehaviorListener {
 
     private static RongCloudEvent instance;
 
@@ -57,6 +70,16 @@ public class RongCloudEvent implements RongIM.UserInfoProvider, RongIM.GroupInfo
     public RongCloudEvent() {
         RongIM.setUserInfoProvider(this, true);//设置用户信息提供者。
         RongIM.setGroupInfoProvider(this, true);//设置群组信息提供者。
+        RongIM.setConversationBehaviorListener(this);
+
+        //扩展功能自定义
+        InputProvider.ExtendProvider[] provider = {
+                new ImageInputProvider(RongContext.getInstance()),//图片
+                new CameraInputProvider(RongContext.getInstance()),//相机
+//                new LocationInputProvider(RongContext.getInstance()),//地理位置
+        };
+        RongIM.getInstance().resetInputExtensionProvider(Conversation.ConversationType.PRIVATE, provider);
+        RongIM.getInstance().resetInputExtensionProvider(Conversation.ConversationType.GROUP, provider);
     }
 
     private Map<String, User> userCache = new HashMap<>();
@@ -127,5 +150,45 @@ public class RongCloudEvent implements RongIM.UserInfoProvider, RongIM.GroupInfo
             });
         }
         return null;
+    }
+
+    @Override
+    public boolean onUserPortraitClick(Context context, Conversation.ConversationType conversationType, UserInfo userInfo) {
+        return false;
+    }
+
+    @Override
+    public boolean onUserPortraitLongClick(Context context, Conversation.ConversationType conversationType, UserInfo userInfo) {
+        return false;
+    }
+
+    @Override
+    public boolean onMessageClick(Context context, View view, Message message) {
+        if (message.getContent() instanceof TextMessage) {
+            TextMessage textMessage = (TextMessage) message.getContent();
+            if (!TextUtils.isEmpty(textMessage.getExtra()) && textMessage.getExtra().startsWith("duola")) {
+                context.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(textMessage.getExtra())));
+            }
+
+        } else if (message.getContent() instanceof ImageMessage) {
+            ImageMessage imageMessage = (ImageMessage) message.getContent();
+            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("duola://photo"));
+            intent.putExtra("photo", imageMessage.getLocalUri() == null ? imageMessage.getRemoteUri() : imageMessage.getLocalUri());
+            if (imageMessage.getThumUri() != null)
+                intent.putExtra("thumbnail", imageMessage.getThumUri());
+
+            context.startActivity(intent);
+        }
+        return false;
+    }
+
+    @Override
+    public boolean onMessageLinkClick(Context context, String s) {
+        return false;
+    }
+
+    @Override
+    public boolean onMessageLongClick(Context context, View view, Message message) {
+        return false;
     }
 }

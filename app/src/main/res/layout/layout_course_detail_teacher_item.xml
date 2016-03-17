@@ -23,7 +23,6 @@
             android:textColor="@color/text_deep_gray"
             android:singleLine="true"
             android:text="专业讲师"
-            android:textStyle="bold"
             android:textSize="@dimen/text_medium"/>
 
     </LinearLayout>

@@ -39,9 +39,13 @@ public class SGActivity extends YXActivity {
     @Override
     public void setContentView(@LayoutRes int layoutResID) {
         super.setContentView(layoutResID);
-        if (!(this instanceof RootTabActivity)) {
+        if (showTitleShadow()) {
             addShadowView();
         }
+    }
+
+    protected boolean showTitleShadow() {
+        return true;
     }
 
     private void addShadowView() {

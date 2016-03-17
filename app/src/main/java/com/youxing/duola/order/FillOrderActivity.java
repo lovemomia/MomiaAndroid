@@ -175,9 +175,11 @@ public class FillOrderActivity extends SGActivity implements View.OnClickListene
         if (ip.section == 0) {
             // do nothing
 
-        } else if (ip.section == 1 && ip.row == 0 && model.getData().getPackages() != null &&
+        } else if (ip.section == 1 && model.getData().getPackages() != null &&
                 model.getData().getPackages().size() > 0) {
-            startActivity("duola://subjectdetail?id=" + this.id);
+            if (ip.row == 0) {
+                startActivity("duola://subjectdetail?id=" + this.id);
+            }
 
         } else  {
             startActivityForResult("duola://contact?name="
