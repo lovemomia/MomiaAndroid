@@ -55,7 +55,10 @@
                     android:text="一元试听"
                     android:textColor="@color/text_deep_gray"
                     android:textSize="@dimen/text_medium"
-                    android:padding="10dp"/>
+                    android:textStyle="bold"
+                    android:paddingTop="10dp"
+                    android:paddingBottom="5dp"
+                    android:paddingRight="10dp"/>
 
                 <TextView
                     android:id="@+id/eventDescLeft"
@@ -66,16 +69,14 @@
                     android:textSize="@dimen/text_super_small"
                     android:background="@drawable/bg_shape_green_frame"
                     android:paddingLeft="6dp"
-                    android:paddingRight="6dp"
-                    android:paddingTop="2dp"
-                    android:paddingBottom="2dp"/>
+                    android:paddingRight="6dp"/>
 
             </LinearLayout>
 
             <com.youxing.common.views.YXNetworkImageView
                 android:id="@+id/iconLeft"
-                android:layout_width="50dp"
-                android:layout_height="50dp"/>
+                android:layout_width="55dp"
+                android:layout_height="55dp"/>
 
         </LinearLayout>
         
@@ -106,7 +107,10 @@
                     android:text="邀请返现"
                     android:textColor="@color/text_deep_gray"
                     android:textSize="@dimen/text_medium"
-                    android:padding="10dp"/>
+                    android:textStyle="bold"
+                    android:paddingTop="10dp"
+                    android:paddingBottom="5dp"
+                    android:paddingRight="10dp"/>
 
                 <TextView
                     android:id="@+id/eventDescRight"
@@ -117,16 +121,14 @@
                     android:textSize="@dimen/text_super_small"
                     android:background="@drawable/bg_shape_red_frame"
                     android:paddingLeft="6dp"
-                    android:paddingRight="6dp"
-                    android:paddingTop="2dp"
-                    android:paddingBottom="2dp"/>
+                    android:paddingRight="6dp"/>
 
             </LinearLayout>
 
             <com.youxing.common.views.YXNetworkImageView
                 android:id="@+id/iconRight"
-                android:layout_width="50dp"
-                android:layout_height="50dp"/>
+                android:layout_width="55dp"
+                android:layout_height="55dp"/>
 
         </LinearLayout>
 

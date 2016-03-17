@@ -108,15 +108,15 @@
 
         <!-- ////////// debug //////////-->
 
-        <meta-data
-            android:name="RONG_CLOUD_APP_KEY"
-            android:value="0vnjpoadnwp2z" />
+        <!--<meta-data-->
+            <!--android:name="RONG_CLOUD_APP_KEY"-->
+            <!--android:value="0vnjpoadnwp2z" />-->
 
         <!-- release -->
 
-        <!--<meta-data-->
-            <!--android:name="RONG_CLOUD_APP_KEY"-->
-            <!--android:value="e5t4ouvptfowa" />-->
+        <meta-data
+            android:name="RONG_CLOUD_APP_KEY"
+            android:value="e5t4ouvptfowa" />
 
         <!-- //////////// end ///////////-->
     </application>

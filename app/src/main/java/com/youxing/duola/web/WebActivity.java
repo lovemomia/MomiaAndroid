@@ -63,7 +63,7 @@ public class WebActivity extends SGWebActivity {
 		if (url.contains("?")) {
 			return url + "&_src=androidapp";
 		}
-		return url + "&_src=androidapp";
+		return url + "?_src=androidapp";
 	}
 
 	public void synCookies(Context context, String url, String cookies) {
