@@ -154,7 +154,11 @@ public class AddReviewActivity extends SGActivity implements RatingBar.OnRatingB
         Intent intent = new Intent(AddReviewActivity.this, PhotoPickerActivity.class);
         intent.putExtra(PhotoPickerActivity.EXTRA_SHOW_CAMERA, true);
         intent.putExtra(PhotoPickerActivity.EXTRA_SELECT_MODE, PhotoPickerActivity.MODE_MULTI);
-        intent.putExtra(PhotoPickerActivity.EXTRA_MAX_MUN, 9);
+        if (uploadPhotos != null && uploadPhotos.size() > 0) {
+            intent.putExtra(PhotoPickerActivity.EXTRA_MAX_MUN, 9 - uploadPhotos.size());
+        } else {
+            intent.putExtra(PhotoPickerActivity.EXTRA_MAX_MUN, 9);
+        }
         startActivityForResult(intent, REQUEST_CODE_PICK_PHOTO);
     }
 

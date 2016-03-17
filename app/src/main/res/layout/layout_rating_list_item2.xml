@@ -22,7 +22,7 @@
         android:numStars="5"
         android:stepSize="1"
         android:minHeight="20dp"
-        android:maxHeight="20dp"
+        android:maxHeight="32dp"
         android:layout_marginLeft="10dp"
         android:progressDrawable="@drawable/ic_rating_face"/>
 

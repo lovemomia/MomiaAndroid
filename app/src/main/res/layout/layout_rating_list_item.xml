@@ -21,8 +21,8 @@
         android:layout_height="wrap_content"
         android:numStars="5"
         android:stepSize="1"
-        android:minHeight="20dp"
-        android:maxHeight="20dp"
+        android:minHeight="23dp"
+        android:maxWidth="31dp"
         android:layout_marginLeft="10dp"
         android:progressDrawable="@drawable/ic_rating_star"/>
 
