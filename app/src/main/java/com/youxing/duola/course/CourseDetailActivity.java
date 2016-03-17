@@ -353,7 +353,7 @@ public class CourseDetailActivity extends SGActivity implements CourseDetailTabI
 
         @Override
         public int getBackgroundColorForRow(IndexPath indexPath) {
-            if (indexPath.section == 0 && indexPath.row == 2) {
+            if (indexPath.section == 0 && indexPath.row == 1) {
                 return Color.parseColor("#f8f8f8");
             }
             return super.getBackgroundColorForRow(indexPath);
