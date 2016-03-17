@@ -22,6 +22,7 @@ import com.youxing.common.model.BaseModel;
 import com.youxing.common.services.http.CacheType;
 import com.youxing.common.services.http.HttpService;
 import com.youxing.common.services.http.RequestHandler;
+import com.youxing.common.utils.UnitTools;
 import com.youxing.duola.R;
 import com.youxing.duola.app.SGActivity;
 import com.youxing.duola.course.views.BuyNoticeItem;
@@ -174,18 +175,31 @@ public class CourseDetailActivity extends SGActivity implements CourseDetailTabI
 
     @Override
     public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
-        if (firstVisibleItem >= getTabPosition() - 2) {
-            topTab.setVisibility(View.VISIBLE);
+        if (listView.getChildAt(0) == null) {
+            return;
+        }
+
+        int tabPos = getTabPosition();
+        if (firstVisibleItem >= tabPos - 2) {
+            if (tabPos == 6) {
+                topTab.setVisibility(View.VISIBLE);
+
+            } else if (firstVisibleItem == tabPos - 2) {
+                View poiView = listView.getChildAt(0);
+                if (poiView.getHeight() + poiView.getTop() + UnitTools.dip2px(CourseDetailActivity.this, 10) <= toolbar.getHeight()) {
+                    topTab.setVisibility(View.VISIBLE);
+                } else {
+                    topTab.setVisibility(View.GONE);
+                }
+            } else {
+                topTab.setVisibility(View.VISIBLE);
+            }
 
         } else if (firstVisibleItem < getTabPosition() - 2) {
             topTab.setVisibility(View.GONE);
         }
 
         if (firstVisibleItem > 1) {
-            return;
-        }
-
-        if (listView.getChildAt(0) == null) {
             return;
         }
 

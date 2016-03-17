@@ -69,7 +69,9 @@ public class CourseDetailContentItem extends LinearLayout {
                 if (!TextUtils.isEmpty(content.getImg())) {
                     YXNetworkImageView imageView = new YXNetworkImageView(getContext());
                     int width = Enviroment.screenWidth(getContext()) - 2 * padding;
-                    imageView.setLayoutParams(new LinearLayout.LayoutParams(width, width * 225 / 320));
+                    LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(width, width * 225 / 320);
+                    lp.setMargins(0, 0, 0, padding);
+                    imageView.setLayoutParams(lp);
                     imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
                     imageView.setDefaultImageResId(R.drawable.bg_default_image);
                     imageView.setImageUrl(content.getImg());

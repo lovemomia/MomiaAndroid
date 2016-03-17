@@ -9,6 +9,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.youxing.common.adapter.GroupStyleAdapter;
+import com.youxing.common.app.Constants;
 import com.youxing.common.app.Enviroment;
 import com.youxing.duola.R;
 import com.youxing.duola.app.SGActivity;
@@ -36,7 +37,7 @@ public class AboutActivity extends SGActivity implements AdapterView.OnItemClick
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         GroupStyleAdapter.IndexPath indexPath = adapter.getIndexForPosition(position);
         if (indexPath.row == 0) {
-            startActivity("duola://web?url=http://www.duolaqinzi.com/agreement.html");
+            startActivity("duola://web?url=http://www.sogokids.com/agreement.html");
         }
     }
 

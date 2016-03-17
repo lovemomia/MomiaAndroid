@@ -6,7 +6,7 @@ import android.view.LayoutInflater;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.youxing.common.views.CircularImage;
+import com.youxing.common.views.CircleImageView;
 import com.youxing.duola.R;
 import com.youxing.duola.model.User;
 
@@ -15,7 +15,7 @@ import com.youxing.duola.model.User;
  */
 public class GroupMemberListItem extends LinearLayout {
 
-    private CircularImage iconIv;
+    private CircleImageView iconIv;
     private TextView nameTv;
 
     public GroupMemberListItem(Context context) {
@@ -29,7 +29,7 @@ public class GroupMemberListItem extends LinearLayout {
     @Override
     protected void onFinishInflate() {
         super.onFinishInflate();
-        iconIv = (CircularImage) findViewById(R.id.avatar);
+        iconIv = (CircleImageView) findViewById(R.id.avatar);
         iconIv.setDefaultImageResId(R.drawable.ic_default_avatar);
         nameTv = (TextView) findViewById(R.id.name);
     }

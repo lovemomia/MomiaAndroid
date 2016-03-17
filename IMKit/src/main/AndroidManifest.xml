@@ -107,14 +107,14 @@
             android:process=":ipc" />
 
         <!-- debug -->
-        <meta-data
-            android:name="RONG_CLOUD_APP_KEY"
-            android:value="0vnjpoadnwp2z" />
-
-        <!-- release -->
         <!--<meta-data-->
             <!--android:name="RONG_CLOUD_APP_KEY"-->
-            <!--android:value="e5t4ouvptfowa" />-->
+            <!--android:value="0vnjpoadnwp2z" />-->
+
+        <!-- release -->
+        <meta-data
+            android:name="RONG_CLOUD_APP_KEY"
+            android:value="e5t4ouvptfowa" />
         <!-- end -->
     </application>
 

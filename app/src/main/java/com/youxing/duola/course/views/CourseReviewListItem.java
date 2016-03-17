@@ -14,10 +14,9 @@ import android.widget.TextView;
 
 import com.youxing.common.app.Enviroment;
 import com.youxing.common.utils.UnitTools;
-import com.youxing.common.views.CircularImage;
+import com.youxing.common.views.CircleImageView;
 import com.youxing.common.views.YXNetworkImageView;
 import com.youxing.duola.R;
-import com.youxing.duola.model.CourseSkuListModel;
 import com.youxing.duola.model.ReviewList;
 
 /**
@@ -25,7 +24,7 @@ import com.youxing.duola.model.ReviewList;
  */
 public class CourseReviewListItem extends LinearLayout implements View.OnClickListener {
 
-    private CircularImage avatar;
+    private CircleImageView avatar;
     private TextView nameTv;
     private TextView dateTv;
     private TextView childrenTv;
@@ -46,7 +45,7 @@ public class CourseReviewListItem extends LinearLayout implements View.OnClickLi
     @Override
     protected void onFinishInflate() {
         super.onFinishInflate();
-        avatar = (CircularImage) findViewById(R.id.avatar);
+        avatar = (CircleImageView) findViewById(R.id.avatar);
         nameTv = (TextView) findViewById(R.id.name);
         dateTv = (TextView) findViewById(R.id.date);
         childrenTv = (TextView) findViewById(R.id.children);

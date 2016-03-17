@@ -1,16 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.youxing.sogoteacher.chat.views.GroupMemberListItem xmlns:android="http://schemas.android.com/apk/res/android"
+<com.youxing.duola.chat.views.GroupMemberListItem xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="horizontal" android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="center_vertical"
     android:background="@color/white">
 
-    <com.youxing.common.views.CircularImage
+    <com.youxing.common.views.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
         android:id="@+id/avatar"
         android:layout_width="50dp"
-        android:layout_height="50dp"
         android:layout_margin="10dp"
-        android:scaleType="centerCrop"/>
+        android:layout_height="50dp"
+        app:civ_border_color="@color/white"
+        app:civ_border_width="1dp" />
 
     <TextView
         android:id="@+id/name"
@@ -20,4 +21,4 @@
         android:text="xxxx"
         android:textSize="@dimen/text_medium"/>
 
-</com.youxing.sogoteacher.chat.views.GroupMemberListItem>
+</com.youxing.duola.chat.views.GroupMemberListItem>

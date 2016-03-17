@@ -34,7 +34,6 @@ import com.youxing.common.services.http.RequestHandler;
 import com.youxing.common.utils.Log;
 import com.youxing.common.utils.UnitTools;
 import com.youxing.common.views.CircleImageView;
-import com.youxing.common.views.CircularImage;
 import com.youxing.duola.R;
 import com.youxing.duola.app.SGActivity;
 import com.youxing.duola.model.AccountModel;

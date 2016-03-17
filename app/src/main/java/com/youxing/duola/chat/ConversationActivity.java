@@ -74,7 +74,7 @@ public class ConversationActivity extends SGActivity {
             return true;
 
         } else if (item.getItemId() == MENU_ID_MEMBER) {
-            startActivity("sgteacher://groupmember?id=" + mTargetId);
+            startActivity("duola://groupmember?id=" + mTargetId);
             return true;
         }
         return super.onOptionsItemSelected(item);

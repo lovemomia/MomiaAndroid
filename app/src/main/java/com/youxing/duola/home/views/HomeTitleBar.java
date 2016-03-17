@@ -10,7 +10,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.youxing.common.views.CircleImageView;
-import com.youxing.common.views.CircularImage;
 import com.youxing.duola.R;
 
 /**
