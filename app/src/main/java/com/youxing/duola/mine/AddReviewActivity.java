@@ -80,7 +80,7 @@ public class AddReviewActivity extends SGActivity implements RatingBar.OnRatingB
 
     @Override
     public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
-        int tag = (int)ratingBar.getTag();
+        int tag = ((Integer)ratingBar.getTag()).intValue();
         if (tag == 0) {
             totalScore = (int) rating;
 
