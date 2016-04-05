@@ -78,6 +78,18 @@ public class CourseDetailActivity extends SGActivity implements CourseDetailTabI
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+//        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+//            Window window = getWindow();
+//            window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS
+//                    | WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
+//            window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+//                    | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+//                    | View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
+//            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+//            window.setStatusBarColor(Color.TRANSPARENT);
+//            window.setNavigationBarColor(Color.TRANSPARENT);
+//        }
+
         setContentView(R.layout.activity_course_detail);
 
         titleLay = findViewById(R.id.title_lay);
@@ -160,7 +172,7 @@ public class CourseDetailActivity extends SGActivity implements CourseDetailTabI
 
         } else {
             buyBtn.setEnabled(false);
-            buyBtn.setText("  已售完  ");
+            buyBtn.setText("名额已满");
         }
     }
 

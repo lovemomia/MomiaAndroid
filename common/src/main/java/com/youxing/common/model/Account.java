@@ -149,6 +149,8 @@ public class Account {
         int month = nowMonth - childMonth;
         if (nowMonth < childMonth) {
             month = 12 - childMonth + nowMonth;
+        } else if (nowMonth == childMonth) {
+            month = 1;
         }
         return sb.append(month + "个月").toString();
     }

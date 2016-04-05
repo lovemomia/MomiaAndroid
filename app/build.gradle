@@ -80,4 +80,5 @@ dependencies {
     compile files('libs/umeng-update-v2.6.0.1.jar')
     compile project(path: ':photopicker')
     compile project(':IMKit')
+    compile 'com.github.mmin18:flexlayout:1.1.0'
 }
