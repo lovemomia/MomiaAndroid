@@ -210,6 +210,45 @@
                     android:scheme="duoladebug" />
             </intent-filter>
         </activity>
+
+        <activity
+            android:name=".mine.ChildListActivity"
+            android:label="出行宝宝"
+            android:screenOrientation="portrait" >
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:host="childlist"
+                    android:scheme="duola" />
+                <data
+                    android:host="childlist"
+                    android:scheme="duoladebug" />
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name=".mine.ChildInfoActivity"
+            android:label=""
+            android:screenOrientation="portrait" >
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:host="childinfo"
+                    android:scheme="duola" />
+                <data
+                    android:host="childinfo"
+                    android:scheme="duoladebug" />
+            </intent-filter>
+        </activity>
+
         <activity
             android:name=".wxapi.WXPayEntryActivity"
             android:exported="true"

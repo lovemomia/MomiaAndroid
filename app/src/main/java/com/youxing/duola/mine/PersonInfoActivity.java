@@ -1,7 +1,6 @@
 package com.youxing.duola.mine;
 
 import android.app.AlertDialog;
-import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -14,7 +13,6 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.Button;
-import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -31,14 +29,12 @@ import com.youxing.common.services.account.AccountService;
 import com.youxing.common.services.http.CacheType;
 import com.youxing.common.services.http.HttpService;
 import com.youxing.common.services.http.RequestHandler;
-import com.youxing.common.utils.Log;
 import com.youxing.common.utils.UnitTools;
 import com.youxing.common.views.CircleImageView;
 import com.youxing.duola.R;
 import com.youxing.duola.app.SGActivity;
 import com.youxing.duola.model.AccountModel;
 import com.youxing.duola.utils.PhotoPicker;
-import com.youxing.duola.views.SectionView;
 import com.youxing.duola.views.SimpleListItem;
 import com.youxing.duola.views.StepperView;
 
@@ -46,10 +42,7 @@ import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
 
 import java.io.File;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -141,46 +134,7 @@ public class PersonInfoActivity extends SGActivity implements StepperView.OnNumb
                 });
             }
         } else {
-            final Child child = account.getChildren().get(section - 2);
-            if (row == 0) {
-                // 昵称
-                showInputDialog("请输入孩子昵称", new OnInputDoneListener() {
-                    @Override
-                    public void onInputDone(String text) {
-                        requestUpdateChildName(child.getId(), text);
-                    }
-                });
-            } else if (row == 1) {
-                // 性别
-                showSexChooseDialog(new OnInputDoneListener() {
-                    @Override
-                    public void onInputDone(String text) {
-                        requestUpdateChildSex(child.getId(), text);
-                    }
-                });
-            } else {
-                // 生日
-                Calendar cal = Calendar.getInstance();
-                if (!TextUtils.isEmpty(child.getBirthday())) {
-                    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-                    try {
-                        Date date = dateFormat.parse(child.getBirthday());
-                        cal.setTime(date);
-                    } catch (Exception e) {
-                        Log.e("PersonInfoActivity", "parse birthday fail", e);
-                    }
-                }
-                new DatePickerDialog(PersonInfoActivity.this, new DatePickerDialog.OnDateSetListener() {
-                    @Override
-                    public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                        Calendar cal = Calendar.getInstance();
-                        cal.set(year, monthOfYear, dayOfMonth);
-                        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-                        String birthday = dateFormat.format(cal.getTime());
-                        requestUpdateChildBirthday(child.getId(), birthday);
-                    }
-                }, cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH)).show();
-            }
+            startActivity("duola://childlist");
         }
     }
 
@@ -543,10 +497,7 @@ public class PersonInfoActivity extends SGActivity implements StepperView.OnNumb
 
         @Override
         public int getSectionCount() {
-            if (account.getChildren().size() == 0) {
-                return 4;
-            }
-            return 3 + account.getChildren().size();
+            return 4;
         }
 
         @Override
@@ -558,11 +509,7 @@ public class PersonInfoActivity extends SGActivity implements StepperView.OnNumb
             } else if (section == getSectionCount() - 1) {
                 return 0;
             }
-
-            if (account.getChildren().size() == 0) {
-                return 0;
-            }
-            return 3;
+            return 1;
         }
 
         @Override
@@ -600,17 +547,8 @@ public class PersonInfoActivity extends SGActivity implements StepperView.OnNumb
                     }
 
                 } else {
-                    Child child = account.getChildren().get(section - 2);
-                    if (row == 0) {
-                        item.setTitle("孩子昵称");
-                        item.setSubTitle(child.getName());
-                    } else if (row == 1) {
-                        item.setTitle("性别");
-                        item.setSubTitle(child.getSex());
-                    } else {
-                        item.setTitle("生日");
-                        item.setSubTitle(child.getBirthday());
-                    }
+                    item.setTitle("出行宝宝");
+                    item.setSubTitle(account.getChildren().size() + "个");
                 }
                 view = item;
             }
@@ -619,23 +557,7 @@ public class PersonInfoActivity extends SGActivity implements StepperView.OnNumb
 
         @Override
         public View getViewForSection(View convertView, ViewGroup parent, int section) {
-            if (section == 0) {
-                SectionView sectionView = SectionView.create(PersonInfoActivity.this);
-                sectionView.setTitle("个人信息");
-                return sectionView;
-
-            } else if (section == 2) {
-                View view = LayoutInflater.from(PersonInfoActivity.this).inflate(R.layout.layout_personinfo_section_child, null);
-                TextView title = (TextView) view.findViewById(R.id.title);
-                title.setText("孩子信息（" + account.getChildren().size() + "个）");
-                StepperView stepper = (StepperView) view.findViewById(R.id.stepper);
-                stepper.setMin(0);
-                stepper.setMax(5);
-                stepper.setNumber(account.getChildren().size());
-                stepper.setListener(PersonInfoActivity.this);
-                return view;
-
-            } else if (section == getSectionCount() - 1) {
+            if (section == getSectionCount() - 1) {
                 LinearLayout ll = new LinearLayout(PersonInfoActivity.this);
                 int padding = UnitTools.dip2px(PersonInfoActivity.this, 20);
                 ll.setPadding(padding, padding, padding, padding);
