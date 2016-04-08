@@ -98,24 +98,16 @@ public class ChildInfoActivity extends SGActivity implements AdapterView.OnItemC
     }
 
     private void submit() {
-        if (avatarImage == null) {
-            showDialog(this, "请选择头像");
-            return;
-        }
         if (TextUtils.isEmpty(child.getName())) {
             showDialog(this, "姓名不能为空");
             return;
         }
-        requestUploadImage();
+        requestAddChild();
     }
 
     private void requestAddChild() {
         showLoadingDialog(this);
 
-        Child child = new Child();
-        child.setName(AccountService.instance().account().getNickName() + "的宝宝");
-        child.setSex("男");
-        child.setBirthday("2015-07-01");
         List<Child> children = new ArrayList<Child>();
         children.add(child);
 
@@ -129,6 +121,7 @@ public class ChildInfoActivity extends SGActivity implements AdapterView.OnItemC
                 AccountModel model = (AccountModel) response;
                 AccountService.instance().dispatchAccountChanged(model.getData());
                 adapter.notifyDataSetChanged();
+                finish();
             }
 
             @Override
@@ -203,25 +196,6 @@ public class ChildInfoActivity extends SGActivity implements AdapterView.OnItemC
         dialog.show();
     }
 
-    private void showPhoto(CircleImageView photo, String picturePath) {
-        if(picturePath.equals(""))
-            return;
-        // 缩放图片, width, height 按相同比例缩放图片
-        BitmapFactory.Options options = new BitmapFactory.Options();
-        // options 设为true时，构造出的bitmap没有图片，只有一些长宽等配置信息，但比较快，设为false时，才有图片
-        options.inJustDecodeBounds = true;
-        Bitmap bitmap = BitmapFactory.decodeFile(picturePath, options);
-        int scale = (int)( options.outWidth / (float)300);
-        if(scale <= 0)
-            scale = 1;
-        options.inSampleSize = scale;
-        options.inJustDecodeBounds = false;
-        bitmap = BitmapFactory.decodeFile(picturePath, options);
-
-        photo.setImageBitmap(bitmap);
-        photo.setMaxHeight(350);
-    }
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -231,7 +205,7 @@ public class ChildInfoActivity extends SGActivity implements AdapterView.OnItemC
                 if (result.size() > 0) {
                     avatarImage = new UploadImage();
                     avatarImage.filePath = result.get(0);
-                    this.adapter.notifyDataSetChanged();
+                    requestUploadImage();
                 }
             }
         }
@@ -246,9 +220,8 @@ public class ChildInfoActivity extends SGActivity implements AdapterView.OnItemC
                 UploadImageModel uploadImageModel = (UploadImageModel) response;
                 avatarImage.url = uploadImageModel.getData().getPath();
                 avatarImage.status = 2;
-                child.setAvatar(avatarImage.url);
-
-                requestAddChild();
+                child.setAvatar(Constants.domainImage() + avatarImage.url);
+                adapter.notifyDataSetChanged();
             }
 
             @Override
@@ -287,12 +260,7 @@ public class ChildInfoActivity extends SGActivity implements AdapterView.OnItemC
                 title.setText("头像");
                 CircleImageView avatar = (CircleImageView) cell.findViewById(R.id.avatar);
                 avatar.setDefaultImageResId(R.drawable.ic_default_avatar);
-                if (avatarImage != null && !TextUtils.isEmpty(avatarImage.filePath)) {
-//                    showPhoto(avatar, avatarImage.filePath);
-                    avatar.setImageURI(Uri.parse(avatarImage.filePath));
-                } else {
-                    avatar.setImageUrl(child.getAvatar());
-                }
+                avatar.setImageUrl(child.getAvatar());
 
             } else {
                 if (row == 1) {

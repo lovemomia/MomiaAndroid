@@ -153,42 +153,17 @@ public class BookActivity extends SGActivity implements ViewPagerIndicatorView.O
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == MENU_ID_SUBMIT) {
-            submit();
+            if (selectSku == null) {
+                showDialog(BookActivity.this, "您还未选择场次");
+                return true;
+            }
+
+            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("duola://bookconfirm?pid=" + pid));
+            intent.putExtra("sku", selectSku);
+            startActivity(intent);
             return true;
         }
         return super.onOptionsItemSelected(item);
     }
 
-    private void submit() {
-        if (selectSku == null) {
-            showDialog(BookActivity.this, "您还未选择场次");
-            return;
-        }
-
-        showLoadingDialog(this);
-
-        List<NameValuePair> params = new ArrayList<NameValuePair>();
-        params.add(new BasicNameValuePair("sid", String.valueOf(selectSku.getId())));
-        params.add(new BasicNameValuePair("pid", pid));
-
-        HttpService.post(Constants.domain() + "/course/booking", params, BaseModel.class, new RequestHandler() {
-            @Override
-            public void onRequestFinish(Object response) {
-                dismissDialog();
-                showDialog(BookActivity.this, "预约成功，您已被拉入该课群组，猛戳 “我的—我的群组” 就可以随意调戏我们的老师啦~", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("duola://mine"));
-                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                        startActivity(intent);
-                    }
-                });
-            }
-
-            @Override
-            public void onRequestFailed(BaseModel error) {
-                showDialog(BookActivity.this, error.getErrmsg());
-            }
-        });
-    }
 }

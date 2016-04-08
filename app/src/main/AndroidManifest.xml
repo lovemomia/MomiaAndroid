@@ -547,6 +547,25 @@
         </activity>
 
         <activity
+            android:name=".course.BookConfirmActivity"
+            android:label="确认约课"
+            android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:host="bookconfirm"
+                    android:scheme="duola" />
+                <data
+                    android:host="bookconfirm"
+                    android:scheme="duoladebug" />
+            </intent-filter>
+        </activity>
+
+        <activity
             android:name=".course.BookedCourseListActivity"
             android:label="已选课程"
             android:screenOrientation="portrait">

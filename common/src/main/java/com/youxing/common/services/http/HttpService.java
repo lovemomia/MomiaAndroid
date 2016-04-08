@@ -1,14 +1,11 @@
 package com.youxing.common.services.http;
 
 import com.alibaba.fastjson.JSON;
-import com.android.volley.ParseError;
-import com.android.volley.toolbox.HttpHeaderParser;
 import com.youxing.common.services.account.AccountService;
 import com.youxing.common.services.cache.CacheService;
 import com.youxing.common.services.http.volley.PhotoMultipartRequest;
 import com.youxing.common.utils.*;
 
-import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -196,7 +193,7 @@ public class HttpService {
                 handler.onRequestFailed(baseModel);
             }
         };
-        PhotoMultipartRequest imageUploadReq = new PhotoMultipartRequest(Constants.domainUploadImage() + "/upload/image", errorListener, listener, imageFile);
+        PhotoMultipartRequest imageUploadReq = new PhotoMultipartRequest(Constants.domainImage() + "/upload/image", errorListener, listener, imageFile);
         getQueue().add(imageUploadReq);
     }
 

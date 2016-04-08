@@ -25,6 +25,7 @@ import com.youxing.common.model.Account;
 import com.youxing.common.model.BaseModel;
 import com.youxing.common.model.Child;
 import com.youxing.common.model.UploadImageModel;
+import com.youxing.common.services.account.AccountChangeListener;
 import com.youxing.common.services.account.AccountService;
 import com.youxing.common.services.http.CacheType;
 import com.youxing.common.services.http.HttpService;
@@ -48,7 +49,8 @@ import java.util.List;
 /**
  * Created by Jun Deng on 15/8/24.
  */
-public class PersonInfoActivity extends SGActivity implements StepperView.OnNumberChangedListener, AdapterView.OnItemClickListener {
+public class PersonInfoActivity extends SGActivity implements StepperView.OnNumberChangedListener,
+        AdapterView.OnItemClickListener, AccountChangeListener {
 
     private ListView listView;
     private Adapter adapter;
@@ -69,6 +71,14 @@ public class PersonInfoActivity extends SGActivity implements StepperView.OnNumb
         listView.setAdapter(adapter);
 
         requestData();
+
+        AccountService.instance().addListener(this);
+    }
+
+    @Override
+    protected void onDestroy() {
+        AccountService.instance().removeListener(this);
+        super.onDestroy();
     }
 
     public void requestData() {
@@ -483,6 +493,12 @@ public class PersonInfoActivity extends SGActivity implements StepperView.OnNumb
         } else if (number > account.getChildren().size()) {
             requestAddChild();
         }
+    }
+
+    @Override
+    public void onAccountChange(AccountService service) {
+        account = AccountService.instance().account();
+        adapter.notifyDataSetChanged();
     }
 
     interface OnInputDoneListener {
