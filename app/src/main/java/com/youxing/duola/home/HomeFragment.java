@@ -62,7 +62,6 @@ public class HomeFragment extends SGFragment implements AdapterView.OnItemClickL
     private boolean isRefresh;
     private boolean hasBannel;
     private boolean hasEvent;
-    private boolean hasTopic;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -155,7 +154,7 @@ public class HomeFragment extends SGFragment implements AdapterView.OnItemClickL
         isRefresh = true;
         hasBannel = false;
         hasEvent = false;
-        hasTopic = false;
+        adapter.reset();
         requestData();
     }
 
@@ -172,49 +171,31 @@ public class HomeFragment extends SGFragment implements AdapterView.OnItemClickL
         }
 
         GroupStyleAdapter.IndexPath ip = adapter.getIndexForPosition(position);
-        int sec = ip.section;
-        if (hasBannel) {
-            if (sec == 0) {
-                // handler by it self
-                return;
-            }
-            sec--;
+
+        ListItem item = adapter.getListItems().get(ip.section);
+        if (item.type == ListItem.ITEM_TYPE_BANNEL) {
+            // handler by it self
+
+        } else if (item.type == ListItem.ITEM_TYPE_EVENT) {
+            // handler by it self
+
+        } else if (item.type == ListItem.ITEM_TYPE_SUBJECT_COVER) {
+            HomeModel.HomeSubject subject = model.getData().getSubjects().get(item.index);
+            startActivity("duola://subjectdetail?id=" + subject.getId());
+
+        } else if (item.type == ListItem.ITEM_TYPE_SUBJECT_COURSES) {
+            // handler by it self
+
+        } else if (item.type == ListItem.ITEM_TYPE_TOPIC) {
+            // topic
+            String url = Constants.domainWeb() + "/discuss/topic?id=" + model.getData().getTopics().get(item.index).getId();
+            startActivity("duola://web?url=" + url);
+
+        } else {
+            Course course = model.getData().getCourses().getList().get(item.index);
+            startActivity("duola://coursedetail?id=" + course.getId() + "&recommend=1");
         }
 
-        if (hasEvent) {
-            if (sec == 0) {
-                // handler by it self
-                return;
-            }
-            sec--;
-        }
-
-        if (sec < model.getData().getSubjects().size() * 2) {
-            HomeModel.HomeSubject subject = model.getData().getSubjects().get(sec / 2);
-            if (sec % 2 == 0) {
-                startActivity("duola://subjectdetail?id=" + subject.getId());
-                return;
-
-            } else {
-                // handler by it self
-                return;
-            }
-        }
-
-        sec -= model.getData().getSubjects().size() * 2;
-
-        if (hasTopic) {
-            if (sec == 0) {
-                // topic
-                String url = Constants.domainWeb() + "/discuss/topic?id=" + model.getData().getTopics().get(0).getId();
-                startActivity("duola://web?url=" + url);
-                return;
-            }
-            sec--;
-        }
-
-        Course course = model.getData().getCourses().getList().get(sec);
-        startActivity("duola://coursedetail?id=" + course.getId() + "&recommend=1");
     }
 
     @Override
@@ -242,12 +223,6 @@ public class HomeFragment extends SGFragment implements AdapterView.OnItemClickL
             hasEvent = false;
         }
 
-        if (model.getData().getTopics() != null && model.getData().getTopics().size() > 0) {
-            hasTopic = true;
-        } else {
-            hasTopic = false;
-        }
-
         new Handler().post(new Runnable() {
             @Override
             public void run() {
@@ -273,26 +248,53 @@ public class HomeFragment extends SGFragment implements AdapterView.OnItemClickL
 
     class Adapter extends GroupStyleAdapter {
 
+        private List<ListItem> listItems;
+
         public Adapter(Context context) {
             super(context);
+        }
+
+        public void reset() {
+            if (listItems != null) {
+                listItems.clear();
+                listItems = null;
+            }
+        }
+
+        private List<ListItem> getListItems() {
+            if (listItems != null) {
+                return listItems;
+            }
+
+            listItems = new ArrayList<ListItem>();
+
+            if (hasBannel) {
+                listItems.add(new ListItem(ListItem.ITEM_TYPE_BANNEL));
+            }
+
+            if (hasEvent) {
+                listItems.add(new ListItem(ListItem.ITEM_TYPE_EVENT));
+            }
+
+            for (int i = 0; i < model.getData().getSubjects().size(); i++) {
+                listItems.add(new ListItem(ListItem.ITEM_TYPE_SUBJECT_COVER, i));
+                listItems.add(new ListItem(ListItem.ITEM_TYPE_SUBJECT_COURSES, i));
+                if (i < model.getData().getTopics().size()) {
+                    listItems.add(new ListItem(ListItem.ITEM_TYPE_TOPIC, i));
+                }
+            }
+
+            for (int i = 0; i < model.getData().getCourses().getList().size(); i++) {
+                listItems.add(new ListItem(ListItem.ITEM_TYPE_COURSE, i));
+            }
+
+            return listItems;
         }
 
         @Override
         public int getSectionCount() {
             if (model != null) {
-                int count = 0;
-                if (hasBannel) {
-                    count++;
-                }
-                if (hasEvent) {
-                    count++;
-                }
-                count += model.getData().getSubjects().size() * 2;
-                if (hasTopic) {
-                    count++;
-                }
-                count += model.getData().getCourses().getList().size();
-                return count;
+                return getListItems().size();
             }
             return 0;
         }
@@ -312,61 +314,39 @@ public class HomeFragment extends SGFragment implements AdapterView.OnItemClickL
 
         @Override
         public View getViewForRow(View convertView, ViewGroup parent, int section, int row) {
-            View cell = null;
-            int sec = section;
-            if (hasBannel) {
-                if (sec == 0) {
-                    HomeHeaderView header = HomeHeaderView.create(getActivity());
-                    header.setData(model.getData().getBanners());
-                    cell = header;
-                    return cell;
-                }
-                sec--;
+            ListItem item = getListItems().get(section);
+            if (item.type == ListItem.ITEM_TYPE_BANNEL) {
+                HomeHeaderView cell = HomeHeaderView.create(getActivity());
+                cell.setData(model.getData().getBanners());
+                return cell;
+
+            } else if (item.type == ListItem.ITEM_TYPE_EVENT) {
+                HomeEventItem cell = HomeEventItem.create(getActivity());
+                cell.setData(model);
+                return cell;
+
+            } else if (item.type == ListItem.ITEM_TYPE_SUBJECT_COVER) {
+                HomeModel.HomeSubject subject = model.getData().getSubjects().get(item.index);
+                HomeSubjectCoverItem cell = HomeSubjectCoverItem.create(getActivity());
+                cell.setData(subject.getCover());
+                return cell;
+
+            } else if (item.type == ListItem.ITEM_TYPE_SUBJECT_COURSES) {
+                HomeModel.HomeSubject subject = model.getData().getSubjects().get(item.index);
+                HomeSubjectContentItem cell = HomeSubjectContentItem.create(getActivity());
+                cell.setData(subject);
+                return cell;
+
+            } else if (item.type == ListItem.ITEM_TYPE_TOPIC) {
+                HomeTopicItem cell = HomeTopicItem.create(getActivity());
+                cell.setData(model.getData().getTopics().get(item.index));
+                return cell;
+
+            } else {
+                HomeListItem cell = HomeListItem.create(getActivity());
+                cell.setData(model.getData().getCourses().getList().get(item.index));
+                return cell;
             }
-
-            if (hasEvent) {
-                if (sec == 0) {
-                    HomeEventItem item = HomeEventItem.create(getActivity());
-                    item.setData(model);
-                    cell = item;
-                    return cell;
-                }
-                sec--;
-            }
-
-            if (sec < model.getData().getSubjects().size() * 2) {
-                HomeModel.HomeSubject subject = model.getData().getSubjects().get(sec / 2);
-                if (sec % 2 == 0) {
-                    HomeSubjectCoverItem item = HomeSubjectCoverItem.create(getActivity());
-                    item.setData(subject.getCover());
-                    cell = item;
-                    return cell;
-
-                } else {
-                    HomeSubjectContentItem item = HomeSubjectContentItem.create(getActivity());
-                    item.setData(subject);
-                    cell = item;
-                    return cell;
-                }
-            }
-
-            sec -= model.getData().getSubjects().size() * 2;
-
-            if (hasTopic) {
-                if (sec == 0) {
-                    HomeTopicItem item = HomeTopicItem.create(getActivity());
-                    item.setData(model.getData().getTopics().get(0));
-                    cell = item;
-                    return cell;
-                }
-                sec--;
-            }
-
-            HomeListItem item = HomeListItem.create(getActivity());
-            item.setData(model.getData().getCourses().getList().get(sec));
-            cell = item;
-
-            return cell;
         }
 
     }
@@ -377,6 +357,28 @@ public class HomeFragment extends SGFragment implements AdapterView.OnItemClickL
         CityManager.instance().removeListener(this);
         AccountService.instance().removeListener(this);
         super.onDestroy();
+    }
+
+    class ListItem {
+        private static final int ITEM_TYPE_BANNEL = 1;
+        private static final int ITEM_TYPE_EVENT = 2;
+        private static final int ITEM_TYPE_SUBJECT_COVER = 3;
+        private static final int ITEM_TYPE_SUBJECT_COURSES = 4;
+        private static final int ITEM_TYPE_TOPIC = 5;
+        private static final int ITEM_TYPE_COURSE = 6;
+
+        private int type;
+        private int index;
+
+        public ListItem(int type) {
+            this(type, 0);
+        }
+
+        public ListItem(int type, int index) {
+            this.type = type;
+            this.index = index;
+        }
+
     }
 
 }
