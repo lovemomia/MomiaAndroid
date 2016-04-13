@@ -13,20 +13,23 @@ import com.youxing.common.views.YXNetworkImageView;
 import com.youxing.duola.R;
 import com.youxing.duola.model.HomeModel;
 
+import butterknife.Bind;
+import butterknife.ButterKnife;
+
 /**
  * Created by Jun Deng on 15/6/15.
  */
 public class HomeEventItem extends LinearLayout implements View.OnClickListener {
 
-    private View eventLeftLay;
-    private View eventRightLay;
-    private TextView titleTv;
-    private TextView eventTitleLeftTv;
-    private TextView eventDescLeftTv;
-    private TextView eventTitleRightTv;
-    private TextView eventDescRightTv;
-    private YXNetworkImageView iconLeft;
-    private YXNetworkImageView iconRight;
+    @Bind(R.id.eventLeft) View eventLeftLay;
+    @Bind(R.id.eventRight) View eventRightLay;
+    @Bind(R.id.title) TextView titleTv;
+    @Bind(R.id.eventTitleLeft) TextView eventTitleLeftTv;
+    @Bind(R.id.eventDescLeft) TextView eventDescLeftTv;
+    @Bind(R.id.eventTitleRight) TextView eventTitleRightTv;
+    @Bind(R.id.eventDescRight) TextView eventDescRightTv;
+    @Bind(R.id.iconLeft) YXNetworkImageView iconLeft;
+    @Bind(R.id.iconRight) YXNetworkImageView iconRight;
 
     private HomeModel model;
 
@@ -45,15 +48,7 @@ public class HomeEventItem extends LinearLayout implements View.OnClickListener 
     @Override
     protected void onFinishInflate() {
         super.onFinishInflate();
-        eventLeftLay = findViewById(R.id.eventLeft);
-        eventRightLay = findViewById(R.id.eventRight);
-        titleTv = (TextView) findViewById(R.id.title);
-        eventTitleLeftTv = (TextView) findViewById(R.id.eventTitleLeft);
-        eventTitleRightTv = (TextView) findViewById(R.id.eventTitleRight);
-        eventDescLeftTv = (TextView) findViewById(R.id.eventDescLeft);
-        eventDescRightTv = (TextView) findViewById(R.id.eventDescRight);
-        iconLeft = (YXNetworkImageView) findViewById(R.id.iconLeft);
-        iconRight = (YXNetworkImageView) findViewById(R.id.iconRight);
+        ButterKnife.bind(this);
 
         eventLeftLay.setOnClickListener(this);
         eventRightLay.setOnClickListener(this);

@@ -41,6 +41,7 @@ public class BookActivity extends SGActivity implements ViewPagerIndicatorView.O
     private int onlyshow;
 
     private ViewPagerIndicatorView viewPagerIndicatorView;
+    private BookSkuListFragment allMonthFragment;
     private BookSkuListFragment currentMonthFragment;
     private BookSkuListFragment nextMonthFragment;
 
@@ -66,6 +67,8 @@ public class BookActivity extends SGActivity implements ViewPagerIndicatorView.O
 
         this.viewPagerIndicatorView = (ViewPagerIndicatorView) findViewById(R.id.viewpager_indicator_view);
         List<String> titleList = new ArrayList<String>();
+        String tab0 = "全部";
+        titleList.add(tab0);
         Calendar c = Calendar.getInstance();
         int month = c.get(Calendar.MONTH);
         String tab1 = getMonthChinese(month) + "月";
@@ -74,8 +77,10 @@ public class BookActivity extends SGActivity implements ViewPagerIndicatorView.O
         titleList.add(tab2);
 
         final Map<String, Fragment> map = new HashMap();
+        allMonthFragment = createFragment(0);
         currentMonthFragment = createFragment(month + 1);
         nextMonthFragment = createFragment(month + 2);
+        map.put(tab0, allMonthFragment);
         map.put(tab1, currentMonthFragment);
         map.put(tab2, nextMonthFragment);
 
@@ -86,7 +91,11 @@ public class BookActivity extends SGActivity implements ViewPagerIndicatorView.O
     @Override
     public void onTabChanged(int tab) {
         if (tab == 0) {
+            allMonthFragment.refresh();
+
+        } else if (tab == 1) {
             currentMonthFragment.refresh();
+
         } else {
             nextMonthFragment.refresh();
         }

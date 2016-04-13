@@ -77,7 +77,9 @@ public class BookSkuListFragment extends SGFragment implements AdapterView.OnIte
 
         List<NameValuePair> params = new ArrayList<NameValuePair>();
         params.add(new BasicNameValuePair("id", id));
-        params.add(new BasicNameValuePair("month", String.valueOf(month)));
+        if (month > 0) {
+            params.add(new BasicNameValuePair("month", String.valueOf(month)));
+        }
 
         String path = onlyshow ? "/course/sku/month/notend" : "/course/sku/month/bookable";
 

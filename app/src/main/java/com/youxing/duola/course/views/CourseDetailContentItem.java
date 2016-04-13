@@ -49,6 +49,10 @@ public class CourseDetailContentItem extends LinearLayout {
         goalTv.setTextSize(13);
         addView(goalTv);
 
+        if (course.getDetail() == null) {
+            return;
+        }
+
         for (int i = 0; i < course.getDetail().size(); i++) {
             Course.CourseDetail detail = course.getDetail().get(i);
 
