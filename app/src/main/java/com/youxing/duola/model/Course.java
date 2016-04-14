@@ -43,6 +43,8 @@ public class Course {
     private String feature; //特色
     private List<CourseTeacher> teachers;
 
+    private long skuId;
+
     public long getId() {
         return id;
     }
@@ -289,6 +291,14 @@ public class Course {
 
     public void setTeachers(List<CourseTeacher> teachers) {
         this.teachers = teachers;
+    }
+
+    public long getSkuId() {
+        return skuId;
+    }
+
+    public void setSkuId(long skuId) {
+        this.skuId = skuId;
     }
 
     public static class CoursePlace {

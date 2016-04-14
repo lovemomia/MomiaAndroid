@@ -20,7 +20,9 @@ import com.youxing.common.services.http.RequestHandler;
 import com.youxing.duola.R;
 import com.youxing.duola.app.SGActivity;
 import com.youxing.duola.course.views.BuyNoticeItem;
+import com.youxing.duola.course.views.CourseListItem;
 import com.youxing.duola.course.views.CourseReviewListItem;
+import com.youxing.duola.course.views.ExpandItem;
 import com.youxing.duola.course.views.SubjectDetailCourseItem;
 import com.youxing.duola.course.views.SubjectDetailHeaderItem;
 import com.youxing.duola.model.Course;
@@ -48,6 +50,9 @@ public class SubjectDetailActivity extends SGActivity implements AdapterView.OnI
     private TextView unitTv;
     private TextView chooseTv;
     private Button buyBtn;
+
+    private boolean newCoursesExpand;
+    private boolean coursesExpand;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,7 +90,7 @@ public class SubjectDetailActivity extends SGActivity implements AdapterView.OnI
 
         List<NameValuePair> params = new ArrayList<NameValuePair>();
         params.add(new BasicNameValuePair("id", id));
-        HttpService.get(Constants.domain() + "/v2/subject", params, CacheType.DISABLE, SubjectDetailModel.class, new RequestHandler() {
+        HttpService.get(Constants.domain() + "/v3/subject", params, CacheType.DISABLE, SubjectDetailModel.class, new RequestHandler() {
             @Override
             public void onRequestFinish(Object response) {
                 dismissDialog();
@@ -127,15 +132,48 @@ public class SubjectDetailActivity extends SGActivity implements AdapterView.OnI
         int section = indexPath.section;
         int row = indexPath.row;
         if (section == 0) {
-            if (row > 0) {
-                Course course = model.getData().getCourses().getList().get(row - 1);
-                startActivity("duola://coursedetail?id=" + course.getId());
+            return;
+        }
+
+        int sec = section;
+        if (model.getData().getNewCourses() != null && model.getData().getNewCourses().size() > 0) {
+            if (--sec == 0) {
+                if (row == 0) {
+
+                } else if (model.getData().getNewCourses().size() > 3 && row == adapter.getCountInSection(section) - 1) {
+                    newCoursesExpand = !newCoursesExpand;
+                    adapter.notifyDataSetChanged();
+
+                } else {
+                    Course course = model.getData().getNewCourses().get(row - 1);
+                    startActivity("duola://coursedetail?id=" + course.getId() + "&sid=" + course.getSkuId());
+                }
+
             }
-        } else if (section == 1 && model.getData().getComments() != null &&
-                model.getData().getComments().getList().size() > 0) {
-            if (row == 0) {
-                startActivity("duola://reviewlist?subjectId=" + SubjectDetailActivity.this.id);
+        }
+
+        if (model.getData().getCourses() != null && model.getData().getCourses().size() > 0) {
+            if (--sec == 0) {
+                if (row == 0) {
+
+                } else if (model.getData().getCourses().size() > 3 && row == adapter.getCountInSection(section) - 1) {
+                    coursesExpand = !coursesExpand;
+                    adapter.notifyDataSetChanged();
+
+                } else {
+                    Course course = model.getData().getCourses().get(row - 1);
+                    startActivity("duola://coursedetail?id=" + course.getId());
+                }
             }
+        }
+
+        if (model.getData().getComments() != null && model.getData().getComments().getList().size() > 0) {
+            if (--sec == 0) {
+                if (row == 0) {
+                    startActivity("duola://reviewlist?subjectId=" + SubjectDetailActivity.this.id);
+                }
+            }
+
         }
 
     }
@@ -150,10 +188,17 @@ public class SubjectDetailActivity extends SGActivity implements AdapterView.OnI
         @Override
         public int getSectionCount() {
             if (model != null) {
-                if (model.getData().getComments() != null && model.getData().getComments().getList().size() > 0) {
-                    return 3;
+                int sec = 2;
+                if (model.getData().getNewCourses() != null && model.getData().getNewCourses().size() > 0) {
+                    sec++;
                 }
-                return 2;
+                if (model.getData().getCourses() != null && model.getData().getCourses().size() > 0) {
+                    sec++;
+                }
+                if (model.getData().getComments() != null && model.getData().getComments().getList().size() > 0) {
+                    sec++;
+                }
+                return sec;
             }
             return 0;
         }
@@ -161,51 +206,127 @@ public class SubjectDetailActivity extends SGActivity implements AdapterView.OnI
         @Override
         public int getCountInSection(int section) {
             if (section == 0) {
-                return 1 + model.getData().getCourses().getList().size();
-
-            } else if (section == 1 && model.getData().getComments() != null &&
-                    model.getData().getComments().getList().size() > 0) {
-                return 2;
-
-            } else {
                 return 1;
             }
+
+            int sec = section;
+            if (model.getData().getNewCourses() != null && model.getData().getNewCourses().size() > 0) {
+                if (--sec == 0) {
+                    int size = model.getData().getNewCourses().size();
+                    if (size > 3) {
+                        if (newCoursesExpand) {
+                            return size + 2;
+                        } else {
+                            return 5;
+                        }
+                    } else {
+                        return size + 1;
+                    }
+                }
+            }
+
+            if (model.getData().getCourses() != null && model.getData().getCourses().size() > 0) {
+                if (--sec == 0) {
+                    int size = model.getData().getCourses().size();
+                    if (size > 3) {
+                        if (coursesExpand) {
+                            return size + 2;
+                        } else {
+                            return 5;
+                        }
+                    } else {
+                        return size + 1;
+                    }
+                }
+            }
+
+            if (model.getData().getComments() != null && model.getData().getComments().getList().size() > 0) {
+                if (--sec == 0) {
+                    return 2;
+                }
+
+            }
+            return 1;
         }
 
         @Override
         public View getViewForRow(View convertView, ViewGroup parent, int section, int row) {
             View cell = null;
             if (section == 0) {
-                if (row == 0) {
-                    SubjectDetailHeaderItem item = SubjectDetailHeaderItem.create(SubjectDetailActivity.this);
-                    item.setData(model.getData().getSubject());
-                    cell = item;
-
-                } else {
-                    SubjectDetailCourseItem item = SubjectDetailCourseItem.create(SubjectDetailActivity.this);
-                    item.setData(model.getData().getCourses().getList().get(row - 1));
-                    cell = item;
-                }
-
-            } else if (section == 1 && model.getData().getComments() != null &&
-                    model.getData().getComments().getList().size() > 0) {
-                if (row == 0) {
-                    SimpleListItem item = SimpleListItem.create(SubjectDetailActivity.this);
-                    item.setTitle("用户评价");
-                    item.setShowArrow(true);
-                    cell = item;
-
-                } else {
-                    CourseReviewListItem view = CourseReviewListItem.create(SubjectDetailActivity.this);
-                    view.setData(model.getData().getComments().getList().get(row - 1), 3);
-                    cell = view;
-                }
-
-            } else {
-                BuyNoticeItem view = BuyNoticeItem.create(SubjectDetailActivity.this);
-                view.setData(model.getData().getSubject().getNotice());
-                cell = view;
+                SubjectDetailHeaderItem item = SubjectDetailHeaderItem.create(SubjectDetailActivity.this);
+                item.setData(model.getData().getSubject());
+                cell = item;
+                return cell;
             }
+
+            int sec = section;
+            if (model.getData().getNewCourses() != null && model.getData().getNewCourses().size() > 0) {
+                if (--sec == 0) {
+                    if (row == 0) {
+                        SimpleListItem item = SimpleListItem.create(SubjectDetailActivity.this);
+                        item.setTitle("最新开班");
+                        cell = item;
+                        return cell;
+
+                    } else if (model.getData().getNewCourses().size() > 3 && row == getCountInSection(section) - 1) {
+                        ExpandItem item = ExpandItem.create(SubjectDetailActivity.this);
+                        item.setExpand(newCoursesExpand);
+                        return item;
+
+                    } else {
+                        CourseListItem item = CourseListItem.create(SubjectDetailActivity.this);
+                        item.setData(model.getData().getNewCourses().get(row - 1));
+                        cell = item;
+                        return cell;
+                    }
+
+                }
+            }
+
+            if (model.getData().getCourses() != null && model.getData().getCourses().size() > 0) {
+                if (--sec == 0) {
+                    if (row == 0) {
+                        SimpleListItem item = SimpleListItem.create(SubjectDetailActivity.this);
+                        item.setTitle("所有课程");
+                        cell = item;
+                        return cell;
+
+                    } else if (model.getData().getCourses().size() > 3 && row == getCountInSection(section) - 1) {
+                        ExpandItem item = ExpandItem.create(SubjectDetailActivity.this);
+                        item.setExpand(coursesExpand);
+                        return item;
+
+                    } else {
+                        SubjectDetailCourseItem item = SubjectDetailCourseItem.create(SubjectDetailActivity.this, convertView);
+                        item.setData(model.getData().getCourses().get(row - 1));
+                        cell = item;
+                        return cell;
+                    }
+                }
+            }
+
+            if (model.getData().getComments() != null && model.getData().getComments().getList().size() > 0) {
+                if (--sec == 0) {
+                    if (row == 0) {
+                        SimpleListItem item = SimpleListItem.create(SubjectDetailActivity.this);
+                        item.setTitle("用户评价");
+                        item.setShowArrow(true);
+                        cell = item;
+                        return cell;
+
+                    } else {
+                        CourseReviewListItem view = CourseReviewListItem.create(SubjectDetailActivity.this);
+                        view.setData(model.getData().getComments().getList().get(row - 1), 3);
+                        cell = view;
+                        return cell;
+                    }
+                }
+
+            }
+
+            BuyNoticeItem view = BuyNoticeItem.create(SubjectDetailActivity.this);
+            view.setData(model.getData().getSubject().getNotice());
+            cell = view;
             return cell;
         }
 

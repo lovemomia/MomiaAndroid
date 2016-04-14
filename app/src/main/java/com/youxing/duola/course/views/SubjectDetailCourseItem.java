@@ -4,6 +4,7 @@ import android.content.Context;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.widget.AbsListView;
 import android.widget.FrameLayout;
 import android.widget.TextView;
@@ -44,7 +45,10 @@ public class SubjectDetailCourseItem extends FrameLayout {
         setLayoutParams(new AbsListView.LayoutParams(width, width * 180 / 300));
     }
 
-    public static SubjectDetailCourseItem create(Context context) {
+    public static SubjectDetailCourseItem create(Context context, View convertView) {
+        if (convertView instanceof SubjectDetailCourseItem) {
+            return (SubjectDetailCourseItem)convertView;
+        }
         return (SubjectDetailCourseItem) LayoutInflater.from(context).inflate(R.layout.layout_subject_detail_course_item, null);
     }
 

@@ -53,6 +53,7 @@ public class CourseDetailActivity extends SGActivity implements CourseDetailTabI
         AbsListView.OnScrollListener, AdapterView.OnItemClickListener, View.OnClickListener {
 
     private String id;
+    private String sid; // sku id
     private int recommend; // 1 表示推荐，可不传或传0，表示课程包点进去的
     private Course model;
 
@@ -109,6 +110,7 @@ public class CourseDetailActivity extends SGActivity implements CourseDetailTabI
         buyBtn.setOnClickListener(this);
 
         id = getIntent().getData().getQueryParameter("id");
+        sid = getIntent().getData().getQueryParameter("sid");
         String recommendStr = getIntent().getData().getQueryParameter("recommend");
         if (!TextUtils.isEmpty(recommendStr)) {
             recommend = Integer.valueOf(recommendStr);
@@ -132,6 +134,9 @@ public class CourseDetailActivity extends SGActivity implements CourseDetailTabI
 
         List<NameValuePair> params = new ArrayList<NameValuePair>();
         params.add(new BasicNameValuePair("id", id));
+        if (sid != null) {
+            params.add(new BasicNameValuePair("sid", sid));
+        }
         params.add(new BasicNameValuePair("recommend", String.valueOf(recommend)));
         HttpService.get(Constants.domain() + "/v3/course", params, CacheType.DISABLE, CourseDetailModel.class, new RequestHandler() {
             @Override
