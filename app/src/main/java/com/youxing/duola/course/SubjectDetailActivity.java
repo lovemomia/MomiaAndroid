@@ -23,6 +23,7 @@ import com.youxing.duola.course.views.BuyNoticeItem;
 import com.youxing.duola.course.views.CourseListItem;
 import com.youxing.duola.course.views.CourseReviewListItem;
 import com.youxing.duola.course.views.ExpandItem;
+import com.youxing.duola.course.views.SubjectDetailCourseHeaderItem;
 import com.youxing.duola.course.views.SubjectDetailCourseItem;
 import com.youxing.duola.course.views.SubjectDetailHeaderItem;
 import com.youxing.duola.model.Course;
@@ -148,7 +149,6 @@ public class SubjectDetailActivity extends SGActivity implements AdapterView.OnI
                     Course course = model.getData().getNewCourses().get(row - 1);
                     startActivity("duola://coursedetail?id=" + course.getId() + "&sid=" + course.getSkuId());
                 }
-
             }
         }
 
@@ -263,7 +263,7 @@ public class SubjectDetailActivity extends SGActivity implements AdapterView.OnI
             if (model.getData().getNewCourses() != null && model.getData().getNewCourses().size() > 0) {
                 if (--sec == 0) {
                     if (row == 0) {
-                        SimpleListItem item = SimpleListItem.create(SubjectDetailActivity.this);
+                        SubjectDetailCourseHeaderItem item = SubjectDetailCourseHeaderItem.create(SubjectDetailActivity.this);
                         item.setTitle("最新开班");
                         cell = item;
                         return cell;
@@ -286,7 +286,7 @@ public class SubjectDetailActivity extends SGActivity implements AdapterView.OnI
             if (model.getData().getCourses() != null && model.getData().getCourses().size() > 0) {
                 if (--sec == 0) {
                     if (row == 0) {
-                        SimpleListItem item = SimpleListItem.create(SubjectDetailActivity.this);
+                        SubjectDetailCourseHeaderItem item = SubjectDetailCourseHeaderItem.create(SubjectDetailActivity.this);
                         item.setTitle("所有课程");
                         cell = item;
                         return cell;
@@ -299,6 +299,7 @@ public class SubjectDetailActivity extends SGActivity implements AdapterView.OnI
                     } else {
                         SubjectDetailCourseItem item = SubjectDetailCourseItem.create(SubjectDetailActivity.this, convertView);
                         item.setData(model.getData().getCourses().get(row - 1));
+                        item.setLessonIndex(row);
                         cell = item;
                         return cell;
                     }

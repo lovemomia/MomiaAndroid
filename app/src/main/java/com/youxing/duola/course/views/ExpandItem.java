@@ -1,6 +1,7 @@
 package com.youxing.duola.course.views;
 
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.widget.LinearLayout;
@@ -39,8 +40,14 @@ public class ExpandItem extends LinearLayout {
     public void setExpand(boolean expand) {
         if (expand) {
             expandBtn.setText("点击收起");
+            Drawable drawable = getResources().getDrawable(R.drawable.ic_black_arrow_up);
+            drawable.setBounds(0, 0, drawable.getMinimumWidth(), drawable.getMinimumHeight());
+            expandBtn.setCompoundDrawables(drawable, null, null, null);
         } else {
             expandBtn.setText("点击展开");
+            Drawable drawable = getResources().getDrawable(R.drawable.ic_black_arrow_down);
+            drawable.setBounds(0, 0, drawable.getMinimumWidth(), drawable.getMinimumHeight());
+            expandBtn.setCompoundDrawables(drawable, null, null, null);
         }
     }
 

@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.youxing.duola.course.views.SubjectDetailCourseHeaderItem xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="10dp">
+
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="wrap_content"
+        android:layout_height="60dp"
+        android:textSize="@dimen/text_medium"
+        android:textColor="@color/text_deep_gray"
+        android:gravity="center"
+        android:text="最新开班"
+        app:layout_top=""
+        app:layout_centerX="50%"
+        app:layout_centerY="50%"/>
+
+    <View android:id="@+id/left_dot"
+        android:layout_width="5dp"
+        android:layout_height="5dp"
+        android:background="@drawable/bg_shape_dot_green"
+        app:layout_centerY="title.centerY"
+        app:layout_right="title.left - 10dp"/>
+
+    <View android:id="@+id/right_dot"
+        android:layout_width="5dp"
+        android:layout_height="5dp"
+        android:background="@drawable/bg_shape_dot_green"
+        app:layout_centerY="title.centerY"
+        app:layout_left="title.right + 10dp"/>
+
+    <View android:id="@+id/left_line"
+        android:layout_width="wrap_content"
+        android:layout_height="1dp"
+        android:background="@color/app_theme"
+        app:layout_centerY="title.centerY"
+        app:layout_right="left_dot.left - 10dp"
+        app:layout_left="50dp"/>
+
+    <View android:id="@+id/right_line"
+        android:layout_width="wrap_content"
+        android:layout_height="1dp"
+        android:background="@color/app_theme"
+        app:layout_centerY="title.centerY"
+        app:layout_left="right_dot.right + 10dp"
+        app:layout_right="parent.width - 50dp"/>
+
+
+</com.youxing.duola.course.views.SubjectDetailCourseHeaderItem>
