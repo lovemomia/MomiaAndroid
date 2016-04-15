@@ -10,7 +10,7 @@
         android:id="@+id/expand_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="点击收起"
+        android:text="点击收起"
         android:textColor="@color/text_deep_gray"
         android:background="@drawable/bg_shape_gray_frame"
         android:textSize="@dimen/text_medium"
