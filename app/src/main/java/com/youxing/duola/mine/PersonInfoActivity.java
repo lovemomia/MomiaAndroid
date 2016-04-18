@@ -322,78 +322,6 @@ public class PersonInfoActivity extends SGActivity implements StepperView.OnNumb
         });
     }
 
-    private void requestUpdateChildName(long id, String name) {
-        showLoadingDialog(this);
-        List<NameValuePair> params = new ArrayList<NameValuePair>();
-        params.add(new BasicNameValuePair("cid", String.valueOf(id)));
-        params.add(new BasicNameValuePair("name", name));
-        HttpService.post(Constants.domain() + "/user/child/name", params, AccountModel.class, new RequestHandler() {
-            @Override
-            public void onRequestFinish(Object response) {
-                dismissDialog();
-
-                AccountModel model = (AccountModel) response;
-                PersonInfoActivity.this.account = model.getData();
-                AccountService.instance().dispatchAccountChanged(model.getData());
-                adapter.notifyDataSetChanged();
-            }
-
-            @Override
-            public void onRequestFailed(BaseModel error) {
-                dismissDialog();
-                showDialog(PersonInfoActivity.this, error.getErrmsg());
-            }
-        });
-    }
-
-    private void requestUpdateChildSex(long id, String sex) {
-        showLoadingDialog(this);
-        List<NameValuePair> params = new ArrayList<NameValuePair>();
-        params.add(new BasicNameValuePair("cid", String.valueOf(id)));
-        params.add(new BasicNameValuePair("sex", sex));
-        HttpService.post(Constants.domain() + "/user/child/sex", params, AccountModel.class, new RequestHandler() {
-            @Override
-            public void onRequestFinish(Object response) {
-                dismissDialog();
-
-                AccountModel model = (AccountModel) response;
-                PersonInfoActivity.this.account = model.getData();
-                AccountService.instance().dispatchAccountChanged(model.getData());
-                adapter.notifyDataSetChanged();
-            }
-
-            @Override
-            public void onRequestFailed(BaseModel error) {
-                dismissDialog();
-                showDialog(PersonInfoActivity.this, error.getErrmsg());
-            }
-        });
-    }
-
-    private void requestUpdateChildBirthday(long id, String date) {
-        showLoadingDialog(this);
-        List<NameValuePair> params = new ArrayList<NameValuePair>();
-        params.add(new BasicNameValuePair("cid", String.valueOf(id)));
-        params.add(new BasicNameValuePair("birthday", date));
-        HttpService.post(Constants.domain() + "/user/child/birthday", params, AccountModel.class, new RequestHandler() {
-            @Override
-            public void onRequestFinish(Object response) {
-                dismissDialog();
-
-                AccountModel model = (AccountModel) response;
-                PersonInfoActivity.this.account = model.getData();
-                AccountService.instance().dispatchAccountChanged(model.getData());
-                adapter.notifyDataSetChanged();
-            }
-
-            @Override
-            public void onRequestFailed(BaseModel error) {
-                dismissDialog();
-                showDialog(PersonInfoActivity.this, error.getErrmsg());
-            }
-        });
-    }
-
     private void requestAddChild() {
         showLoadingDialog(this);
 
@@ -498,6 +426,10 @@ public class PersonInfoActivity extends SGActivity implements StepperView.OnNumb
     @Override
     public void onAccountChange(AccountService service) {
         account = AccountService.instance().account();
+        if (account == null) {
+            finish();
+            return;
+        }
         adapter.notifyDataSetChanged();
     }
 
@@ -537,7 +469,7 @@ public class PersonInfoActivity extends SGActivity implements StepperView.OnNumb
                 title.setText("头像");
                 CircleImageView avatar = (CircleImageView) view.findViewById(R.id.avatar);
                 avatar.setDefaultImageResId(R.drawable.ic_default_avatar);
-                avatar.setImageUrl(account.getAvatar());
+                avatar.setImageUrl(account == null ? "" : account.getAvatar());
 
             } else {
                 SimpleListItem item = SimpleListItem.create(PersonInfoActivity.this);
@@ -545,26 +477,26 @@ public class PersonInfoActivity extends SGActivity implements StepperView.OnNumb
                 if (section == 0) {
                     if (row == 1) {
                         item.setTitle("昵称");
-                        item.setSubTitle(account.getNickName());
+                        item.setSubTitle(account == null ? "" : account.getNickName());
 
                     } else if (row == 2) {
                         item.setTitle("手机号");
-                        item.setSubTitle(account.getMobile());
+                        item.setSubTitle(account == null ? "" : account.getMobile());
                         item.setShowArrow(false);
                     }
 
                 } else if (section == 1) {
                     if (row == 0) {
                         item.setTitle("性别");
-                        item.setSubTitle(account.getSex());
+                        item.setSubTitle(account == null ? "" : account.getSex());
                     } else {
                         item.setTitle("常住地");
-                        item.setSubTitle(account.getAddress());
+                        item.setSubTitle(account == null ? "" : account.getAddress());
                     }
 
                 } else {
                     item.setTitle("出行宝宝");
-                    item.setSubTitle(account.getChildren().size() + "个");
+                    item.setSubTitle(account == null ? "" : account.getChildren().size() + "个");
                 }
                 view = item;
             }

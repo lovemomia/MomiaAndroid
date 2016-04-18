@@ -172,7 +172,7 @@ public class BookSkuListFragment extends SGFragment implements AdapterView.OnIte
         public View getViewForSection(View convertView, ViewGroup parent, int section) {
             if (isEmpty) {
                 EmptyView emptyView = EmptyView.create(getActivity());
-                emptyView.setMessage("还没有课程，敬请期待哦～");
+                emptyView.setMessage("我们正在快马加鞭地排课中......");
                 return emptyView;
             }
             return super.getViewForSection(convertView, parent, section);
