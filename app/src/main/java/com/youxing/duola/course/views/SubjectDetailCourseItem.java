@@ -56,7 +56,12 @@ public class SubjectDetailCourseItem extends FrameLayout {
         coverIv.setImageUrl(course.getCover());
         titleTv.setText(course.getTitle());
         subTitleTv.setText(course.getAge());
-        numberTv.setText(course.getJoined() + "人已参加");
+        if (course.getJoined() > 0) {
+            numberTv.setText(course.getJoined() + "人已参加");
+            numberTv.setVisibility(View.VISIBLE);
+        } else {
+            numberTv.setVisibility(View.GONE);
+        }
     }
 
     public void setLessonIndex(int index) {
