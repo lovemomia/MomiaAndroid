@@ -63,6 +63,9 @@ public class CourseDetailHeaderItem extends LinearLayout implements ViewPager.On
         ImagePagerAdapter adapter = new ImagePagerAdapter(getContext(), product.getImgs());
         if (pageCount > 1) {
             adapter.setInfiniteLoop(true);
+        } else if (pageCount == 0) {
+            pageControl.setVisibility(View.GONE);
+            return;
         }
         pager.setAdapter(adapter);
         pager.setOnPageChangeListener(this);
