@@ -162,12 +162,12 @@ public class CourseDetailActivity extends SGActivity implements CourseDetailTabI
         if (model.isBuyable()) {
             //单次课程
             priceTv.setText(PriceUtils.formatPriceString(model.getPrice()));
-            unitTv.setText("／次");
+            unitTv.setText("/次");
             chooseTv.setText("");
 
         } else {
             priceTv.setText(PriceUtils.formatPriceString(model.getCheapestSkuPrice()));
-            unitTv.setText("起／" + model.getCheapestSkuTimeUnit());
+            unitTv.setText("起/" + model.getCheapestSkuTimeUnit());
             chooseTv.setText(model.getCheapestSkuDesc());
         }
 

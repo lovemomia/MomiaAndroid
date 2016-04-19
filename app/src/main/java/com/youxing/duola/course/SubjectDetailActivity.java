@@ -114,7 +114,7 @@ public class SubjectDetailActivity extends SGActivity implements AdapterView.OnI
         }
 
         priceTv.setText(PriceUtils.formatPriceString(model.getData().getSubject().getCheapestSkuPrice()));
-        unitTv.setText("起／" + model.getData().getSubject().getCheapestSkuTimeUnit());
+        unitTv.setText("起/" + model.getData().getSubject().getCheapestSkuTimeUnit());
         chooseTv.setText(model.getData().getSubject().getCheapestSkuDesc());
 
         if (model.getData().getSubject().getStatus() == 1) {
