@@ -104,7 +104,7 @@ public class Account {
 
     public String getAgeOfChild() {
         if (children == null || children.size() == 0) {
-            return null;
+            return "";
         }
         Child child = children.get(0);
         return child.getAge();

@@ -45,7 +45,7 @@ public class BookConfirmChildListItem extends LinearLayout {
     public void setData(Child child) {
         this.child = child;
         nameTv.setText(child.getName());
-        ageTv.setText(child.getBirthday());
+        ageTv.setText(child.getAge());
         avatarIv.setImageUrl(child.getAvatar());
     }
 }

@@ -40,11 +40,15 @@
 
     </LinearLayout>
 
-    <Button
+    <TextView
         android:id="@+id/edit"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="编辑"
-        android:focusable="false"/>
+        android:focusable="false"
+        android:drawableLeft="@drawable/ic_child_edit"
+        android:drawablePadding="5dp"
+        android:layout_marginRight="10dp"
+        android:textColor="@color/text_deep_gray"/>
 
 </com.youxing.duola.mine.views.ChildListItem>

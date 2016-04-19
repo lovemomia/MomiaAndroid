@@ -22,7 +22,7 @@ public class ChildListItem extends LinearLayout implements View.OnClickListener 
     private TextView nameTv;
     private TextView ageTv;
     private CircleImageView avatarIv;
-    private Button editBtn;
+    private View editBtn;
 
     private Child child;
 
@@ -45,14 +45,14 @@ public class ChildListItem extends LinearLayout implements View.OnClickListener 
         ageTv = (TextView) findViewById(R.id.age);
         avatarIv = (CircleImageView) findViewById(R.id.avatar);
         avatarIv.setDefaultImageResId(R.drawable.ic_default_avatar);
-        editBtn = (Button) findViewById(R.id.edit);
+        editBtn = (View) findViewById(R.id.edit);
         editBtn.setOnClickListener(this);
     }
 
     public void setData(Child child) {
         this.child = child;
         nameTv.setText(child.getName());
-        ageTv.setText(child.getBirthday());
+        ageTv.setText(child.getAge());
         avatarIv.setImageUrl(child.getAvatar());
     }
 

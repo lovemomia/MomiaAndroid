@@ -27,6 +27,7 @@ import com.youxing.common.app.Constants;
 import com.youxing.common.model.BaseModel;
 import com.youxing.common.model.Child;
 import com.youxing.common.model.UploadImageModel;
+import com.youxing.common.services.account.AccountChangeListener;
 import com.youxing.common.services.account.AccountService;
 import com.youxing.common.services.http.HttpService;
 import com.youxing.common.services.http.RequestHandler;
@@ -56,7 +57,7 @@ import java.util.List;
 /**
  * Created by Jun Deng on 16/4/8.
  */
-public class BookConfirmActivity extends SGActivity implements AdapterView.OnItemClickListener {
+public class BookConfirmActivity extends SGActivity implements AdapterView.OnItemClickListener, AccountChangeListener {
 
     private final static int REQUEST_CODE_PICK_PHOTO = 1;
     private final static int REQUEST_CODE_CHOOSE_CHILD = 2;
@@ -90,6 +91,27 @@ public class BookConfirmActivity extends SGActivity implements AdapterView.OnIte
         adapter = new Adapter(this);
         listView.setAdapter(adapter);
         listView.setOnItemClickListener(this);
+
+        AccountService.instance().addListener(this);
+    }
+
+    @Override
+    protected void onDestroy() {
+        AccountService.instance().removeListener(this);
+        super.onDestroy();
+    }
+
+    @Override
+    public void onAccountChange(AccountService service) {
+        if (AccountService.instance().isLogin() && AccountService.instance().account().getChildren().size() > 0) {
+            child = AccountService.instance().account().getChildren().get(0);
+            hasChild = true;
+
+        } else {
+            child = new Child();
+            hasChild = false;
+        }
+        adapter.notifyDataSetChanged();
     }
 
     private void submit() {
