@@ -91,6 +91,9 @@ public class ShareDialog extends AlertDialog implements View.OnClickListener {
             Bitmap bitmap = getNetBitmap(thumb);
             if (bitmap != null) {
                 msg.setThumbImage(bitmap);
+            } else {
+                Bitmap bm = BitmapFactory.decodeResource(getContext().getResources(), R.drawable.ic_share_coupon);
+                msg.setThumbImage(bm);
             }
         }
 
