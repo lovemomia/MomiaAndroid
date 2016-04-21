@@ -58,25 +58,33 @@ public class ReviewListActivity extends SGActivity {
         params.add(new BasicNameValuePair("start", String.valueOf(start)));
         params.add(new BasicNameValuePair("count", "20"));
         String path = TextUtils.isEmpty(subjectId) ? "/course/comment/list" : "/subject/comment/list";
-        HttpService.get(Constants.domain() + path, params, CacheType.DISABLE, ReviewListModel.class, new RequestHandler() {
-            @Override
-            public void onRequestFinish(Object response) {
-                ReviewListModel model = (ReviewListModel) response;
-                dataList.addAll(model.getData().getList());
-                if (model.getData().getNextIndex() == 0 || model.getData().getTotalCount() <= dataList.size()) {
-                    isEnd = true;
-                }
-                if (dataList.size() == 0) {
-                    isEmpty = true;
-                }
-                adapter.notifyDataSetChanged();
-            }
+        HttpService.get(Constants.domain() + path, params, CacheType.DISABLE, ReviewListModel.class, hander);
+    }
 
-            @Override
-            public void onRequestFailed(BaseModel error) {
-                showDialog(ReviewListActivity.this, error.getErrmsg());
+    private RequestHandler hander = new RequestHandler() {
+        @Override
+        public void onRequestFinish(Object response) {
+            ReviewListModel model = (ReviewListModel) response;
+            dataList.addAll(model.getData().getList());
+            if (model.getData().getNextIndex() == 0 || model.getData().getTotalCount() <= dataList.size()) {
+                isEnd = true;
             }
-        });
+            if (dataList.size() == 0) {
+                isEmpty = true;
+            }
+            adapter.notifyDataSetChanged();
+        }
+
+        @Override
+        public void onRequestFailed(BaseModel error) {
+            showDialog(ReviewListActivity.this, error.getErrmsg());
+        }
+    };
+
+    @Override
+    protected void onDestroy() {
+        HttpService.abort(hander);
+        super.onDestroy();
     }
 
     class Adapter extends BasicAdapter {

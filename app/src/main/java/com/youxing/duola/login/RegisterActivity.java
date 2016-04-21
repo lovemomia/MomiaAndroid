@@ -108,30 +108,32 @@ public class RegisterActivity extends SGActivity implements View.OnClickListener
         params.add(new BasicNameValuePair("mobile", phoneEdit.getText().toString().trim()));
         params.add(new BasicNameValuePair("type", "register"));
 
-        HttpService.post(Constants.domain() + "/auth/send", params, BaseModel.class, new RequestHandler() {
-            @Override
-            public void onRequestFinish(Object response) {
-                dismissDialog();
-                codeBtn.setEnabled(false);
-                codeBtn.setText("60s");
-                new CountDownTimer(60000, 1000) {
-                    public void onTick(long millisUntilFinished) {
-                        codeBtn.setText(millisUntilFinished / 1000 + "s");
-                    }
-                    public void onFinish() {
-                        codeBtn.setText("获取");
-                        codeBtn.setEnabled(true);
-                    }
-                }.start();
-            }
-
-            @Override
-            public void onRequestFailed(BaseModel error) {
-                dismissDialog();
-                showDialog(RegisterActivity.this, error.getErrmsg());
-            }
-        });
+        HttpService.post(Constants.domain() + "/auth/send", params, BaseModel.class, vercoderHandler);
     }
+
+    private RequestHandler vercoderHandler = new RequestHandler() {
+        @Override
+        public void onRequestFinish(Object response) {
+            dismissDialog();
+            codeBtn.setEnabled(false);
+            codeBtn.setText("60s");
+            new CountDownTimer(60000, 1000) {
+                public void onTick(long millisUntilFinished) {
+                    codeBtn.setText(millisUntilFinished / 1000 + "s");
+                }
+                public void onFinish() {
+                    codeBtn.setText("获取");
+                    codeBtn.setEnabled(true);
+                }
+            }.start();
+        }
+
+        @Override
+        public void onRequestFailed(BaseModel error) {
+            dismissDialog();
+            showDialog(RegisterActivity.this, error.getErrmsg());
+        }
+    };
 
     private void requestRegister() {
         showLoadingDialog(this, "正在注册，请稍候...", null);
@@ -142,22 +144,31 @@ public class RegisterActivity extends SGActivity implements View.OnClickListener
         params.add(new BasicNameValuePair("password", pwdEdit.getText().toString().trim()));
         params.add(new BasicNameValuePair("code", codeEdit.getText().toString().trim()));
 
-        HttpService.post(Constants.domain() + "/auth/register", params, AccountModel.class, new RequestHandler() {
-            @Override
-            public void onRequestFinish(Object response) {
-                dismissDialog();
+        HttpService.post(Constants.domain() + "/auth/register", params, AccountModel.class, registerHandler);
+    }
 
-                AccountModel model = (AccountModel) response;
-                AccountService.instance().dispatchAccountChanged(model.getData());
+    private RequestHandler registerHandler = new RequestHandler() {
+        @Override
+        public void onRequestFinish(Object response) {
+            dismissDialog();
 
-                setResult(RESULT_OK);
-                finish();
-            }
+            AccountModel model = (AccountModel) response;
+            AccountService.instance().dispatchAccountChanged(model.getData());
 
-            @Override
-            public void onRequestFailed(BaseModel error) {
-                showDialog(RegisterActivity.this, error.getErrmsg());
-            }
-        });
+            setResult(RESULT_OK);
+            finish();
+        }
+
+        @Override
+        public void onRequestFailed(BaseModel error) {
+            showDialog(RegisterActivity.this, error.getErrmsg());
+        }
+    };
+
+    @Override
+    protected void onDestroy() {
+        HttpService.abort(vercoderHandler);
+        HttpService.abort(registerHandler);
+        super.onDestroy();
     }
 }

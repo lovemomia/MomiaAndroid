@@ -111,29 +111,35 @@ public class LoginActivity extends SGActivity implements View.OnClickListener {
         params.add(new BasicNameValuePair("mobile", phoneEdit.getText().toString().trim()));
         params.add(new BasicNameValuePair("password", pwdEdit.getText().toString().trim()));
 
-        HttpService.post(Constants.domain() + "/auth/login", params, AccountModel.class, new RequestHandler() {
-            @Override
-            public void onRequestFinish(Object response) {
-                dismissDialog();
-
-                AccountModel model = (AccountModel) response;
-                AccountService.instance().dispatchAccountChanged(model.getData());
-
-                String destination = getIntent().getStringExtra("_destination");
-                if (!TextUtils.isEmpty(destination)) {
-                    startActivity(getIntent().getStringExtra("_destination"));
-                }
-
-                finish();
-            }
-
-            @Override
-            public void onRequestFailed(BaseModel error) {
-                dismissDialog();
-                showDialog(LoginActivity.this, error.getErrmsg());
-            }
-        });
-
+        HttpService.post(Constants.domain() + "/auth/login", params, AccountModel.class, loginHandler);
     }
 
+    private RequestHandler loginHandler = new RequestHandler() {
+        @Override
+        public void onRequestFinish(Object response) {
+            dismissDialog();
+
+            AccountModel model = (AccountModel) response;
+            AccountService.instance().dispatchAccountChanged(model.getData());
+
+            String destination = getIntent().getStringExtra("_destination");
+            if (!TextUtils.isEmpty(destination)) {
+                startActivity(getIntent().getStringExtra("_destination"));
+            }
+
+            finish();
+        }
+
+        @Override
+        public void onRequestFailed(BaseModel error) {
+            dismissDialog();
+            showDialog(LoginActivity.this, error.getErrmsg());
+        }
+    };
+
+    @Override
+    protected void onDestroy() {
+        HttpService.abort(loginHandler);
+        super.onDestroy();
+    }
 }

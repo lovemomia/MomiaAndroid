@@ -51,32 +51,40 @@ public class BookingSubjectListActivity extends SGActivity implements AdapterVie
         listView.setOnItemClickListener(this);
     }
 
+    @Override
+    protected void onDestroy() {
+        HttpService.abort(handler);
+        super.onDestroy();
+    }
+
     private void requestData() {
         int start = dataList.size();
         List<NameValuePair> params = new ArrayList<NameValuePair>();
         params.add(new BasicNameValuePair("oid", oid));
         params.add(new BasicNameValuePair("start", String.valueOf(start)));
         params.add(new BasicNameValuePair("count", "20"));
-        HttpService.get(Constants.domain() + "/user/bookable", params, CacheType.DISABLE, BookingSubjectListModel.class, new RequestHandler() {
-            @Override
-            public void onRequestFinish(Object response) {
-                BookingSubjectListModel model = (BookingSubjectListModel) response;
-                dataList.addAll(model.getData().getList());
-                if (model.getData().getNextIndex() == 0 || model.getData().getTotalCount() <= dataList.size()) {
-                    isEnd = true;
-                }
-                if (dataList.size() == 0) {
-                    isEmpty = true;
-                }
-                adapter.notifyDataSetChanged();
-            }
-
-            @Override
-            public void onRequestFailed(BaseModel error) {
-                showDialog(BookingSubjectListActivity.this, error.getErrmsg());
-            }
-        });
+        HttpService.get(Constants.domain() + "/user/bookable", params, CacheType.DISABLE, BookingSubjectListModel.class, handler);
     }
+
+    private RequestHandler handler = new RequestHandler() {
+        @Override
+        public void onRequestFinish(Object response) {
+            BookingSubjectListModel model = (BookingSubjectListModel) response;
+            dataList.addAll(model.getData().getList());
+            if (model.getData().getNextIndex() == 0 || model.getData().getTotalCount() <= dataList.size()) {
+                isEnd = true;
+            }
+            if (dataList.size() == 0) {
+                isEmpty = true;
+            }
+            adapter.notifyDataSetChanged();
+        }
+
+        @Override
+        public void onRequestFailed(BaseModel error) {
+            showDialog(BookingSubjectListActivity.this, error.getErrmsg());
+        }
+    };
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {

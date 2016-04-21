@@ -78,35 +78,45 @@ public class PersonInfoActivity extends SGActivity implements StepperView.OnNumb
     @Override
     protected void onDestroy() {
         AccountService.instance().removeListener(this);
+        HttpService.abort(handler);
+        HttpService.abort(uploadImageHandler);
+        HttpService.abort(updateAvatarHandler);
+        HttpService.abort(updateNicknameHandler);
+        HttpService.abort(updateSexHandler);
+        HttpService.abort(updateAddresshandler);
+        HttpService.abort(addChildHandler);
+        HttpService.abort(delChildHandler);
         super.onDestroy();
     }
 
     public void requestData() {
         showLoadingDialog(this);
 
-        HttpService.get(Constants.domain() + "/user", null, CacheType.DISABLE, AccountModel.class, new RequestHandler() {
-            @Override
-            public void onRequestFinish(Object response) {
-                dismissDialog();
-
-                AccountModel model = (AccountModel) response;
-                PersonInfoActivity.this.account = model.getData();
-                AccountService.instance().dispatchAccountChanged(model.getData());
-                adapter.notifyDataSetChanged();
-            }
-
-            @Override
-            public void onRequestFailed(BaseModel error) {
-                dismissDialog();
-                showDialog(PersonInfoActivity.this, error.getErrmsg(), new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        finish();
-                    }
-                });
-            }
-        });
+        HttpService.get(Constants.domain() + "/user", null, CacheType.DISABLE, AccountModel.class, handler);
     }
+
+    private RequestHandler handler = new RequestHandler() {
+        @Override
+        public void onRequestFinish(Object response) {
+            dismissDialog();
+
+            AccountModel model = (AccountModel) response;
+            PersonInfoActivity.this.account = model.getData();
+            AccountService.instance().dispatchAccountChanged(model.getData());
+            adapter.notifyDataSetChanged();
+        }
+
+        @Override
+        public void onRequestFailed(BaseModel error) {
+            dismissDialog();
+            showDialog(PersonInfoActivity.this, error.getErrmsg(), new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    finish();
+                }
+            });
+        }
+    };
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -216,7 +226,8 @@ public class PersonInfoActivity extends SGActivity implements StepperView.OnNumb
     private void requestUploadImage(File file) {
         showLoadingDialog(this);
 
-        HttpService.uploadImage(file, new RequestHandler() {
+        HttpService.abort(uploadImageHandler);
+        uploadImageHandler = new RequestHandler() {
             @Override
             public void onRequestFinish(Object response) {
                 UploadImageModel model = (UploadImageModel) response;
@@ -228,13 +239,16 @@ public class PersonInfoActivity extends SGActivity implements StepperView.OnNumb
                 dismissDialog();
                 showDialog(PersonInfoActivity.this, error.getErrmsg());
             }
-        });
+        };
+
+        HttpService.uploadImage(file, uploadImageHandler);
     }
 
+    private RequestHandler uploadImageHandler;
+
     private void requestUpdateAvatar(String url) {
-        List<NameValuePair> params = new ArrayList<NameValuePair>();
-        params.add(new BasicNameValuePair("avatar", url));
-        HttpService.post(Constants.domain() + "/user/avatar", params, AccountModel.class, new RequestHandler() {
+        HttpService.abort(updateAvatarHandler);
+        updateAvatarHandler = new RequestHandler() {
             @Override
             public void onRequestFinish(Object response) {
                 dismissDialog();
@@ -250,14 +264,20 @@ public class PersonInfoActivity extends SGActivity implements StepperView.OnNumb
                 dismissDialog();
                 showDialog(PersonInfoActivity.this, error.getErrmsg());
             }
-        });
+        };
+
+        List<NameValuePair> params = new ArrayList<NameValuePair>();
+        params.add(new BasicNameValuePair("avatar", url));
+        HttpService.post(Constants.domain() + "/user/avatar", params, AccountModel.class, updateAvatarHandler);
     }
+
+    private RequestHandler updateAvatarHandler;
 
     private void requestUpdateNickname(String nickname) {
         showLoadingDialog(this);
-        List<NameValuePair> params = new ArrayList<NameValuePair>();
-        params.add(new BasicNameValuePair("nickname", nickname));
-        HttpService.post(Constants.domain() + "/user/nickname", params, AccountModel.class, new RequestHandler() {
+
+        HttpService.abort(updateNicknameHandler);
+        updateNicknameHandler = new RequestHandler() {
             @Override
             public void onRequestFinish(Object response) {
                 dismissDialog();
@@ -273,14 +293,20 @@ public class PersonInfoActivity extends SGActivity implements StepperView.OnNumb
                 dismissDialog();
                 showDialog(PersonInfoActivity.this, error.getErrmsg());
             }
-        });
+        };
+
+        List<NameValuePair> params = new ArrayList<NameValuePair>();
+        params.add(new BasicNameValuePair("nickname", nickname));
+        HttpService.post(Constants.domain() + "/user/nickname", params, AccountModel.class, updateNicknameHandler);
     }
+
+    private RequestHandler updateNicknameHandler;
 
     private void requestUpdateSex(String sex) {
         showLoadingDialog(this);
-        List<NameValuePair> params = new ArrayList<NameValuePair>();
-        params.add(new BasicNameValuePair("sex", sex));
-        HttpService.post(Constants.domain() + "/user/sex", params, AccountModel.class, new RequestHandler() {
+
+        HttpService.abort(updateSexHandler);
+        updateSexHandler = new RequestHandler() {
             @Override
             public void onRequestFinish(Object response) {
                 dismissDialog();
@@ -296,14 +322,20 @@ public class PersonInfoActivity extends SGActivity implements StepperView.OnNumb
                 dismissDialog();
                 showDialog(PersonInfoActivity.this, error.getErrmsg());
             }
-        });
+        };
+
+        List<NameValuePair> params = new ArrayList<NameValuePair>();
+        params.add(new BasicNameValuePair("sex", sex));
+        HttpService.post(Constants.domain() + "/user/sex", params, AccountModel.class, updateSexHandler);
     }
+
+    private RequestHandler updateSexHandler;
 
     private void requestUpdateAddress(String address) {
         showLoadingDialog(this);
-        List<NameValuePair> params = new ArrayList<NameValuePair>();
-        params.add(new BasicNameValuePair("address", address));
-        HttpService.post(Constants.domain() + "/user/address", params, AccountModel.class, new RequestHandler() {
+
+        HttpService.abort(updateAddresshandler);
+        updateAddresshandler = new RequestHandler() {
             @Override
             public void onRequestFinish(Object response) {
                 dismissDialog();
@@ -319,11 +351,36 @@ public class PersonInfoActivity extends SGActivity implements StepperView.OnNumb
                 dismissDialog();
                 showDialog(PersonInfoActivity.this, error.getErrmsg());
             }
-        });
+        };
+
+        List<NameValuePair> params = new ArrayList<NameValuePair>();
+        params.add(new BasicNameValuePair("address", address));
+        HttpService.post(Constants.domain() + "/user/address", params, AccountModel.class, updateAddresshandler);
     }
+
+    private RequestHandler updateAddresshandler;
 
     private void requestAddChild() {
         showLoadingDialog(this);
+
+        HttpService.abort(addChildHandler);
+        addChildHandler = new RequestHandler() {
+            @Override
+            public void onRequestFinish(Object response) {
+                dismissDialog();
+
+                AccountModel model = (AccountModel) response;
+                PersonInfoActivity.this.account = model.getData();
+                AccountService.instance().dispatchAccountChanged(model.getData());
+                adapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onRequestFailed(BaseModel error) {
+                dismissDialog();
+                showDialog(PersonInfoActivity.this, error.getErrmsg());
+            }
+        };
 
         Child child = new Child();
         child.setName(AccountService.instance().account().getNickName() + "的宝宝");
@@ -334,7 +391,16 @@ public class PersonInfoActivity extends SGActivity implements StepperView.OnNumb
 
         List<NameValuePair> params = new ArrayList<NameValuePair>();
         params.add(new BasicNameValuePair("children", JSON.toJSONString(children)));
-        HttpService.post(Constants.domain() + "/user/child", params, AccountModel.class, new RequestHandler() {
+        HttpService.post(Constants.domain() + "/user/child", params, AccountModel.class, addChildHandler);
+    }
+
+    private RequestHandler addChildHandler;
+
+    private void requestDelChild() {
+        showLoadingDialog(this);
+
+        HttpService.abort(delChildHandler);
+        delChildHandler = new RequestHandler() {
             @Override
             public void onRequestFinish(Object response) {
                 dismissDialog();
@@ -350,34 +416,16 @@ public class PersonInfoActivity extends SGActivity implements StepperView.OnNumb
                 dismissDialog();
                 showDialog(PersonInfoActivity.this, error.getErrmsg());
             }
-        });
-    }
-
-    private void requestDelChild() {
-        showLoadingDialog(this);
+        };
 
         Child child = account.getChildren().get(account.getChildren().size() - 1);
 
         List<NameValuePair> params = new ArrayList<NameValuePair>();
         params.add(new BasicNameValuePair("cid", String.valueOf(child.getId())));
-        HttpService.post(Constants.domain() + "/user/child/delete", params, AccountModel.class, new RequestHandler() {
-            @Override
-            public void onRequestFinish(Object response) {
-                dismissDialog();
-
-                AccountModel model = (AccountModel) response;
-                PersonInfoActivity.this.account = model.getData();
-                AccountService.instance().dispatchAccountChanged(model.getData());
-                adapter.notifyDataSetChanged();
-            }
-
-            @Override
-            public void onRequestFailed(BaseModel error) {
-                dismissDialog();
-                showDialog(PersonInfoActivity.this, error.getErrmsg());
-            }
-        });
+        HttpService.post(Constants.domain() + "/user/child/delete", params, AccountModel.class, delChildHandler);
     }
+
+    private RequestHandler delChildHandler;
 
     private void showInputDialog(String title, final OnInputDoneListener listener) {
         final EditText input = new EditText(this);

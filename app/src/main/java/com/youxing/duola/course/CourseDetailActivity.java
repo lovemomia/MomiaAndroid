@@ -129,6 +129,12 @@ public class CourseDetailActivity extends SGActivity implements CourseDetailTabI
         requestData();
     }
 
+    @Override
+    protected void onDestroy() {
+        HttpService.abort(handler);
+        super.onDestroy();
+    }
+
     private void requestData() {
         showLoadingDialog(this);
 
@@ -138,21 +144,23 @@ public class CourseDetailActivity extends SGActivity implements CourseDetailTabI
             params.add(new BasicNameValuePair("sid", sid));
         }
         params.add(new BasicNameValuePair("recommend", String.valueOf(recommend)));
-        HttpService.get(Constants.domain() + "/v3/course", params, CacheType.DISABLE, CourseDetailModel.class, new RequestHandler() {
-            @Override
-            public void onRequestFinish(Object response) {
-                dismissDialog();
-                model = ((CourseDetailModel) response).getData();
-                adapter.notifyDataSetChanged();
-                setBuyView();
-            }
-
-            @Override
-            public void onRequestFailed(BaseModel error) {
-                showDialog(CourseDetailActivity.this, error.getErrmsg());
-            }
-        });
+        HttpService.get(Constants.domain() + "/v3/course", params, CacheType.DISABLE, CourseDetailModel.class, handler);
     }
+
+    private RequestHandler handler = new RequestHandler() {
+        @Override
+        public void onRequestFinish(Object response) {
+            dismissDialog();
+            model = ((CourseDetailModel) response).getData();
+            adapter.notifyDataSetChanged();
+            setBuyView();
+        }
+
+        @Override
+        public void onRequestFailed(BaseModel error) {
+            showDialog(CourseDetailActivity.this, error.getErrmsg());
+        }
+    };
 
     private void setBuyView() {
         if (model == null) {
@@ -191,8 +199,6 @@ public class CourseDetailActivity extends SGActivity implements CourseDetailTabI
 
     @Override
     public void onScrollStateChanged(AbsListView view, int scrollState) {
-
-
     }
 
     @Override

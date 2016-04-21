@@ -68,6 +68,12 @@ public class BookSkuListFragment extends SGFragment implements AdapterView.OnIte
         requestData();
     }
 
+    @Override
+    public void onDestroy() {
+        HttpService.abort(handler);
+        super.onDestroy();
+    }
+
     public void refresh() {
         adapter.notifyDataSetChanged();
     }
@@ -83,24 +89,26 @@ public class BookSkuListFragment extends SGFragment implements AdapterView.OnIte
 
         String path = onlyshow ? "/course/sku/month/notend" : "/course/sku/month/bookable";
 
-        HttpService.get(Constants.domain() + path, params, CacheType.DISABLE, CourseSkuListModel.class, new RequestHandler() {
-            @Override
-            public void onRequestFinish(Object response) {
-                getDLActivity().dismissDialog();
-
-                model = (CourseSkuListModel) response;
-                if (model.getData().size() == 0) {
-                    isEmpty = true;
-                }
-                adapter.notifyDataSetChanged();
-            }
-
-            @Override
-            public void onRequestFailed(BaseModel error) {
-                getDLActivity().showDialog(getActivity(), error.getErrmsg());
-            }
-        });
+        HttpService.get(Constants.domain() + path, params, CacheType.DISABLE, CourseSkuListModel.class, handler);
     }
+
+    private RequestHandler handler = new RequestHandler() {
+        @Override
+        public void onRequestFinish(Object response) {
+            getDLActivity().dismissDialog();
+
+            model = (CourseSkuListModel) response;
+            if (model.getData().size() == 0) {
+                isEmpty = true;
+            }
+            adapter.notifyDataSetChanged();
+        }
+
+        @Override
+        public void onRequestFailed(BaseModel error) {
+            getDLActivity().showDialog(getActivity(), error.getErrmsg());
+        }
+    };
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {

@@ -38,6 +38,58 @@ public class ChatListFragment extends SGFragment implements AccountChangeListene
 
     private TitleBar titleBar;
 
+    private RequestHandler handler = new RequestHandler() {
+        @Override
+        public void onRequestFinish(Object response) {
+            IMGroupListModel model = (IMGroupListModel) response;
+
+            List<Group> grouplist = new ArrayList<Group>();
+            for (int i = 0; i < model.getData().size(); i++) {
+                IMGroup imGroup = model.getData().get(i);
+                String id = String.valueOf(imGroup.getGroupId());
+                String name = imGroup.getGroupName();
+                grouplist.add(new Group(id, name, null));
+
+//                    RongCloudEvent.instance().getGroupCache().put(id, imGroup);
+            }
+
+            if (grouplist.size() > 0 && RongIM.getInstance() != null && RongIM.getInstance().getRongIMClient() != null) {
+                List<Conversation> conversations = RongIM.getInstance().getRongIMClient().getConversationList();
+                for (IMGroup group : model.getData()) {
+                    boolean exist = false;
+                    if (conversations != null) {
+                        for (Conversation cvs : conversations) {
+                            if (cvs.getConversationType() != Conversation.ConversationType.GROUP) {
+                                continue;
+                            }
+                            if (cvs.getTargetId().equals(String.valueOf(group.getGroupId()))) {
+                                exist = true;
+                                break;
+                            }
+                        }
+                    }
+                    if (!exist) {
+                        RongIM.getInstance().getRongIMClient().insertMessage(Conversation.ConversationType.GROUP, String.valueOf(group.getGroupId()), "10000", InformationNotificationMessage.obtain("欢迎来到松果课堂~"), new RongIMClient.ResultCallback(){
+                            @Override
+                            public void onSuccess(Object o) {
+                            }
+
+                            @Override
+                            public void onError(RongIMClient.ErrorCode errorCode) {
+                            }
+                        });
+                    }
+                }
+            }
+
+        }
+
+        @Override
+        public void onRequestFailed(BaseModel error) {
+
+        }
+    };
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_chatlist, container, false);
@@ -70,62 +122,13 @@ public class ChatListFragment extends SGFragment implements AccountChangeListene
     }
 
     private void requestData() {
-        HttpService.get(Constants.domain() + "/im/user/group", null, CacheType.DISABLE, IMGroupListModel.class, new RequestHandler() {
-            @Override
-            public void onRequestFinish(Object response) {
-                IMGroupListModel model = (IMGroupListModel) response;
-
-                List<Group> grouplist = new ArrayList<Group>();
-                for (int i = 0; i < model.getData().size(); i++) {
-                    IMGroup imGroup = model.getData().get(i);
-                    String id = String.valueOf(imGroup.getGroupId());
-                    String name = imGroup.getGroupName();
-                    grouplist.add(new Group(id, name, null));
-
-//                    RongCloudEvent.instance().getGroupCache().put(id, imGroup);
-                }
-
-                if (grouplist.size() > 0 && RongIM.getInstance() != null && RongIM.getInstance().getRongIMClient() != null) {
-                    List<Conversation> conversations = RongIM.getInstance().getRongIMClient().getConversationList();
-                    for (IMGroup group : model.getData()) {
-                        boolean exist = false;
-                        if (conversations != null) {
-                            for (Conversation cvs : conversations) {
-                                if (cvs.getConversationType() != Conversation.ConversationType.GROUP) {
-                                    continue;
-                                }
-                                if (cvs.getTargetId().equals(String.valueOf(group.getGroupId()))) {
-                                    exist = true;
-                                    break;
-                                }
-                            }
-                        }
-                        if (!exist) {
-                            RongIM.getInstance().getRongIMClient().insertMessage(Conversation.ConversationType.GROUP, String.valueOf(group.getGroupId()), "10000", InformationNotificationMessage.obtain("欢迎来到松果课堂~"), new RongIMClient.ResultCallback(){
-                                @Override
-                                public void onSuccess(Object o) {
-                                }
-
-                                @Override
-                                public void onError(RongIMClient.ErrorCode errorCode) {
-                                }
-                            });
-                        }
-                    }
-                }
-
-            }
-
-            @Override
-            public void onRequestFailed(BaseModel error) {
-
-            }
-        });
+        HttpService.get(Constants.domain() + "/im/user/group", null, CacheType.DISABLE, IMGroupListModel.class, handler);
     }
 
     @Override
     public void onDestroy() {
         AccountService.instance().removeListener(this);
+        HttpService.abort(handler);
         super.onDestroy();
     }
 

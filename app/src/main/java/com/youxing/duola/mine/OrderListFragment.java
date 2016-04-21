@@ -85,26 +85,28 @@ public class OrderListFragment extends SGFragment implements AdapterView.OnItemC
         params.add(new BasicNameValuePair("status", String.valueOf(status)));
         params.add(new BasicNameValuePair("start", String.valueOf(start)));
         params.add(new BasicNameValuePair("count", "20"));
-        HttpService.get(Constants.domain() + "/user/order", params, CacheType.DISABLE, OrderListModel.class, new RequestHandler() {
-            @Override
-            public void onRequestFinish(Object response) {
-                OrderListModel model = (OrderListModel) response;
-                orderList.addAll(model.getData().getList());
-                if (model.getData().getNextIndex() == 0 || model.getData().getTotalCount() <= orderList.size()) {
-                    isEnd = true;
-                }
-                if (orderList.size() == 0) {
-                    isEmpty = true;
-                }
-                adapter.notifyDataSetChanged();
-            }
-
-            @Override
-            public void onRequestFailed(BaseModel error) {
-                getDLActivity().showDialog(getDLActivity(), error.getErrmsg());
-            }
-        });
+        HttpService.get(Constants.domain() + "/user/order", params, CacheType.DISABLE, OrderListModel.class, handler);
     }
+
+    private RequestHandler handler = new RequestHandler() {
+        @Override
+        public void onRequestFinish(Object response) {
+            OrderListModel model = (OrderListModel) response;
+            orderList.addAll(model.getData().getList());
+            if (model.getData().getNextIndex() == 0 || model.getData().getTotalCount() <= orderList.size()) {
+                isEnd = true;
+            }
+            if (orderList.size() == 0) {
+                isEmpty = true;
+            }
+            adapter.notifyDataSetChanged();
+        }
+
+        @Override
+        public void onRequestFailed(BaseModel error) {
+            getDLActivity().showDialog(getDLActivity(), error.getErrmsg());
+        }
+    };
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -114,6 +116,12 @@ public class OrderListFragment extends SGFragment implements AdapterView.OnItemC
             startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("duola://orderdetail?oid=" +
                     order.getId())));
         }
+    }
+
+    @Override
+    public void onDestroy() {
+        HttpService.abort(handler);
+        super.onDestroy();
     }
 
     class Adapter extends BasicAdapter {

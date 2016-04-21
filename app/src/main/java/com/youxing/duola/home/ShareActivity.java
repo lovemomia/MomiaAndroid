@@ -37,23 +37,31 @@ public class ShareActivity extends SGActivity implements OnClickListener {
         requestData();
     }
 
+    @Override
+    protected void onDestroy() {
+        HttpService.abort(handler);
+        super.onDestroy();
+    }
+
     private void requestData() {
         showLoadingDialog(this);
 
-        HttpService.get(Constants.domain() + "/coupon/share", null, CacheType.DISABLE, CouponShareModel.class, new RequestHandler() {
-            @Override
-            public void onRequestFinish(Object response) {
-                dismissDialog();
-                model = (CouponShareModel) response;
-                contentTv.setText(model.getData().getDesc());
-            }
-
-            @Override
-            public void onRequestFailed(BaseModel error) {
-                showDialog(ShareActivity.this, error.getErrmsg());
-            }
-        });
+        HttpService.get(Constants.domain() + "/coupon/share", null, CacheType.DISABLE, CouponShareModel.class, handler);
     }
+
+    private RequestHandler handler = new RequestHandler() {
+        @Override
+        public void onRequestFinish(Object response) {
+            dismissDialog();
+            model = (CouponShareModel) response;
+            contentTv.setText(model.getData().getDesc());
+        }
+
+        @Override
+        public void onRequestFailed(BaseModel error) {
+            showDialog(ShareActivity.this, error.getErrmsg());
+        }
+    };
 
     @Override
     public void onClick(View v) {

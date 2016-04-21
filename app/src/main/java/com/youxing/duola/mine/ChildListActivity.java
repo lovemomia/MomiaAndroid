@@ -82,6 +82,7 @@ public class ChildListActivity extends SGActivity implements AccountChangeListen
     @Override
     protected void onDestroy() {
         AccountService.instance().removeListener(this);
+        HttpService.abort(delChildHandler);
         super.onDestroy();
     }
 
@@ -111,9 +112,8 @@ public class ChildListActivity extends SGActivity implements AccountChangeListen
     private void requestDelChild(final Child child) {
         showLoadingDialog(this);
 
-        List<NameValuePair> params = new ArrayList<NameValuePair>();
-        params.add(new BasicNameValuePair("cid", String.valueOf(child.getId())));
-        HttpService.post(Constants.domain() + "/user/child/delete", params, AccountModel.class, new RequestHandler() {
+        HttpService.abort(delChildHandler);
+        delChildHandler = new RequestHandler() {
             @Override
             public void onRequestFinish(Object response) {
                 dismissDialog();
@@ -129,8 +129,14 @@ public class ChildListActivity extends SGActivity implements AccountChangeListen
                 dismissDialog();
                 showDialog(ChildListActivity.this, error.getErrmsg());
             }
-        });
+        };
+
+        List<NameValuePair> params = new ArrayList<NameValuePair>();
+        params.add(new BasicNameValuePair("cid", String.valueOf(child.getId())));
+        HttpService.post(Constants.domain() + "/user/child/delete", params, AccountModel.class, delChildHandler);
     }
+
+    private RequestHandler delChildHandler;
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {

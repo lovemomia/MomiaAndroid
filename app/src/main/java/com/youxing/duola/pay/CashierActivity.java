@@ -147,6 +147,9 @@ public class CashierActivity extends SGActivity implements View.OnClickListener,
     @Override
     protected void onDestroy() {
         unregisterReceiver(receiver);
+        HttpService.abort(refreshPriceHandler);
+        HttpService.abort(wxpayHandler);
+        HttpService.abort(alipayHandler);
         super.onDestroy();
     }
 
@@ -162,11 +165,8 @@ public class CashierActivity extends SGActivity implements View.OnClickListener,
     private void requestRefreshPrice(long couponId) {
         showLoadingDialog(this);
 
-        List<NameValuePair> params = new ArrayList<NameValuePair>();
-        params.add(new BasicNameValuePair("oid", String.valueOf(order.getId())));
-        params.add(new BasicNameValuePair("coupon", String.valueOf(couponId)));
-        HttpService.get(Constants.domain() + "/subject/order/coupon", params, CacheType.DISABLE,
-                CouponPriceModel.class, new RequestHandler() {
+        HttpService.abort(refreshPriceHandler);
+        refreshPriceHandler = new RequestHandler() {
             @Override
             public void onRequestFinish(Object response) {
                 dismissDialog();
@@ -180,8 +180,16 @@ public class CashierActivity extends SGActivity implements View.OnClickListener,
                 showDialog(CashierActivity.this, error.getErrmsg());
                 CashierActivity.this.couponId = 0;
             }
-        });
+        };
+
+        List<NameValuePair> params = new ArrayList<NameValuePair>();
+        params.add(new BasicNameValuePair("oid", String.valueOf(order.getId())));
+        params.add(new BasicNameValuePair("coupon", String.valueOf(couponId)));
+        HttpService.get(Constants.domain() + "/subject/order/coupon", params, CacheType.DISABLE,
+                CouponPriceModel.class, refreshPriceHandler);
     }
+
+    private RequestHandler refreshPriceHandler;
 
     @Override
     public void onClick(View v) {
@@ -213,14 +221,8 @@ public class CashierActivity extends SGActivity implements View.OnClickListener,
             return;
         }
 
-        List<NameValuePair> params = new ArrayList<NameValuePair>();
-        params.add(new BasicNameValuePair("type", "APP"));
-        params.add(new BasicNameValuePair("oid", String.valueOf(order.getId())));
-        if (couponId > 0) {
-            params.add(new BasicNameValuePair("coupon", String.valueOf(couponId)));
-        }
-
-        HttpService.post(Constants.domainHttps() + "/payment/prepay/weixin", params, WechatPayModel.class, new RequestHandler() {
+        HttpService.abort(wxpayHandler);
+        wxpayHandler = new RequestHandler() {
             @Override
             public void onRequestFinish(Object response) {
                 dismissDialog();
@@ -252,11 +254,7 @@ public class CashierActivity extends SGActivity implements View.OnClickListener,
                     }
                 });
             }
-        });
-    }
-
-    public void startAlipay() {
-        showLoadingDialog(CashierActivity.this, "正在准备支付，请稍候...", null);
+        };
 
         List<NameValuePair> params = new ArrayList<NameValuePair>();
         params.add(new BasicNameValuePair("type", "APP"));
@@ -265,7 +263,16 @@ public class CashierActivity extends SGActivity implements View.OnClickListener,
             params.add(new BasicNameValuePair("coupon", String.valueOf(couponId)));
         }
 
-        HttpService.post(Constants.domainHttps() + "/payment/prepay/alipay", params, AlipayOrderModel.class, new RequestHandler() {
+        HttpService.post(Constants.domainHttps() + "/payment/prepay/weixin", params, WechatPayModel.class, wxpayHandler);
+    }
+
+    private RequestHandler wxpayHandler;
+
+    public void startAlipay() {
+        showLoadingDialog(CashierActivity.this, "正在准备支付，请稍候...", null);
+
+        HttpService.abort(alipayHandler);
+        alipayHandler = new RequestHandler() {
             @Override
             public void onRequestFinish(Object response) {
                 dismissDialog();
@@ -304,8 +311,19 @@ public class CashierActivity extends SGActivity implements View.OnClickListener,
                     }
                 });
             }
-        });
+        };
+
+        List<NameValuePair> params = new ArrayList<NameValuePair>();
+        params.add(new BasicNameValuePair("type", "APP"));
+        params.add(new BasicNameValuePair("oid", String.valueOf(order.getId())));
+        if (couponId > 0) {
+            params.add(new BasicNameValuePair("coupon", String.valueOf(couponId)));
+        }
+
+        HttpService.post(Constants.domainHttps() + "/payment/prepay/alipay", params, AlipayOrderModel.class, alipayHandler);
     }
+
+    private RequestHandler alipayHandler;
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {

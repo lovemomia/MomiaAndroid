@@ -79,6 +79,13 @@ public class FillOrderActivity extends SGActivity implements View.OnClickListene
         requestOrder();
     }
 
+    @Override
+    protected void onDestroy() {
+        HttpService.abort(orderHandler);
+        HttpService.abort(submitHandler);
+        super.onDestroy();
+    }
+
     private void requestOrder() {
         showLoadingDialog(this);
 
@@ -88,27 +95,29 @@ public class FillOrderActivity extends SGActivity implements View.OnClickListene
             params.add(new BasicNameValuePair("coid", coid));
         }
 
-        HttpService.get(Constants.domain() + "/v2/subject/sku", params, CacheType.DISABLE, SkuListModel.class, new RequestHandler() {
-            @Override
-            public void onRequestFinish(Object response) {
-                dismissDialog();
-
-                model = (SkuListModel) response;
-                adapter.notifyDataSetChanged();
-            }
-
-            @Override
-            public void onRequestFailed(BaseModel error) {
-                dismissDialog();
-                showDialog(FillOrderActivity.this, error.getErrmsg(), new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        finish();
-                    }
-                });
-            }
-        });
+        HttpService.get(Constants.domain() + "/v2/subject/sku", params, CacheType.DISABLE, SkuListModel.class, orderHandler);
     }
+
+    private RequestHandler orderHandler = new RequestHandler() {
+        @Override
+        public void onRequestFinish(Object response) {
+            dismissDialog();
+
+            model = (SkuListModel) response;
+            adapter.notifyDataSetChanged();
+        }
+
+        @Override
+        public void onRequestFailed(BaseModel error) {
+            dismissDialog();
+            showDialog(FillOrderActivity.this, error.getErrmsg(), new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    finish();
+                }
+            });
+        }
+    };
 
     private void requestSubmitOrder() {
         if (!check()) {
@@ -126,22 +135,24 @@ public class FillOrderActivity extends SGActivity implements View.OnClickListene
         List<NameValuePair> params = new ArrayList<NameValuePair>();
         params.add(new BasicNameValuePair("order", JSON.toJSONString(model.getData())));
 
-        HttpService.post(Constants.domainHttps() + "/subject/order", params, PostOrderModel.class, new RequestHandler() {
-            @Override
-            public void onRequestFinish(Object response) {
-                dismissDialog();
-
-                PostOrderModel model = (PostOrderModel) response;
-                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("duola://cashpay?order=" + JSON.toJSONString(model.getData()))));
-            }
-
-            @Override
-            public void onRequestFailed(BaseModel error) {
-                dismissDialog();
-                showDialog(FillOrderActivity.this, error.getErrmsg());
-            }
-        });
+        HttpService.post(Constants.domainHttps() + "/subject/order", params, PostOrderModel.class, submitHandler);
     }
+
+    private RequestHandler submitHandler = new RequestHandler() {
+        @Override
+        public void onRequestFinish(Object response) {
+            dismissDialog();
+
+            PostOrderModel model = (PostOrderModel) response;
+            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("duola://cashpay?order=" + JSON.toJSONString(model.getData()))));
+        }
+
+        @Override
+        public void onRequestFailed(BaseModel error) {
+            dismissDialog();
+            showDialog(FillOrderActivity.this, error.getErrmsg());
+        }
+    };
 
     private boolean check() {
         for (Sku sku : model.getData().getSkus()) {

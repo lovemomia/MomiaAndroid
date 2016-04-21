@@ -203,7 +203,9 @@ public class HttpService {
      * @param tag
      */
     public static void abort(RequestHandler tag) {
-        getQueue().cancelAll(tag);
+        if (tag != null) {
+            getQueue().cancelAll(tag);
+        }
     }
 
     private static Map<String, String> getHeaders() {

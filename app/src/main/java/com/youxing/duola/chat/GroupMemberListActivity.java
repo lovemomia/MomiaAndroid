@@ -41,6 +41,21 @@ public class GroupMemberListActivity extends SGActivity implements AdapterView.O
     private Adapter adapter;
     private IMGroupMemberModel model;
 
+    private RequestHandler handler = new RequestHandler() {
+        @Override
+        public void onRequestFinish(Object response) {
+            dismissDialog();
+            model = (IMGroupMemberModel) response;
+            adapter.notifyDataSetChanged();
+        }
+
+        @Override
+        public void onRequestFailed(BaseModel error) {
+            dismissDialog();
+            GroupMemberListActivity.this.showDialog(GroupMemberListActivity.this, error.getErrmsg());
+        }
+    };
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,25 +71,18 @@ public class GroupMemberListActivity extends SGActivity implements AdapterView.O
         requestData();
     }
 
+    @Override
+    protected void onDestroy() {
+        HttpService.abort(handler);
+        super.onDestroy();
+    }
+
     private void requestData() {
         showLoadingDialog(this);
 
         List<NameValuePair> params = new ArrayList<NameValuePair>();
         params.add(new BasicNameValuePair("id", id));
-        HttpService.get(Constants.domain() + "/im/group/member", params, CacheType.DISABLE, IMGroupMemberModel.class, new RequestHandler() {
-            @Override
-            public void onRequestFinish(Object response) {
-                dismissDialog();
-                model = (IMGroupMemberModel) response;
-                adapter.notifyDataSetChanged();
-            }
-
-            @Override
-            public void onRequestFailed(BaseModel error) {
-                dismissDialog();
-                GroupMemberListActivity.this.showDialog(GroupMemberListActivity.this, error.getErrmsg());
-            }
-        });
+        HttpService.get(Constants.domain() + "/im/group/member", params, CacheType.DISABLE, IMGroupMemberModel.class, handler);
     }
 
     @Override

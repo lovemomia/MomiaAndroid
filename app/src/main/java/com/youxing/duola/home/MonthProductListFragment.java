@@ -67,30 +67,38 @@ public class MonthProductListFragment extends SGFragment implements AdapterView.
         requestData();
     }
 
+    @Override
+    public void onDestroy() {
+        HttpService.abort(handler);
+        super.onDestroy();
+    }
+
     private void requestData() {
         getDLActivity().showLoadingDialog(getActivity());
 
         List<NameValuePair> params = new ArrayList<NameValuePair>();
         params.add(new BasicNameValuePair("month", String.valueOf(getArguments().getInt("month"))));
-        HttpService.get(Constants.domain() + "/product/month", params, CacheType.DISABLE, ProductCalendarMonthModel.class, new RequestHandler() {
-            @Override
-            public void onRequestFinish(Object response) {
-                getDLActivity().dismissDialog();
-                ProductCalendarMonthModel model = (ProductCalendarMonthModel) response;
-                groups.addAll(model.getData());
-                if (groups.size() == 0) {
-                    isEmpty = true;
-                }
-                adapter.notifyDataSetChanged();
-            }
-
-            @Override
-            public void onRequestFailed(BaseModel error) {
-                getDLActivity().dismissDialog();
-                getDLActivity().showDialog(getDLActivity(), error.getErrmsg());
-            }
-        });
+        HttpService.get(Constants.domain() + "/product/month", params, CacheType.DISABLE, ProductCalendarMonthModel.class, handler);
     }
+
+    private RequestHandler handler = new RequestHandler() {
+        @Override
+        public void onRequestFinish(Object response) {
+            getDLActivity().dismissDialog();
+            ProductCalendarMonthModel model = (ProductCalendarMonthModel) response;
+            groups.addAll(model.getData());
+            if (groups.size() == 0) {
+                isEmpty = true;
+            }
+            adapter.notifyDataSetChanged();
+        }
+
+        @Override
+        public void onRequestFailed(BaseModel error) {
+            getDLActivity().dismissDialog();
+            getDLActivity().showDialog(getDLActivity(), error.getErrmsg());
+        }
+    };
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {

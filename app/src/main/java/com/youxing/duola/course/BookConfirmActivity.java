@@ -98,6 +98,9 @@ public class BookConfirmActivity extends SGActivity implements AdapterView.OnIte
     @Override
     protected void onDestroy() {
         AccountService.instance().removeListener(this);
+        HttpService.abort(submitHandler);
+        HttpService.abort(uploadImageHandler);
+        HttpService.abort(addChildHandler);
         super.onDestroy();
     }
 
@@ -120,48 +123,52 @@ public class BookConfirmActivity extends SGActivity implements AdapterView.OnIte
         params.add(new BasicNameValuePair("pid", pid));
         params.add(new BasicNameValuePair("cid", child.getId() > 0 ? String.valueOf(child.getId()) : ""));
 
-        HttpService.post(Constants.domain() + "/course/booking", params, BaseModel.class, new RequestHandler() {
-            @Override
-            public void onRequestFinish(Object response) {
-                dismissDialog();
-                showDialog(BookConfirmActivity.this, "预约成功，您已被拉入该课群组，猛戳 “我的—我的群组” 就可以随意调戏我们的老师啦~", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("duola://mine"));
-                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                        startActivity(intent);
-                    }
-                });
-            }
-
-            @Override
-            public void onRequestFailed(BaseModel error) {
-                showDialog(BookConfirmActivity.this, error.getErrmsg());
-            }
-        });
+        HttpService.post(Constants.domain() + "/course/booking", params, BaseModel.class, submitHandler);
     }
+
+    private RequestHandler submitHandler = new RequestHandler() {
+        @Override
+        public void onRequestFinish(Object response) {
+            dismissDialog();
+            showDialog(BookConfirmActivity.this, "预约成功，您已被拉入该课群组，猛戳 “我的—我的群组” 就可以随意调戏我们的老师啦~", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("duola://mine"));
+                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(intent);
+                }
+            });
+        }
+
+        @Override
+        public void onRequestFailed(BaseModel error) {
+            showDialog(BookConfirmActivity.this, error.getErrmsg());
+        }
+    };
 
     private void requestUploadImage() {
         avatarImage.status = 1;
 
-        HttpService.uploadImage(new File(avatarImage.filePath), new RequestHandler() {
-            @Override
-            public void onRequestFinish(Object response) {
-                UploadImageModel uploadImageModel = (UploadImageModel) response;
-                avatarImage.url = uploadImageModel.getData().getPath();
-                avatarImage.status = 2;
-                child.setAvatar(Constants.domainImage() + avatarImage.url);
-                adapter.notifyDataSetChanged();
-            }
-
-            @Override
-            public void onRequestFailed(BaseModel error) {
-                dismissDialog();
-                showDialog(BookConfirmActivity.this, error.getErrmsg());
-                avatarImage.status = -1;
-            }
-        });
+        HttpService.uploadImage(new File(avatarImage.filePath), uploadImageHandler);
     }
+
+    private RequestHandler uploadImageHandler = new RequestHandler() {
+        @Override
+        public void onRequestFinish(Object response) {
+            UploadImageModel uploadImageModel = (UploadImageModel) response;
+            avatarImage.url = uploadImageModel.getData().getPath();
+            avatarImage.status = 2;
+            child.setAvatar(Constants.domainImage() + avatarImage.url);
+            adapter.notifyDataSetChanged();
+        }
+
+        @Override
+        public void onRequestFailed(BaseModel error) {
+            dismissDialog();
+            showDialog(BookConfirmActivity.this, error.getErrmsg());
+            avatarImage.status = -1;
+        }
+    };
 
     private void requestAddChild() {
         List<Child> children = new ArrayList<Child>();
@@ -169,24 +176,24 @@ public class BookConfirmActivity extends SGActivity implements AdapterView.OnIte
 
         List<NameValuePair> params = new ArrayList<NameValuePair>();
         params.add(new BasicNameValuePair("children", JSON.toJSONString(children)));
-        HttpService.post(Constants.domain() + "/user/child", params, AccountModel.class, new RequestHandler() {
-            @Override
-            public void onRequestFinish(Object response) {
-                AccountModel model = (AccountModel) response;
-                AccountService.instance().dispatchAccountChanged(model.getData());
-                child = model.getData().getChildren().get(0);
-                submit();
-            }
-
-            @Override
-            public void onRequestFailed(BaseModel error) {
-                dismissDialog();
-                showDialog(BookConfirmActivity.this, error.getErrmsg());
-            }
-        });
+        HttpService.post(Constants.domain() + "/user/child", params, AccountModel.class, addChildHandler);
     }
 
+    private RequestHandler addChildHandler = new RequestHandler() {
+        @Override
+        public void onRequestFinish(Object response) {
+            AccountModel model = (AccountModel) response;
+            AccountService.instance().dispatchAccountChanged(model.getData());
+            child = model.getData().getChildren().get(0);
+            submit();
+        }
 
+        @Override
+        public void onRequestFailed(BaseModel error) {
+            dismissDialog();
+            showDialog(BookConfirmActivity.this, error.getErrmsg());
+        }
+    };
 
     private boolean check() {
         if (TextUtils.isEmpty(child.getName())) {
@@ -430,4 +437,5 @@ public class BookConfirmActivity extends SGActivity implements AdapterView.OnIte
         int status; // -1.failed 0.pending 1.uploading 2.finish
         String url;
     }
+
 }

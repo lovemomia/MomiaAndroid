@@ -113,24 +113,26 @@ public class ChildInfoActivity extends SGActivity implements AdapterView.OnItemC
 
         List<NameValuePair> params = new ArrayList<NameValuePair>();
         params.add(new BasicNameValuePair("children", JSON.toJSONString(children)));
-        HttpService.post(Constants.domain() + "/user/child", params, AccountModel.class, new RequestHandler() {
-            @Override
-            public void onRequestFinish(Object response) {
-                dismissDialog();
-
-                AccountModel model = (AccountModel) response;
-                AccountService.instance().dispatchAccountChanged(model.getData());
-                adapter.notifyDataSetChanged();
-                finish();
-            }
-
-            @Override
-            public void onRequestFailed(BaseModel error) {
-                dismissDialog();
-                showDialog(ChildInfoActivity.this, error.getErrmsg());
-            }
-        });
+        HttpService.post(Constants.domain() + "/user/child", params, AccountModel.class, addChildHandler);
     }
+
+    private RequestHandler addChildHandler = new RequestHandler() {
+        @Override
+        public void onRequestFinish(Object response) {
+            dismissDialog();
+
+            AccountModel model = (AccountModel) response;
+            AccountService.instance().dispatchAccountChanged(model.getData());
+            adapter.notifyDataSetChanged();
+            finish();
+        }
+
+        @Override
+        public void onRequestFailed(BaseModel error) {
+            dismissDialog();
+            showDialog(ChildInfoActivity.this, error.getErrmsg());
+        }
+    };
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -214,23 +216,32 @@ public class ChildInfoActivity extends SGActivity implements AdapterView.OnItemC
     private void requestUploadImage() {
         avatarImage.status = 1;
 
-        HttpService.uploadImage(new File(avatarImage.filePath), new RequestHandler() {
-            @Override
-            public void onRequestFinish(Object response) {
-                UploadImageModel uploadImageModel = (UploadImageModel) response;
-                avatarImage.url = uploadImageModel.getData().getPath();
-                avatarImage.status = 2;
-                child.setAvatar(Constants.domainImage() + avatarImage.url);
-                adapter.notifyDataSetChanged();
-            }
+        HttpService.uploadImage(new File(avatarImage.filePath), uploadImageHandler);
+    }
 
-            @Override
-            public void onRequestFailed(BaseModel error) {
-                dismissDialog();
-                showDialog(ChildInfoActivity.this, error.getErrmsg());
-                avatarImage.status = -1;
-            }
-        });
+    private RequestHandler uploadImageHandler = new RequestHandler() {
+        @Override
+        public void onRequestFinish(Object response) {
+            UploadImageModel uploadImageModel = (UploadImageModel) response;
+            avatarImage.url = uploadImageModel.getData().getPath();
+            avatarImage.status = 2;
+            child.setAvatar(Constants.domainImage() + avatarImage.url);
+            adapter.notifyDataSetChanged();
+        }
+
+        @Override
+        public void onRequestFailed(BaseModel error) {
+            dismissDialog();
+            showDialog(ChildInfoActivity.this, error.getErrmsg());
+            avatarImage.status = -1;
+        }
+    };
+
+    @Override
+    protected void onDestroy() {
+        HttpService.abort(addChildHandler);
+        HttpService.abort(uploadImageHandler);
+        super.onDestroy();
     }
 
     class Adapter extends GroupStyleAdapter {

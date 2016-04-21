@@ -90,6 +90,7 @@ public class BookedCourseListFragment extends SGFragment implements AdapterView.
     @Override
     public void onDetach() {
         getActivity().unregisterReceiver(receiver);
+        HttpService.abort(handler);
         super.onDetach();
     }
 
@@ -115,30 +116,32 @@ public class BookedCourseListFragment extends SGFragment implements AdapterView.
 
         String path = finish ? "/user/course/finished" : "/user/course/notfinished";
 
-        HttpService.get(Constants.domain() + path, params, CacheType.DISABLE, BookedCourseListModel.class, new RequestHandler() {
-            @Override
-            public void onRequestFinish(Object response) {
-                getDLActivity().dismissDialog();
-
-                BookedCourseListModel model = (BookedCourseListModel) response;
-                dataList.addAll(model.getData().getList());
-                nextIndex = model.getData().getNextIndex();
-
-                if (nextIndex == 0 || model.getData().getTotalCount() <= dataList.size()) {
-                    isEnd = true;
-                }
-                if (dataList.size() == 0) {
-                    isEmpty = true;
-                }
-                adapter.notifyDataSetChanged();
-            }
-
-            @Override
-            public void onRequestFailed(BaseModel error) {
-                getDLActivity().showDialog(getActivity(), error.getErrmsg());
-            }
-        });
+        HttpService.get(Constants.domain() + path, params, CacheType.DISABLE, BookedCourseListModel.class, handler);
     }
+
+    private RequestHandler handler = new RequestHandler() {
+        @Override
+        public void onRequestFinish(Object response) {
+            getDLActivity().dismissDialog();
+
+            BookedCourseListModel model = (BookedCourseListModel) response;
+            dataList.addAll(model.getData().getList());
+            nextIndex = model.getData().getNextIndex();
+
+            if (nextIndex == 0 || model.getData().getTotalCount() <= dataList.size()) {
+                isEnd = true;
+            }
+            if (dataList.size() == 0) {
+                isEmpty = true;
+            }
+            adapter.notifyDataSetChanged();
+        }
+
+        @Override
+        public void onRequestFailed(BaseModel error) {
+            getDLActivity().showDialog(getActivity(), error.getErrmsg());
+        }
+    };
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {

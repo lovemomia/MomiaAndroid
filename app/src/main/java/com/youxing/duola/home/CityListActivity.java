@@ -29,6 +29,21 @@ public class CityListActivity extends SGActivity implements AdapterView.OnItemCl
 
     private CityListModel model;
 
+    private RequestHandler handler = new RequestHandler() {
+        @Override
+        public void onRequestFinish(Object response) {
+            dismissDialog();
+            model = (CityListModel) response;
+            adapter.notifyDataSetChanged();
+        }
+
+        @Override
+        public void onRequestFailed(BaseModel error) {
+            dismissDialog();
+            showDialog(CityListActivity.this, error.getErrmsg());
+        }
+    };
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,23 +57,16 @@ public class CityListActivity extends SGActivity implements AdapterView.OnItemCl
         requestData();
     }
 
+    @Override
+    protected void onDestroy() {
+        HttpService.abort(handler);
+        super.onDestroy();
+    }
+
     private void requestData() {
         showLoadingDialog(CityListActivity.this);
 
-        HttpService.get(Constants.domain() + "/city", null, CacheType.DISABLE, CityListModel.class, new RequestHandler() {
-            @Override
-            public void onRequestFinish(Object response) {
-                dismissDialog();
-                model = (CityListModel) response;
-                adapter.notifyDataSetChanged();
-            }
-
-            @Override
-            public void onRequestFailed(BaseModel error) {
-                dismissDialog();
-                showDialog(CityListActivity.this, error.getErrmsg());
-            }
-        });
+        HttpService.get(Constants.domain() + "/city", null, CacheType.DISABLE, CityListModel.class, handler);
     }
 
     @Override

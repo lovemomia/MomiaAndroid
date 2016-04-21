@@ -89,31 +89,33 @@ public class ForgetPwdActivity extends SGActivity implements View.OnClickListene
         params.add(new BasicNameValuePair("mobile", phoneEdit.getText().toString().trim()));
 //        params.add(new BasicNameValuePair("type", "forgetpwd"));
 
-        HttpService.post(Constants.domain() + "/auth/send", params, BaseModel.class, new RequestHandler() {
-            @Override
-            public void onRequestFinish(Object response) {
-                dismissDialog();
-                codeBtn.setEnabled(false);
-                codeBtn.setText("60s");
-                new CountDownTimer(60000, 1000) {
-                    public void onTick(long millisUntilFinished) {
-                        codeBtn.setText(millisUntilFinished / 1000 + "s");
-                    }
-
-                    public void onFinish() {
-                        codeBtn.setText("获取");
-                        codeBtn.setEnabled(true);
-                    }
-                }.start();
-            }
-
-            @Override
-            public void onRequestFailed(BaseModel error) {
-                dismissDialog();
-                showDialog(ForgetPwdActivity.this, error.getErrmsg());
-            }
-        });
+        HttpService.post(Constants.domain() + "/auth/send", params, BaseModel.class, vercodeHandler);
     }
+
+    private RequestHandler vercodeHandler = new RequestHandler() {
+        @Override
+        public void onRequestFinish(Object response) {
+            dismissDialog();
+            codeBtn.setEnabled(false);
+            codeBtn.setText("60s");
+            new CountDownTimer(60000, 1000) {
+                public void onTick(long millisUntilFinished) {
+                    codeBtn.setText(millisUntilFinished / 1000 + "s");
+                }
+
+                public void onFinish() {
+                    codeBtn.setText("获取");
+                    codeBtn.setEnabled(true);
+                }
+            }.start();
+        }
+
+        @Override
+        public void onRequestFailed(BaseModel error) {
+            dismissDialog();
+            showDialog(ForgetPwdActivity.this, error.getErrmsg());
+        }
+    };
 
     private void requestForgetpwd() {
         showLoadingDialog(this);
@@ -123,25 +125,31 @@ public class ForgetPwdActivity extends SGActivity implements View.OnClickListene
         params.add(new BasicNameValuePair("password", pwdEdit.getText().toString().trim()));
         params.add(new BasicNameValuePair("code", codeEdit.getText().toString().trim()));
 
-        HttpService.post(Constants.domain() + "/auth/password", params, AccountModel.class, new RequestHandler() {
-            @Override
-            public void onRequestFinish(Object response) {
-                dismissDialog();
-
-                AccountModel model = (AccountModel) response;
-                AccountService.instance().dispatchAccountChanged(model.getData());
-
-                setResult(RESULT_OK);
-                finish();
-            }
-
-            @Override
-            public void onRequestFailed(BaseModel error) {
-                showDialog(ForgetPwdActivity.this, error.getErrmsg());
-            }
-        });
+        HttpService.post(Constants.domain() + "/auth/password", params, AccountModel.class, forgetPwdHandler);
     }
 
+    private RequestHandler forgetPwdHandler = new RequestHandler() {
+        @Override
+        public void onRequestFinish(Object response) {
+            dismissDialog();
 
+            AccountModel model = (AccountModel) response;
+            AccountService.instance().dispatchAccountChanged(model.getData());
 
+            setResult(RESULT_OK);
+            finish();
+        }
+
+        @Override
+        public void onRequestFailed(BaseModel error) {
+            showDialog(ForgetPwdActivity.this, error.getErrmsg());
+        }
+    };
+
+    @Override
+    protected void onDestroy() {
+        HttpService.abort(vercodeHandler);
+        HttpService.abort(forgetPwdHandler);
+        super.onDestroy();
+    }
 }

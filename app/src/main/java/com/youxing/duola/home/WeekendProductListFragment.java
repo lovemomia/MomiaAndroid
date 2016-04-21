@@ -62,30 +62,38 @@ public class WeekendProductListFragment extends SGFragment implements AdapterVie
         return rootView;
     }
 
+    @Override
+    public void onDestroy() {
+        HttpService.abort(handler);
+        super.onDestroy();
+    }
+
     private void requestData() {
         List<NameValuePair> params = new ArrayList<NameValuePair>();
         params.add(new BasicNameValuePair("start", String.valueOf(nextIndex)));
-        HttpService.get(Constants.domain() + "/product/weekend", params, CacheType.DISABLE, ProductListModel.class, new RequestHandler() {
-            @Override
-            public void onRequestFinish(Object response) {
-                ProductListModel model = (ProductListModel) response;
-                productList.addAll(model.getData().getList());
-                nextIndex = model.getData().getNextIndex();
-                if (nextIndex <= 0 || model.getData().getTotalCount() <= productList.size()) {
-                    isEnd = true;
-                }
-                if (productList.size() == 0) {
-                    isEmpty = true;
-                }
-                adapter.notifyDataSetChanged();
-            }
-
-            @Override
-            public void onRequestFailed(BaseModel error) {
-                getDLActivity().showDialog(getDLActivity(), error.getErrmsg());
-            }
-        });
+        HttpService.get(Constants.domain() + "/product/weekend", params, CacheType.DISABLE, ProductListModel.class, handler);
     }
+
+    private RequestHandler handler = new RequestHandler() {
+        @Override
+        public void onRequestFinish(Object response) {
+            ProductListModel model = (ProductListModel) response;
+            productList.addAll(model.getData().getList());
+            nextIndex = model.getData().getNextIndex();
+            if (nextIndex <= 0 || model.getData().getTotalCount() <= productList.size()) {
+                isEnd = true;
+            }
+            if (productList.size() == 0) {
+                isEmpty = true;
+            }
+            adapter.notifyDataSetChanged();
+        }
+
+        @Override
+        public void onRequestFailed(BaseModel error) {
+            getDLActivity().showDialog(getDLActivity(), error.getErrmsg());
+        }
+    };
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {

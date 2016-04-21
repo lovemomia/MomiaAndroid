@@ -62,6 +62,13 @@ public class PayResultActivity extends SGActivity implements View.OnClickListene
         }
     }
 
+    @Override
+    protected void onDestroy() {
+        HttpService.abort(freePayHandler);
+        HttpService.abort(checkHandler);
+        super.onDestroy();
+    }
+
     private void freePay() {
         showLoadingDialog(this);
 
@@ -69,26 +76,28 @@ public class PayResultActivity extends SGActivity implements View.OnClickListene
         params.add(new BasicNameValuePair("oid", oid));
         params.add(new BasicNameValuePair("coupon", coupon));
 
-        HttpService.post(Constants.domainHttps() + "/payment/prepay/free", params, PayCheckModel.class, new RequestHandler() {
-            @Override
-            public void onRequestFinish(Object response) {
-                dismissDialog();
+        HttpService.post(Constants.domainHttps() + "/payment/prepay/free", params, PayCheckModel.class, freePayHandler);
+    }
 
-                model = (PayCheckModel) response;
-                if (model.getData().isPayed()) {
-                    paySuccess = true;
-                } else {
-                    setPayFailed();
-                }
-            }
+    private RequestHandler freePayHandler = new RequestHandler() {
+        @Override
+        public void onRequestFinish(Object response) {
+            dismissDialog();
 
-            @Override
-            public void onRequestFailed(BaseModel error) {
-                dismissDialog();
+            model = (PayCheckModel) response;
+            if (model.getData().isPayed()) {
+                paySuccess = true;
+            } else {
                 setPayFailed();
             }
-        });
-    }
+        }
+
+        @Override
+        public void onRequestFailed(BaseModel error) {
+            dismissDialog();
+            setPayFailed();
+        }
+    };
 
     private void checkPayResult() {
         showLoadingDialog(this);
@@ -96,26 +105,28 @@ public class PayResultActivity extends SGActivity implements View.OnClickListene
         List<NameValuePair> params = new ArrayList<NameValuePair>();
         params.add(new BasicNameValuePair("oid", oid));
 
-        HttpService.post(Constants.domainHttps() + "/payment/check", params, PayCheckModel.class, new RequestHandler() {
-            @Override
-            public void onRequestFinish(Object response) {
-                dismissDialog();
+        HttpService.post(Constants.domainHttps() + "/payment/check", params, PayCheckModel.class, checkHandler);
+    }
 
-                model = (PayCheckModel) response;
-                if (model.getData().isPayed()) {
-                    paySuccess = true;
-                } else {
-                    setPayFailed();
-                }
-            }
+    private RequestHandler checkHandler = new RequestHandler() {
+        @Override
+        public void onRequestFinish(Object response) {
+            dismissDialog();
 
-            @Override
-            public void onRequestFailed(BaseModel error) {
-                dismissDialog();
+            model = (PayCheckModel) response;
+            if (model.getData().isPayed()) {
+                paySuccess = true;
+            } else {
                 setPayFailed();
             }
-        });
-    }
+        }
+
+        @Override
+        public void onRequestFailed(BaseModel error) {
+            dismissDialog();
+            setPayFailed();
+        }
+    };
 
     private void setPayFailed() {
         titleTv.setText("购买失败");

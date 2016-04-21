@@ -86,27 +86,35 @@ public class SubjectDetailActivity extends SGActivity implements AdapterView.OnI
         requestData();
     }
 
+    @Override
+    protected void onDestroy() {
+        HttpService.abort(handler);
+        super.onDestroy();
+    }
+
     private void requestData() {
         showLoadingDialog(this);
 
         List<NameValuePair> params = new ArrayList<NameValuePair>();
         params.add(new BasicNameValuePair("id", id));
-        HttpService.get(Constants.domain() + "/v3/subject", params, CacheType.DISABLE, SubjectDetailModel.class, new RequestHandler() {
-            @Override
-            public void onRequestFinish(Object response) {
-                dismissDialog();
-                model = (SubjectDetailModel) response;
-                adapter.notifyDataSetChanged();
-                setTitle(model.getData().getSubject().getTitle());
-                setBuyView();
-            }
-
-            @Override
-            public void onRequestFailed(BaseModel error) {
-                showDialog(SubjectDetailActivity.this, error.getErrmsg());
-            }
-        });
+        HttpService.get(Constants.domain() + "/v3/subject", params, CacheType.DISABLE, SubjectDetailModel.class, handler);
     }
+
+    private RequestHandler handler = new RequestHandler() {
+        @Override
+        public void onRequestFinish(Object response) {
+            dismissDialog();
+            model = (SubjectDetailModel) response;
+            adapter.notifyDataSetChanged();
+            setTitle(model.getData().getSubject().getTitle());
+            setBuyView();
+        }
+
+        @Override
+        public void onRequestFailed(BaseModel error) {
+            showDialog(SubjectDetailActivity.this, error.getErrmsg());
+        }
+    };
 
     private void setBuyView() {
         if (model == null) {

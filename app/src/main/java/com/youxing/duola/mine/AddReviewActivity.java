@@ -209,8 +209,10 @@ public class AddReviewActivity extends SGActivity implements RatingBar.OnRatingB
      */
     private void requestUploadImage(final UploadImage file) {
         file.status = 1;
-
-        HttpService.uploadImage(new File(file.filePath), new RequestHandler() {
+        if (uploadImageHandler != null) {
+            HttpService.abort(uploadImageHandler);
+        }
+        uploadImageHandler = new RequestHandler() {
             @Override
             public void onRequestFinish(Object response) {
                 UploadImageModel uploadImageModel = (UploadImageModel) response;
@@ -232,8 +234,11 @@ public class AddReviewActivity extends SGActivity implements RatingBar.OnRatingB
                 showDialog(AddReviewActivity.this, error.getErrmsg());
                 file.status = -1;
             }
-        });
+        };
+        HttpService.uploadImage(new File(file.filePath), uploadImageHandler);
     }
+
+    private RequestHandler uploadImageHandler;
 
     private void requestSubmit() {
         AddReview ar = new AddReview();
@@ -253,29 +258,31 @@ public class AddReviewActivity extends SGActivity implements RatingBar.OnRatingB
         List<NameValuePair> params = new ArrayList<NameValuePair>();
         params.add(new BasicNameValuePair("comment", JSON.toJSONString(ar)));
 
-        HttpService.post(Constants.domain() + "/course/comment", params, BaseModel.class, new RequestHandler() {
-            @Override
-            public void onRequestFinish(Object response) {
-                dismissDialog();
-                showDialog(AddReviewActivity.this, "发布成功！", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        finish();
-
-                        sendBroadcast(new Intent(BookedCourseListFragment.INTENT_ACTION_DATA_CHANGE));
-                    }
-                });
-
-                isSubmitting = false;
-            }
-
-            @Override
-            public void onRequestFailed(BaseModel error) {
-                showDialog(AddReviewActivity.this, error.getErrmsg());
-                isSubmitting = false;
-            }
-        });
+        HttpService.post(Constants.domain() + "/course/comment", params, BaseModel.class, submitHandler);
     }
+
+    private RequestHandler submitHandler = new RequestHandler() {
+        @Override
+        public void onRequestFinish(Object response) {
+            dismissDialog();
+            showDialog(AddReviewActivity.this, "发布成功！", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    finish();
+
+                    sendBroadcast(new Intent(BookedCourseListFragment.INTENT_ACTION_DATA_CHANGE));
+                }
+            });
+
+            isSubmitting = false;
+        }
+
+        @Override
+        public void onRequestFailed(BaseModel error) {
+            showDialog(AddReviewActivity.this, error.getErrmsg());
+            isSubmitting = false;
+        }
+    };
 
     @Override
     public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -288,6 +295,13 @@ public class AddReviewActivity extends SGActivity implements RatingBar.OnRatingB
 
     @Override
     public void afterTextChanged(Editable s) {
+    }
+
+    @Override
+    protected void onDestroy() {
+        HttpService.abort(uploadImageHandler);
+        HttpService.abort(submitHandler);
+        super.onDestroy();
     }
 
     class Adapter extends GroupStyleAdapter {

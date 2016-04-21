@@ -43,6 +43,26 @@ public class BookableCourseListActivity extends SGActivity implements AdapterVie
     private boolean isEmpty;
     private boolean isEnd;
 
+    private RequestHandler handler = new RequestHandler() {
+        @Override
+        public void onRequestFinish(Object response) {
+            CourseListModel model = (CourseListModel) response;
+            dataList.addAll(model.getData().getCourses().getList());
+            if (model.getData().getCourses().getNextIndex() == 0 || model.getData().getCourses().getTotalCount() <= dataList.size()) {
+                isEnd = true;
+            }
+            if (dataList.size() == 0) {
+                isEmpty = true;
+            }
+            adapter.notifyDataSetChanged();
+        }
+
+        @Override
+        public void onRequestFailed(BaseModel error) {
+            showDialog(BookableCourseListActivity.this, error.getErrmsg());
+        }
+    };
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -64,25 +84,7 @@ public class BookableCourseListActivity extends SGActivity implements AdapterVie
         params.add(new BasicNameValuePair("pid", pid));
         params.add(new BasicNameValuePair("start", String.valueOf(start)));
         params.add(new BasicNameValuePair("count", "20"));
-        HttpService.get(Constants.domain() + "/subject/course", params, CacheType.DISABLE, CourseListModel.class, new RequestHandler() {
-            @Override
-            public void onRequestFinish(Object response) {
-                CourseListModel model = (CourseListModel) response;
-                dataList.addAll(model.getData().getCourses().getList());
-                if (model.getData().getCourses().getNextIndex() == 0 || model.getData().getCourses().getTotalCount() <= dataList.size()) {
-                    isEnd = true;
-                }
-                if (dataList.size() == 0) {
-                    isEmpty = true;
-                }
-                adapter.notifyDataSetChanged();
-            }
-
-            @Override
-            public void onRequestFailed(BaseModel error) {
-                showDialog(BookableCourseListActivity.this, error.getErrmsg());
-            }
-        });
+        HttpService.get(Constants.domain() + "/subject/course", params, CacheType.DISABLE, CourseListModel.class, handler);
     }
 
     @Override
@@ -92,6 +94,12 @@ public class BookableCourseListActivity extends SGActivity implements AdapterVie
             startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("duola://book?id=" +
                     course.getId() + "&pid=" + pid)));
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        HttpService.abort(handler);
+        super.onDestroy();
     }
 
     class Adapter extends BasicAdapter {

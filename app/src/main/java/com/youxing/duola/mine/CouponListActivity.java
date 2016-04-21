@@ -70,26 +70,28 @@ public class CouponListActivity extends SGActivity implements AdapterView.OnItem
         params.add(new BasicNameValuePair("start", String.valueOf(start)));
         params.add(new BasicNameValuePair("count", "20"));
         params.add(new BasicNameValuePair("oid", oid));
-        HttpService.get(Constants.domain() + "/user/coupon", params, CacheType.DISABLE, CouponListModel.class, new RequestHandler() {
-            @Override
-            public void onRequestFinish(Object response) {
-                CouponListModel model = (CouponListModel) response;
-                couponList.addAll(model.getData().getList());
-                if (model.getData().getTotalCount() <= couponList.size()) {
-                    isEnd = true;
-                }
-                if (couponList.size() == 0) {
-                    isEmpty = true;
-                }
-                adapter.notifyDataSetChanged();
-            }
-
-            @Override
-            public void onRequestFailed(BaseModel error) {
-                showDialog(CouponListActivity.this, error.getErrmsg());
-            }
-        });
+        HttpService.get(Constants.domain() + "/user/coupon", params, CacheType.DISABLE, CouponListModel.class, handler);
     }
+
+    private RequestHandler handler = new RequestHandler() {
+        @Override
+        public void onRequestFinish(Object response) {
+            CouponListModel model = (CouponListModel) response;
+            couponList.addAll(model.getData().getList());
+            if (model.getData().getTotalCount() <= couponList.size()) {
+                isEnd = true;
+            }
+            if (couponList.size() == 0) {
+                isEmpty = true;
+            }
+            adapter.notifyDataSetChanged();
+        }
+
+        @Override
+        public void onRequestFailed(BaseModel error) {
+            showDialog(CouponListActivity.this, error.getErrmsg());
+        }
+    };
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -100,6 +102,12 @@ public class CouponListActivity extends SGActivity implements AdapterView.OnItem
             setResult(RESULT_OK, data);
             finish();
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        HttpService.abort(handler);
+        super.onDestroy();
     }
 
     class Adapter extends BasicAdapter {

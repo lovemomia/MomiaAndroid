@@ -67,6 +67,9 @@ public class RongCloudEvent implements RongIM.UserInfoProvider, RongIM.GroupInfo
         }
     }
 
+    private RequestHandler groupInfoHandler;
+    private RequestHandler userInfoHandler;
+
     public RongCloudEvent() {
         RongIM.setUserInfoProvider(this, true);//设置用户信息提供者。
         RongIM.setGroupInfoProvider(this, true);//设置群组信息提供者。
@@ -96,6 +99,22 @@ public class RongCloudEvent implements RongIM.UserInfoProvider, RongIM.GroupInfo
     @Override
 
     public Group getGroupInfo(final String groupId) {
+        groupInfoHandler = new RequestHandler() {
+            @Override
+            public void onRequestFinish(Object response) {
+                IMGroupModel model = (IMGroupModel) response;
+
+                Group rcGroup = new Group(String.valueOf(model.getData().getGroupId()), model.getData().getGroupName(), Uri.parse(""));
+                RongIM.getInstance().refreshGroupInfoCache(rcGroup);
+
+                groupCache.put(groupId, model.getData());
+            }
+
+            @Override
+            public void onRequestFailed(BaseModel error) {
+            }
+        };
+
         IMGroup group = groupCache.get(groupId);
         if (group != null) {
             Group rcGroup = new Group(String.valueOf(group.getGroupId()), group.getGroupName(), Uri.parse(""));
@@ -104,27 +123,28 @@ public class RongCloudEvent implements RongIM.UserInfoProvider, RongIM.GroupInfo
         } else {
             List<NameValuePair> params = new ArrayList<NameValuePair>();
             params.add(new BasicNameValuePair("id", groupId));
-            HttpService.get(Constants.domain() + "/im/group", params, CacheType.DISABLE, IMGroupModel.class, new RequestHandler() {
-                @Override
-                public void onRequestFinish(Object response) {
-                    IMGroupModel model = (IMGroupModel) response;
-
-                    Group rcGroup = new Group(String.valueOf(model.getData().getGroupId()), model.getData().getGroupName(), Uri.parse(""));
-                    RongIM.getInstance().refreshGroupInfoCache(rcGroup);
-
-                    groupCache.put(groupId, model.getData());
-                }
-
-                @Override
-                public void onRequestFailed(BaseModel error) {
-                }
-            });
+            HttpService.get(Constants.domain() + "/im/group", params, CacheType.DISABLE, IMGroupModel.class, groupInfoHandler);
         }
         return null;
     }
 
     @Override
     public UserInfo getUserInfo(final String userId) {
+        userInfoHandler = new RequestHandler() {
+            @Override
+            public void onRequestFinish(Object response) {
+                IMUserModel model = (IMUserModel) response;
+
+                UserInfo rcUser = new UserInfo(String.valueOf(model.getData().getId()), model.getData().getNickName(), Uri.parse(model.getData().getAvatar()));
+                RongIM.getInstance().refreshUserInfoCache(rcUser);
+
+                userCache.put(userId, model.getData());
+            }
+
+            @Override
+            public void onRequestFailed(BaseModel error) {
+            }
+        };
         User user = userCache.get(userId);
         if (user != null) {
             UserInfo rcUser = new UserInfo(String.valueOf(user.getId()), user.getNickName(), Uri.parse(user.getAvatar()));
@@ -133,21 +153,7 @@ public class RongCloudEvent implements RongIM.UserInfoProvider, RongIM.GroupInfo
         } else {
             List<NameValuePair> params = new ArrayList<NameValuePair>();
             params.add(new BasicNameValuePair("uid", userId));
-            HttpService.get(Constants.domain() + "/im/user", params, CacheType.DISABLE, IMUserModel.class, new RequestHandler() {
-                @Override
-                public void onRequestFinish(Object response) {
-                    IMUserModel model = (IMUserModel) response;
-
-                    UserInfo rcUser = new UserInfo(String.valueOf(model.getData().getId()), model.getData().getNickName(), Uri.parse(model.getData().getAvatar()));
-                    RongIM.getInstance().refreshUserInfoCache(rcUser);
-
-                    userCache.put(userId, model.getData());
-                }
-
-                @Override
-                public void onRequestFailed(BaseModel error) {
-                }
-            });
+            HttpService.get(Constants.domain() + "/im/user", params, CacheType.DISABLE, IMUserModel.class, userInfoHandler);
         }
         return null;
     }
@@ -191,4 +197,5 @@ public class RongCloudEvent implements RongIM.UserInfoProvider, RongIM.GroupInfo
     public boolean onMessageLongClick(Context context, View view, Message message) {
         return false;
     }
+
 }
