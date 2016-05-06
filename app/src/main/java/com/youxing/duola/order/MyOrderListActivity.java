@@ -1,4 +1,4 @@
-package com.youxing.duola.mine;
+package com.youxing.duola.order;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;

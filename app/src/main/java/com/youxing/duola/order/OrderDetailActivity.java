@@ -1,4 +1,4 @@
-package com.youxing.duola.mine;
+package com.youxing.duola.order;
 
 import android.content.Intent;
 import android.net.Uri;
@@ -23,11 +23,8 @@ import com.youxing.common.services.http.RequestHandler;
 import com.youxing.common.utils.UnitTools;
 import com.youxing.duola.R;
 import com.youxing.duola.app.SGActivity;
-import com.youxing.duola.mine.views.OrderDetailInfoView;
 import com.youxing.duola.mine.views.OrderListItem;
 import com.youxing.duola.model.OrderDetailModel;
-import com.youxing.duola.utils.PriceUtils;
-import com.youxing.duola.views.ProductListItem;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;

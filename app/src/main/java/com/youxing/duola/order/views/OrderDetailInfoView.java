@@ -1,4 +1,4 @@
-package com.youxing.duola.mine.views;
+package com.youxing.duola.order.views;
 
 import android.content.Context;
 import android.text.Html;
