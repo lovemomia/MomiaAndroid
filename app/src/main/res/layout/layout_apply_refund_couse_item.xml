@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.youxing.duola.order.views.ApplyRefundCouseItem xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal" android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="12dp"
+    android:gravity="center_vertical">
+
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:textColor="@color/text_deep_gray"
+        android:layout_marginRight="10dp"
+        android:textSize="@dimen/text_medium"/>
+
+    <CheckBox
+        android:id="@+id/checkbox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:focusable="false"
+        android:clickable="false"
+        android:checked="false"
+        android:button="@drawable/ic_custom_checkbox"
+        android:layout_marginRight="10dp"/>
+
+</com.youxing.duola.order.views.ApplyRefundCouseItem>

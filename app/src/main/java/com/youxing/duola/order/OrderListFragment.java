@@ -1,5 +1,6 @@
 package com.youxing.duola.order;
 
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -10,6 +11,7 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.youxing.common.adapter.BasicAdapter;
+import com.youxing.common.adapter.GroupStyleAdapter;
 import com.youxing.common.app.Constants;
 import com.youxing.common.model.BaseModel;
 import com.youxing.common.services.http.CacheType;
@@ -17,7 +19,7 @@ import com.youxing.common.services.http.HttpService;
 import com.youxing.common.services.http.RequestHandler;
 import com.youxing.duola.R;
 import com.youxing.duola.app.SGFragment;
-import com.youxing.duola.mine.views.OrderListItem;
+import com.youxing.duola.order.views.OrderListItem;
 import com.youxing.duola.model.Order;
 import com.youxing.duola.model.OrderListModel;
 import com.youxing.duola.views.EmptyView;
@@ -55,7 +57,7 @@ public class OrderListFragment extends SGFragment implements AdapterView.OnItemC
         if (rootView == null) {
             rootView = inflater.inflate(R.layout.activity_list, null);
             listView = (ListView)rootView.findViewById(R.id.listView);
-            adapter = new Adapter();
+            adapter = new Adapter(getContext());
             listView.setAdapter(adapter);
             listView.setOnItemClickListener(this);
             rebuild = true;
@@ -110,7 +112,8 @@ public class OrderListFragment extends SGFragment implements AdapterView.OnItemC
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        Object item = parent.getItemAtPosition(position);
+        GroupStyleAdapter.IndexPath indexPath = adapter.getIndexForPosition(position);
+        Object item = adapter.getItemForSection(indexPath.section);
         if (item instanceof Order) {
             Order order = (Order) item;
             startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("duola://orderdetail?oid=" +
@@ -124,13 +127,14 @@ public class OrderListFragment extends SGFragment implements AdapterView.OnItemC
         super.onDestroy();
     }
 
-    class Adapter extends BasicAdapter {
+    class Adapter extends GroupStyleAdapter {
 
-        public Adapter() {
+        public Adapter(Context context) {
+            super(context);
         }
 
         @Override
-        public int getCount() {
+        public int getSectionCount() {
             if (isEmpty) {
                 return 1;
             }
@@ -141,24 +145,24 @@ public class OrderListFragment extends SGFragment implements AdapterView.OnItemC
         }
 
         @Override
-        public Object getItem(int position) {
+        public int getCountInSection(int section) {
+            return 1;
+        }
+
+        public Object getItemForSection(int section) {
             if (isEmpty) {
                 return EMPTY;
             }
-            if (position < orderList.size()) {
-                return orderList.get(position);
+
+            if (section < orderList.size()) {
+                return orderList.get(section);
             }
             return LOADING;
         }
 
         @Override
-        public long getItemId(int position) {
-            return position;
-        }
-
-        @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-            Object item = getItem(position);
+        public View getViewForRow(View convertView, ViewGroup parent, int section, int row) {
+            Object item = getItemForSection(section);
             View view = null;
             if (item == EMPTY) {
                 String msg;

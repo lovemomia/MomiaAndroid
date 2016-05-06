@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.youxing.duola.order.views.RefundStatusItem xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="10dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/step_1_text"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:textColor="@color/white"
+                android:gravity="center"
+                android:textSize="@dimen/text_medium"
+                android:text="1"
+                android:background="@drawable/bg_shape_gray_circle"/>
+
+            <View
+                android:id="@+id/step_1_line"
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:minHeight="100dp"
+                android:background="@color/text_light_gray"
+                android:layout_gravity="center_horizontal"/>
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingLeft="10dp"
+            android:paddingBottom="30dp">
+
+            <TextView
+                android:id="@+id/step_1_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingBottom="5dp"
+                android:textColor="@color/text_light_gray"
+                android:textSize="@dimen/text_medium"
+                android:text="申请已提交"/>
+
+            <TextView
+                android:id="@+id/step_1_subtitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/text_light_gray"
+                android:textSize="@dimen/text_medium"
+                android:text="您的退款申请已成功提交"/>
+
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/step_2_text"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:textColor="@color/white"
+                android:gravity="center"
+                android:textSize="@dimen/text_medium"
+                android:text="2"
+                android:background="@drawable/bg_shape_gray_circle"/>
+
+            <View
+                android:id="@+id/step_2_line"
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:minHeight="100dp"
+                android:background="@color/text_light_gray"
+                android:layout_gravity="center_horizontal"/>
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingLeft="10dp"
+            android:paddingBottom="30dp">
+
+            <TextView
+                android:id="@+id/step_2_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingBottom="5dp"
+                android:textColor="@color/text_light_gray"
+                android:textSize="@dimen/text_medium"
+                android:text="松果处理中"/>
+
+            <TextView
+                android:id="@+id/step_2_subtitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/text_light_gray"
+                android:textSize="@dimen/text_medium"
+                android:text="您的退款申请已受理，松果会尽快完成审核，部分情况需要1-2个工作日"/>
+
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/step_3_text"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:textColor="@color/white"
+                android:gravity="center"
+                android:textSize="@dimen/text_medium"
+                android:text="3"
+                android:background="@drawable/bg_shape_gray_circle"/>
+
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingLeft="10dp"
+            android:paddingBottom="30dp">
+
+            <TextView
+                android:id="@+id/step_3_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingBottom="5dp"
+                android:textColor="@color/text_light_gray"
+                android:textSize="@dimen/text_medium"
+                android:text="退款成功"/>
+
+            <TextView
+                android:id="@+id/step_3_subtitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/text_light_gray"
+                android:textSize="@dimen/text_medium"
+                android:text="微信支付处理完成后，退款会在3-5个工作日内退至您的微信支付账户"/>
+
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+</com.youxing.duola.order.views.RefundStatusItem>

@@ -28,6 +28,7 @@ import java.util.List;
 /**
  * Created by Jun Deng on 15/8/27.
  */
+@Deprecated
 public class MyFavActivity extends SGActivity implements AdapterView.OnItemClickListener {
 
     private ListView listView;

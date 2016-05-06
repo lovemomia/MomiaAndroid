@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.youxing.duola.order.views.RefundHeaderItem xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="10dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="10dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="80dp"
+            android:layout_height="wrap_content"
+            android:textColor="@color/text_deep_gray"
+            android:textSize="@dimen/text_medium"
+            android:text="退款金额"
+            android:layout_marginRight="10dp"/>
+
+        <TextView
+            android:id="@+id/price"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/text_light_gray"
+            android:textSize="@dimen/text_medium"
+            android:text="$99"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="10dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="80dp"
+            android:layout_height="wrap_content"
+            android:textColor="@color/text_deep_gray"
+            android:textSize="@dimen/text_medium"
+            android:text="数量"
+            android:layout_marginRight="10dp"/>
+
+        <TextView
+            android:id="@+id/number"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/text_light_gray"
+            android:textSize="@dimen/text_medium"
+            android:text="1"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="10dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="80dp"
+            android:layout_height="wrap_content"
+            android:textColor="@color/text_deep_gray"
+            android:textSize="@dimen/text_medium"
+            android:text="退回账户"
+            android:layout_marginRight="10dp"/>
+
+        <TextView
+            android:id="@+id/payType"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/text_light_gray"
+            android:textSize="@dimen/text_medium"
+            android:text="微信账户"/>
+    </LinearLayout>
+
+
+</com.youxing.duola.order.views.RefundHeaderItem>

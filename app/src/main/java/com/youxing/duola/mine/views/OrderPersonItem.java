@@ -14,6 +14,7 @@ import com.youxing.duola.model.OrderPerson;
 /**
  * Created by Jun Deng on 15/8/26.
  */
+@Deprecated
 public class OrderPersonItem extends LinearLayout implements View.OnClickListener {
 
     private View editView;

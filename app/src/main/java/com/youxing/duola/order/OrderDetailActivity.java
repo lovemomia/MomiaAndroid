@@ -1,5 +1,7 @@
 package com.youxing.duola.order;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -23,7 +25,7 @@ import com.youxing.common.services.http.RequestHandler;
 import com.youxing.common.utils.UnitTools;
 import com.youxing.duola.R;
 import com.youxing.duola.app.SGActivity;
-import com.youxing.duola.mine.views.OrderListItem;
+import com.youxing.duola.order.views.OrderListItem;
 import com.youxing.duola.model.OrderDetailModel;
 
 import org.apache.http.NameValuePair;
@@ -44,6 +46,15 @@ public class OrderDetailActivity extends SGActivity implements AdapterView.OnIte
     private Adapter adapter;
 
     private OrderDetailModel model;
+
+    private BroadcastReceiver receiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if (intent.getAction().endsWith("")) {
+
+            }
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -112,7 +123,10 @@ public class OrderDetailActivity extends SGActivity implements AdapterView.OnIte
         @Override
         public int getSectionCount() {
             if (model != null) {
-                return 3;
+                if (model.getData().getGroupInfo() != null) {
+                    return 3;
+                }
+                return 2;
             }
             return 0;
         }
@@ -121,45 +135,21 @@ public class OrderDetailActivity extends SGActivity implements AdapterView.OnIte
         public int getCountInSection(int section) {
             if (section == 0) {
                 return 1;
-            } else if (section == 1) {
+            } else if (section == 1 && model.getData().getGroupInfo() != null) {
+                return 6;
+
+            } else {
                 if (!TextUtils.isEmpty(model.getData().getCouponDesc())) {
                     return 6;
                 }
                 return 5;
             }
-            return 0;
-        }
-
-        @Override
-        public View getViewForSection(View convertView, ViewGroup parent, int section) {
-            int status = model.getData().getStatus();
-            int bookStatus = model.getData().getBookingStatus();
-            if (section == 2 && (status == 2 || bookStatus == 1)) {
-                LinearLayout ll = new LinearLayout(OrderDetailActivity.this);
-                int padding = UnitTools.dip2px(OrderDetailActivity.this, 20);
-                ll.setPadding(padding, padding, padding, padding);
-                Button payBtn = new Button(OrderDetailActivity.this);
-                payBtn.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
-                        LinearLayout.LayoutParams.WRAP_CONTENT));
-                payBtn.setText(status == 2 ? "继续支付" : "预约课程");
-                payBtn.setTextSize(18);
-                payBtn.setTextColor(getResources().getColor(R.color.white));
-                payBtn.setOnClickListener(OrderDetailActivity.this);
-                padding = UnitTools.dip2px(OrderDetailActivity.this, 10);
-                payBtn.setPadding(padding, padding, padding, padding);
-                payBtn.setBackgroundResource(R.drawable.btn_shape_red);
-                ll.addView(payBtn);
-                return ll;
-            }
-            return super.getViewForSection(convertView, parent, section);
         }
 
         @Override
         public int getHeightForSectionView(int section) {
             if (section == 0) {
                 return 0;
-            } else if (section == 3) {
-                return 60;
             }
             return super.getHeightForSectionView(section);
         }
@@ -169,8 +159,39 @@ public class OrderDetailActivity extends SGActivity implements AdapterView.OnIte
             View view = null;
             if (section == 0) {
                 OrderListItem item = OrderListItem.create(OrderDetailActivity.this);
-                item.setData(model.getData(), false);
+                item.setData(model.getData());
                 view = item;
+
+            } else if (section == 1 && model.getData().getGroupInfo() != null) {
+                TextView tv = new TextView(OrderDetailActivity.this);
+                tv.setLayoutParams(new AbsListView.LayoutParams(AbsListView.LayoutParams.MATCH_PARENT,
+                        AbsListView.LayoutParams.WRAP_CONTENT));
+                int padding = UnitTools.dip2px(OrderDetailActivity.this, 10);
+                tv.setPadding(padding, padding, padding, padding);
+                tv.setTextColor(row == 0 ? getResources().getColor(R.color.text_deep_gray) :
+                        getResources().getColor(R.color.text_gray));
+                tv.setTextSize(14);
+
+                if (row == 0) {
+                    tv.setText("拼团详情");
+
+                } else if (row == 1) {
+                    tv.setText("参与人数：" + model.getData().getGroupInfo().getJoinedCount() + "人");
+
+                } else if (row == 2) {
+                    tv.setText("应返金额：¥" + model.getData().getGroupInfo().getReturnFee());
+
+                } else if (row == 3) {
+                    tv.setText("开团时间：" + model.getData().getGroupInfo().getStartTime());
+
+                } else if (row == 4 && !TextUtils.isEmpty(model.getData().getCouponDesc())) {
+                    tv.setText("结束时间：" + model.getData().getGroupInfo().getEndTime());
+
+                } else {
+                    tv.setText("拼团状态：" + (model.getData().getGroupInfo().isSuccessful() ? "拼团成功" : "拼团失败"));
+                }
+
+                view = tv;
 
             } else {
                 TextView tv = new TextView(OrderDetailActivity.this);

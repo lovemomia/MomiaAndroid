@@ -319,7 +319,7 @@
         </activity>
 
         <activity
-            android:name=".mine.MyOrderListActivity"
+            android:name=".order.MyOrderListActivity"
             android:label="我的订单"
             android:screenOrientation="portrait">
             <intent-filter>
@@ -338,7 +338,7 @@
         </activity>
 
         <activity
-            android:name=".mine.OrderDetailActivity"
+            android:name=".order.OrderDetailActivity"
             android:label="订单详情"
             android:screenOrientation="portrait">
             <intent-filter>
@@ -352,6 +352,44 @@
                     android:scheme="duola" />
                 <data
                     android:host="orderdetail"
+                    android:scheme="duoladebug" />
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name=".order.ApplyRefundActivity"
+            android:label="申请退款"
+            android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:host="applyrefund"
+                    android:scheme="duola" />
+                <data
+                    android:host="applyrefund"
+                    android:scheme="duoladebug" />
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name=".order.RefundInfoActivity"
+            android:label="退款详情"
+            android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:host="refundinfo"
+                    android:scheme="duola" />
+                <data
+                    android:host="refundinfo"
                     android:scheme="duoladebug" />
             </intent-filter>
         </activity>
