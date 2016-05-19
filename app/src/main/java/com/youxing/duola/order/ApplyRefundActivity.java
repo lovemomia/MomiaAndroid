@@ -138,7 +138,7 @@ public class ApplyRefundActivity extends SGActivity implements AdapterView.OnIte
             if (section == 0) {
                 SimpleListItem cell = SimpleListItem.create(ApplyRefundActivity.this);
                 cell.setTitle("退款金额");
-                cell.setSubTitle("¥" + order.getPayedFee());
+                cell.setSubTitle("¥" + PriceUtils.formatPriceString(order.getPayedFee()));
                 cell.getSubTitleTv().setTextColor(getResources().getColor(R.color.text_red));
                 return cell;
             } else if (section == 1) {

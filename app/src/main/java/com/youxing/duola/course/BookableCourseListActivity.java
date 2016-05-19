@@ -84,7 +84,7 @@ public class BookableCourseListActivity extends SGActivity implements AdapterVie
         params.add(new BasicNameValuePair("pid", pid));
         params.add(new BasicNameValuePair("start", String.valueOf(start)));
         params.add(new BasicNameValuePair("count", "20"));
-        HttpService.get(Constants.domain() + "/subject/course", params, CacheType.DISABLE, CourseListModel.class, handler);
+        HttpService.get(Constants.domain() + "/subject/course/bookable", params, CacheType.DISABLE, CourseListModel.class, handler);
     }
 
     @Override

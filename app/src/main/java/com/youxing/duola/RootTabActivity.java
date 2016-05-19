@@ -88,7 +88,6 @@ public class RootTabActivity extends SGActivity implements RongIMClient.OnReceiv
         });
 
         // Umeng
-        MobclickAgent.updateOnlineConfig(this);
         UmengUpdateAgent.silentUpdate(this);
 
         // RongCloud
