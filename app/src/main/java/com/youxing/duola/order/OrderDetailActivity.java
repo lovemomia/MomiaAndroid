@@ -1,7 +1,5 @@
 package com.youxing.duola.order;
 
-import android.content.BroadcastReceiver;
-import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -10,8 +8,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
-import android.widget.Button;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -25,8 +21,8 @@ import com.youxing.common.services.http.RequestHandler;
 import com.youxing.common.utils.UnitTools;
 import com.youxing.duola.R;
 import com.youxing.duola.app.SGActivity;
-import com.youxing.duola.order.views.OrderListItem;
 import com.youxing.duola.model.OrderDetailModel;
+import com.youxing.duola.order.views.OrderListItem;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
@@ -46,15 +42,6 @@ public class OrderDetailActivity extends SGActivity implements AdapterView.OnIte
     private Adapter adapter;
 
     private OrderDetailModel model;
-
-    private BroadcastReceiver receiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            if (intent.getAction().endsWith("")) {
-
-            }
-        }
-    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

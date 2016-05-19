@@ -1,7 +1,9 @@
 package com.youxing.duola.order;
 
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -36,8 +38,6 @@ import java.util.List;
 public class OrderListFragment extends SGFragment implements AdapterView.OnItemClickListener {
 
     private View rootView;
-    private boolean rebuild;
-
     private ListView listView;
     private Adapter adapter;
 
@@ -45,6 +45,15 @@ public class OrderListFragment extends SGFragment implements AdapterView.OnItemC
     private boolean isEmpty;
     private boolean isEnd;
     private int status = 1;
+
+    private BroadcastReceiver receiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if (intent.getAction().equals("com.youxing.duola.ACTION_ORDER_CHANGED")) {
+                refresh();
+            }
+        }
+    };
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -60,9 +69,6 @@ public class OrderListFragment extends SGFragment implements AdapterView.OnItemC
             adapter = new Adapter(getContext());
             listView.setAdapter(adapter);
             listView.setOnItemClickListener(this);
-            rebuild = true;
-        } else {
-            rebuild = false;
         }
 
         ViewGroup parent = (ViewGroup) rootView.getParent();
@@ -76,12 +82,19 @@ public class OrderListFragment extends SGFragment implements AdapterView.OnItemC
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-//        if (rebuild) {
-//            requestData();
-//        }
+        IntentFilter filter =new IntentFilter("com.youxing.duola.ACTION_ORDER_CHANGED");
+        getContext().registerReceiver(receiver, filter);
+
     }
 
-    private void requestData() {
+    private void refresh() {
+        requestData(true);
+    }
+
+    private void requestData(boolean refresh) {
+        if (refresh) {
+            orderList.clear();
+        }
         int start = orderList.size();
         List<NameValuePair> params = new ArrayList<NameValuePair>();
         params.add(new BasicNameValuePair("status", String.valueOf(status)));
@@ -124,6 +137,7 @@ public class OrderListFragment extends SGFragment implements AdapterView.OnItemC
     @Override
     public void onDestroy() {
         HttpService.abort(handler);
+        getContext().unregisterReceiver(receiver);
         super.onDestroy();
     }
 
@@ -178,7 +192,7 @@ public class OrderListFragment extends SGFragment implements AdapterView.OnItemC
                 view = emptyView;
 
             } else if (item == LOADING) {
-                requestData();
+                requestData(false);
                 view = getLoadingView(parent, convertView);
 
             } else {

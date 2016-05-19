@@ -71,8 +71,14 @@ public class ApplyRefundActivity extends SGActivity implements AdapterView.OnIte
         public void onRequestFinish(Object response) {
             dismissDialog();
 
-            setResult(RESULT_OK);
-            finish();
+            dismissDialog();
+            sendBroadcast(new Intent("com.youxing.duola.ACTION_ORDER_CHANGED"));
+
+            order.setStatus(5);
+            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("duola://refundinfo"));
+            intent.putExtra("order", order);
+            intent.putExtra("back2root", true);
+            startActivity(intent);
         }
 
         @Override
@@ -88,7 +94,7 @@ public class ApplyRefundActivity extends SGActivity implements AdapterView.OnIte
             return;
         }
 
-        showLoadingDialog(ApplyRefundActivity.this, "正在提交订单，请稍候...", new DialogInterface.OnCancelListener() {
+        showLoadingDialog(ApplyRefundActivity.this, "正在提交退款申请，请稍候...", new DialogInterface.OnCancelListener() {
             @Override
             public void onCancel(DialogInterface dialog) {
 

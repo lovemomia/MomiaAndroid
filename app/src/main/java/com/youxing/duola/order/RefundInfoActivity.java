@@ -1,7 +1,10 @@
 package com.youxing.duola.order;
 
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
@@ -20,6 +23,7 @@ import com.youxing.duola.views.SimpleListItem;
 public class RefundInfoActivity extends SGActivity {
 
     private Order order;
+    private boolean back2root;
 
     private Adapter adapter;
 
@@ -29,11 +33,39 @@ public class RefundInfoActivity extends SGActivity {
         setContentView(R.layout.activity_list);
 
         order = getIntent().getParcelableExtra("order");
+        back2root = getIntent().getBooleanExtra("back2root", false);
 
         ListView listView = (ListView) findViewById(R.id.listView);
         adapter = new Adapter(this);
         listView.setAdapter(adapter);
 
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                if (back2root) {
+                    Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("duola://myorderlist"));
+                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(intent);
+                }
+                return true;
+
+            default:
+                break;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        if (back2root) {
+            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("duola://myorderlist"));
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(intent);
+        }
     }
 
     class Adapter extends GroupStyleAdapter {
