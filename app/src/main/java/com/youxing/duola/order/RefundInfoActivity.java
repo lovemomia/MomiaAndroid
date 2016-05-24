@@ -49,8 +49,9 @@ public class RefundInfoActivity extends SGActivity {
                     Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("duola://myorderlist"));
                     intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(intent);
+                    return true;
                 }
-                return true;
+                return super.onOptionsItemSelected(item);
 
             default:
                 break;
