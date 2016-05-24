@@ -26,7 +26,8 @@ public class HomeModel extends BaseModel {
         private List<HomeEvent> events;
         private List<HomeSubject> subjects;
         private List<HomeTopic> topics;
-        private CourseListModel.CourseList courses;
+        private List<HomeRecommend> recommends;
+        private CourseListModel.CourseList courses; //deprecated
 
         public List<HomeBanner> getBanners() {
             return banners;
@@ -74,6 +75,14 @@ public class HomeModel extends BaseModel {
 
         public void setCourses(CourseListModel.CourseList courses) {
             this.courses = courses;
+        }
+
+        public List<HomeRecommend> getRecommends() {
+            return recommends;
+        }
+
+        public void setRecommends(List<HomeRecommend> recommends) {
+            this.recommends = recommends;
         }
     }
 
@@ -295,6 +304,45 @@ public class HomeModel extends BaseModel {
 
         public void setSubTitle(String subTitle) {
             this.subTitle = subTitle;
+        }
+    }
+
+    public static class HomeRecommend {
+        private String title;
+        private String cover;
+        private String desc;
+        private String action;
+
+        public String getTitle() {
+            return title;
+        }
+
+        public void setTitle(String title) {
+            this.title = title;
+        }
+
+        public String getCover() {
+            return cover;
+        }
+
+        public void setCover(String cover) {
+            this.cover = cover;
+        }
+
+        public String getDesc() {
+            return desc;
+        }
+
+        public void setDesc(String desc) {
+            this.desc = desc;
+        }
+
+        public String getAction() {
+            return action;
+        }
+
+        public void setAction(String action) {
+            this.action = action;
         }
     }
 }

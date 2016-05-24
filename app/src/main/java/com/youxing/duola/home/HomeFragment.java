@@ -1,6 +1,8 @@
 package com.youxing.duola.home;
 
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -26,6 +28,7 @@ import com.youxing.duola.app.SGFragment;
 import com.youxing.duola.home.views.HomeEventItem;
 import com.youxing.duola.home.views.HomeHeaderView;
 import com.youxing.duola.home.views.HomeListItem;
+import com.youxing.duola.home.views.HomeRecommendItem;
 import com.youxing.duola.home.views.HomeSubjectContentItem;
 import com.youxing.duola.home.views.HomeSubjectCoverItem;
 import com.youxing.duola.home.views.HomeTitleBar;
@@ -192,8 +195,8 @@ public class HomeFragment extends SGFragment implements AdapterView.OnItemClickL
             startActivity("duola://web?url=" + url);
 
         } else {
-            Course course = model.getData().getCourses().getList().get(item.index);
-            startActivity("duola://coursedetail?id=" + course.getId() + "&recommend=1");
+            HomeModel.HomeRecommend recommend = model.getData().getRecommends().get(item.index);
+            getContext().startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(recommend.getAction())));
         }
 
     }
@@ -284,10 +287,9 @@ public class HomeFragment extends SGFragment implements AdapterView.OnItemClickL
                 }
             }
 
-            for (int i = 0; i < model.getData().getCourses().getList().size(); i++) {
-                listItems.add(new ListItem(ListItem.ITEM_TYPE_COURSE, i));
+            if (model.getData().getRecommends().size() > 0) {
+                listItems.add(new ListItem(ListItem.ITEM_TYPE_RECOMMEND));
             }
-
             return listItems;
         }
 
@@ -301,6 +303,10 @@ public class HomeFragment extends SGFragment implements AdapterView.OnItemClickL
 
         @Override
         public int getCountInSection(int section) {
+            ListItem item = getListItems().get(section);
+            if (item.type == ListItem.ITEM_TYPE_RECOMMEND) {
+                return model.getData().getRecommends().size();
+            }
             return 1;
         }
 
@@ -343,8 +349,8 @@ public class HomeFragment extends SGFragment implements AdapterView.OnItemClickL
                 return cell;
 
             } else {
-                HomeListItem cell = HomeListItem.create(getActivity());
-                cell.setData(model.getData().getCourses().getList().get(item.index));
+                HomeRecommendItem cell = HomeRecommendItem.create(getActivity());
+                cell.setData(model.getData().getRecommends().get(row));
                 return cell;
             }
         }
@@ -365,7 +371,7 @@ public class HomeFragment extends SGFragment implements AdapterView.OnItemClickL
         private static final int ITEM_TYPE_SUBJECT_COVER = 3;
         private static final int ITEM_TYPE_SUBJECT_COURSES = 4;
         private static final int ITEM_TYPE_TOPIC = 5;
-        private static final int ITEM_TYPE_COURSE = 6;
+        private static final int ITEM_TYPE_RECOMMEND = 6;
 
         private int type;
         private int index;

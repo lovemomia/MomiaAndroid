@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.youxing.duola.home.views.HomeRecommendItem xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal" android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center_vertical"
+    android:padding="10dp">
+
+    <com.youxing.common.views.YXNetworkImageView
+        android:id="@+id/icon"
+        android:layout_width="150dp"
+        android:layout_height="100dp"
+        android:scaleType="centerCrop"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingLeft="10dp">
+
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/text_deep_gray"
+            android:maxLines="2"
+            android:text="xxxx"
+            android:textSize="@dimen/text_medium"/>
+
+        <TextView
+            android:id="@+id/subTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/text_gray"
+            android:layout_marginTop="10dp"
+            android:singleLine="true"
+            android:text="yyyy"
+            android:textSize="@dimen/text_super_small"/>
+
+    </LinearLayout>
+
+</com.youxing.duola.home.views.HomeRecommendItem>
