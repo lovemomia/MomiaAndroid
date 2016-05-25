@@ -35,6 +35,9 @@ public class SGMappingManager extends MappingManager {
 
         // 邀请好友
         putPage("share", new MappingPage("share", true));
+
+        // vip卡兑换
+        putPage("signvip", new MappingPage("signvip", true));
     }
 
 }

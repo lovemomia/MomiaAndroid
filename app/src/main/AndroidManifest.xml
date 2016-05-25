@@ -319,6 +319,25 @@
         </activity>
 
         <activity
+            android:name=".mine.SignVIPCardActivity"
+            android:label=""
+            android:screenOrientation="portrait" >
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:host="signvip"
+                    android:scheme="duola" />
+                <data
+                    android:host="signvip"
+                    android:scheme="duoladebug" />
+            </intent-filter>
+        </activity>
+
+        <activity
             android:name=".order.MyOrderListActivity"
             android:label="我的订单"
             android:screenOrientation="portrait">

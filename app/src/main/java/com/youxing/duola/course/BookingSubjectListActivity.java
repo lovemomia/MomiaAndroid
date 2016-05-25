@@ -3,6 +3,8 @@ package com.youxing.duola.course;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -31,6 +33,8 @@ import java.util.List;
  */
 public class BookingSubjectListActivity extends SGActivity implements AdapterView.OnItemClickListener {
 
+    private static final int MENU_ID_VIP = 1;
+
     private String oid;
     private Adapter adapter;
 
@@ -49,6 +53,22 @@ public class BookingSubjectListActivity extends SGActivity implements AdapterVie
         adapter = new Adapter();
         listView.setAdapter(adapter);
         listView.setOnItemClickListener(this);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        menu.add(1, MENU_ID_VIP, 0, "激活VIP卡").setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == MENU_ID_VIP) {
+            String url = Constants.DEBUG ? "http://m.momia.cn/user/vipcard" : "http://m.sogokids.com/user/vipcard";
+            startActivity("duola://signvip?url=" + url);
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
