@@ -3,6 +3,7 @@ package com.youxing.duola;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTabHost;
 import android.text.TextUtils;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TabHost;
@@ -17,6 +18,7 @@ import com.youxing.common.services.account.AccountService;
 import com.youxing.common.services.http.HttpService;
 import com.youxing.common.services.http.RequestHandler;
 import com.youxing.duola.app.SGActivity;
+import com.youxing.duola.app.SGFragment;
 import com.youxing.duola.chat.ChatListFragment;
 import com.youxing.duola.home.HomeFragment;
 import com.youxing.duola.mine.MineFragment;
@@ -177,6 +179,26 @@ public class RootTabActivity extends SGActivity implements RongIMClient.OnReceiv
         if (AccountService.instance().isLogin()) {
             refreshDot();
         }
+    }
+
+    @Override
+    public boolean onKeyUp(int keyCode, KeyEvent event) {
+        if (getFragment(tabHost.getCurrentTab()).onKeyUp(keyCode, event)) {
+            return true;
+        }
+        return super.onKeyUp(keyCode, event);
+    }
+
+    private SGFragment getFragment(int index) {
+        String tag;
+        if (index == 0) {
+            tag = "home";
+        } else if (index == 1) {
+            tag = "chatlist";
+        } else {
+            tag = "mine";
+        }
+        return (SGFragment) getSupportFragmentManager().findFragmentByTag(tag);
     }
 
     private void refreshDot() {

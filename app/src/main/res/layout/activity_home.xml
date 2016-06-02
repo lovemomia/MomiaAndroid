@@ -63,19 +63,19 @@
     </com.youxing.duola.home.views.HomeTitleBar>
 
 
-    <android.support.v4.widget.SwipeRefreshLayout
-        android:id="@+id/refresh"
+    <FrameLayout
+        android:id="@+id/container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="-2dp">
-        <ListView
-            android:id="@+id/listView"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:dividerHeight="1dp"
-            android:divider="@color/bg_divider"
-            android:headerDividersEnabled="false"/>
+        <!--<ListView-->
+            <!--android:id="@+id/listView"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:dividerHeight="1dp"-->
+            <!--android:divider="@color/bg_divider"-->
+            <!--android:headerDividersEnabled="false"/>-->
 
-    </android.support.v4.widget.SwipeRefreshLayout>
+    </FrameLayout>
 
 </LinearLayout>
