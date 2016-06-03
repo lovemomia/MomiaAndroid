@@ -10,7 +10,6 @@ import android.widget.TabHost;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.umeng.analytics.MobclickAgent;
 import com.umeng.update.UmengUpdateAgent;
 import com.youxing.common.app.Constants;
 import com.youxing.common.model.BaseModel;
@@ -20,7 +19,7 @@ import com.youxing.common.services.http.RequestHandler;
 import com.youxing.duola.app.SGActivity;
 import com.youxing.duola.app.SGFragment;
 import com.youxing.duola.chat.ChatListFragment;
-import com.youxing.duola.home.HomeFragment;
+import com.youxing.duola.home.HomeFragmentV2;
 import com.youxing.duola.mine.MineFragment;
 import com.youxing.duola.model.IMTokenModel;
 
@@ -44,7 +43,7 @@ public class RootTabActivity extends SGActivity implements RongIMClient.OnReceiv
         tabHost.addTab(
                 tabHost.newTabSpec("home").setIndicator(
                         createTabItem("精选",
-                                R.drawable.ic_tab_home)), HomeFragment.class,
+                                R.drawable.ic_tab_home)), HomeFragmentV2.class,
                 null);
 
         View groupTabItem = createTabItem("群组", R.drawable.ic_tab_group);
