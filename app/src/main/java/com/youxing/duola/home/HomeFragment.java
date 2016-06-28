@@ -193,7 +193,7 @@ public class HomeFragment extends SGFragment implements AdapterView.OnItemClickL
             startActivity("duola://web?url=" + url);
 
         } else {
-            HomeModel.HomeRecommend recommend = model.getData().getRecommends().get(item.index);
+            HomeModel.HomeRecommend recommend = model.getData().getRecommends().get(ip.row);
             getContext().startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(recommend.getAction())));
         }
 
